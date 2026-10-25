@@ -19,6 +19,8 @@
       }
     ],
     "paths": {
+      "@/components/ui/*": ["./src/registry/components/*"],
+      "@/components/blocks/*": ["./src/registry/blocks/*"],
       "@/*": ["./src/*"]
     }
   },

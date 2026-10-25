@@ -1,26 +1,111 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
+/*
+ * Theme tokens — copy this block into your own globals.css.
+ * `base-*` is Tailwind's neutral scale, flipped for light mode:
+ * base-950 is the darkest surface in dark mode and the lightest in light mode.
+ */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  --color-base-50: var(--base-50);
+  --color-base-100: var(--base-100);
+  --color-base-200: var(--base-200);
+  --color-base-300: var(--base-300);
+  --color-base-400: var(--base-400);
+  --color-base-500: var(--base-500);
+  --color-base-600: var(--base-600);
+  --color-base-700: var(--base-700);
+  --color-base-800: var(--base-800);
+  --color-base-900: var(--base-900);
+  --color-base-950: var(--base-950);
+  --color-canvas: var(--canvas);
+  --color-shade: var(--shade);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  color-scheme: light;
+  --base-50: var(--color-neutral-950);
+  --base-100: var(--color-neutral-900);
+  --base-200: var(--color-neutral-800);
+  --base-300: var(--color-neutral-700);
+  --base-400: var(--color-neutral-600);
+  --base-500: var(--color-neutral-500);
+  --base-600: var(--color-neutral-400);
+  --base-700: var(--color-neutral-300);
+  --base-800: var(--color-neutral-200);
+  --base-900: var(--color-neutral-100);
+  --base-950: var(--color-neutral-50);
+  --canvas: var(--color-white);
+  --shade: var(--color-neutral-400);
 }
 
+.dark {
+  color-scheme: dark;
+  --base-50: var(--color-neutral-50);
+  --base-100: var(--color-neutral-100);
+  --base-200: var(--color-neutral-200);
+  --base-300: var(--color-neutral-300);
+  --base-400: var(--color-neutral-400);
+  --base-500: var(--color-neutral-500);
+  --base-600: var(--color-neutral-600);
+  --base-700: var(--color-neutral-700);
+  --base-800: var(--color-neutral-800);
+  --base-900: var(--color-neutral-900);
+  --base-950: var(--color-neutral-950);
+  --canvas: var(--color-black);
+  --shade: var(--color-black);
+}
+
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--canvas);
+  color: var(--base-200);
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-blue-500) 35%, transparent);
+}
+
+/* ---------- site-only utilities (registry components never depend on these) ---------- */
+
+/* Highlighted code from shiki (dual theme) */
+.code-html pre {
+  background: transparent !important;
+  padding: 1.25rem 0;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.dark .code-html .shiki,
+.dark .code-html .shiki span {
+  color: var(--shiki-dark) !important;
+}
+
+.code-html code {
+  display: grid;
+  counter-reset: line;
+}
+
+.code-html .line {
+  padding-right: 1.25rem;
+}
+
+.code-html .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 3.25rem;
+  padding-right: 1.25rem;
+  text-align: right;
+  color: var(--base-700);
+  user-select: none;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--base-800) transparent;
 }
