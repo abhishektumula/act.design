@@ -26,7 +26,7 @@ export function BlockFrame({ slug, width, reloadKey }: { slug: string; width: nu
   return (
     <div className="flex justify-center">
       <div
-        className="relative max-w-full overflow-hidden rounded-xl ring-1 ring-base-50/10 transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        className="relative max-w-full overflow-hidden rounded-[24px] ring-1 ring-base-50/10 transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
         style={{ width: width === "100%" ? "100%" : `${width}px` }}
       >
         {!loaded && <div className="absolute inset-0 animate-pulse bg-base-950" />}

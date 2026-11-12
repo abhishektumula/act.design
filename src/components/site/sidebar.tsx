@@ -16,7 +16,7 @@ export function Sidebar() {
           pathname === "/components" ? "text-base-50" : "text-base-400 hover:text-base-100"
         }`}
       >
-        All components
+        All instruments
         <span className="ml-2 text-base-600">{registry.length}</span>
       </Link>
       <Link
@@ -46,11 +46,11 @@ export function Sidebar() {
                         <motion.span
                           layoutId="sidebar-active"
                           transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-                          className="absolute inset-0 rounded-lg bg-base-50/[0.06] ring-1 ring-base-50/5"
+                          className="absolute inset-0 rounded-lg bg-base-950 shadow-[0_1px_0_white_inset,0_1px_3px_rgb(0_0_0/0.08)] ring-1 ring-base-50/10 dark:bg-base-900 dark:shadow-none"
                         />
                       )}
                       <span className="relative">{r.name}</span>
-                      {r.isNew && <span className="relative size-1.5 rounded-full bg-blue-400" aria-label="New" />}
+                      {r.isNew && <span className="relative size-1.5 rounded-full bg-signal" aria-label="New" />}
                     </Link>
                   </li>
                 );

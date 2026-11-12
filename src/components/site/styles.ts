@@ -1,5 +1,5 @@
 export const btnBase =
-  "inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap transition-[background-color,box-shadow,color,transform,translate] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/70 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas";
+  "inline-flex items-center justify-center gap-2 font-medium whitespace-nowrap transition-[background-color,box-shadow,color,transform,translate] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-signal/70 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas";
 
 /**
  * A keycap: inverted surface with a solid lower lip. Pressing sinks it into the

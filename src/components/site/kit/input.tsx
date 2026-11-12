@@ -13,10 +13,10 @@ export const inputVariants = cva(
       variant: {
         // recessed field with an inner shadow
         inset:
-          "rounded-xl bg-base-950 ring-1 ring-base-50/10 inset-shadow-sm inset-shadow-shade/60 focus-within:bg-base-900/60 focus-within:ring-blue-500/60 focus-within:outline-4 focus-within:outline-offset-1 focus-within:outline-blue-500/15",
+          "rounded-2xl bg-base-50/[0.05] shadow-[inset_0_1px_3px_rgb(0_0_0/0.12)] ring-1 ring-base-50/[0.07] focus-within:ring-signal/60 focus-within:outline-4 focus-within:outline-offset-1 focus-within:outline-signal/15",
         // raised surface, like a secondary button
         raised:
-          "rounded-xl bg-linear-to-b from-base-800 to-base-900 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/10 shadow-md shadow-shade/40 focus-within:ring-blue-500/60",
+          "rounded-xl bg-linear-to-b from-base-800 to-base-900 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/10 shadow-md shadow-shade/40 focus-within:ring-signal/60",
         // just a bottom border — for minimal forms
         underline:
           "rounded-none border-b border-base-50/15 px-0! focus-within:border-base-200 data-[error=true]:border-red-500/60",

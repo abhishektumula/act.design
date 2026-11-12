@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Footer } from "@/components/site/footer";
 import { CopyButton } from "@/components/site/kit/copy-button";
 
-export const metadata: Metadata = { title: "Setup · Tasteful UI" };
+export const metadata: Metadata = { title: "Setup · act.design" };
 
 const steps = [
   {
@@ -24,7 +24,7 @@ export function cn(...inputs: ClassValue[]) {
   },
   {
     title: "Add the theme tokens",
-    body: "base-* is Tailwind's neutral scale, flipped for light mode. Components only use these and Tailwind's own palette, so dark and light come for free. Toggle with a .dark class on <html>.",
+    body: "base-* is a warm graphite scale, flipped for light mode, and signal is the single accent. Components only use these and Tailwind's own palette, so dark and light come for free. Toggle with a .dark class on <html>.",
     file: "app/globals.css",
     code: `@import "tailwindcss";
 
@@ -32,8 +32,9 @@ export function cn(...inputs: ClassValue[]) {
 
 /*
  * Theme tokens — copy this block into your own globals.css.
- * \`base-*\` is Tailwind's neutral scale, flipped for light mode:
+ * \`base-*\` is a warm graphite scale, flipped for light mode:
  * base-950 is the darkest surface in dark mode and the lightest in light mode.
+ * \`signal\` is the single accent: lit ticks, live indicators, primary keys.
  */
 @theme inline {
   --color-base-50: var(--base-50);
@@ -49,40 +50,43 @@ export function cn(...inputs: ClassValue[]) {
   --color-base-950: var(--base-950);
   --color-canvas: var(--canvas);
   --color-shade: var(--shade);
+  --color-signal: var(--signal);
 }
 
 :root {
   color-scheme: light;
-  --base-50: var(--color-neutral-950);
-  --base-100: var(--color-neutral-900);
-  --base-200: var(--color-neutral-800);
-  --base-300: var(--color-neutral-700);
-  --base-400: var(--color-neutral-600);
-  --base-500: var(--color-neutral-500);
-  --base-600: var(--color-neutral-400);
-  --base-700: var(--color-neutral-300);
-  --base-800: var(--color-neutral-200);
-  --base-900: var(--color-neutral-100);
-  --base-950: var(--color-neutral-50);
-  --canvas: var(--color-white);
-  --shade: var(--color-neutral-400);
+  --base-50: oklch(0.2 0.008 70);
+  --base-100: oklch(0.26 0.008 70);
+  --base-200: oklch(0.33 0.008 70);
+  --base-300: oklch(0.42 0.008 70);
+  --base-400: oklch(0.51 0.008 70);
+  --base-500: oklch(0.6 0.008 70);
+  --base-600: oklch(0.69 0.008 75);
+  --base-700: oklch(0.8 0.008 75);
+  --base-800: oklch(0.875 0.007 80);
+  --base-900: oklch(0.93 0.006 80);
+  --base-950: oklch(0.985 0.003 85);
+  --canvas: oklch(0.962 0.006 85);
+  --shade: oklch(0.42 0.03 60);
+  --signal: oklch(0.65 0.205 38);
 }
 
 .dark {
   color-scheme: dark;
-  --base-50: var(--color-neutral-50);
-  --base-100: var(--color-neutral-100);
-  --base-200: var(--color-neutral-200);
-  --base-300: var(--color-neutral-300);
-  --base-400: var(--color-neutral-400);
-  --base-500: var(--color-neutral-500);
-  --base-600: var(--color-neutral-600);
-  --base-700: var(--color-neutral-700);
-  --base-800: var(--color-neutral-800);
-  --base-900: var(--color-neutral-900);
-  --base-950: var(--color-neutral-950);
-  --canvas: var(--color-black);
-  --shade: var(--color-black);
+  --base-50: oklch(0.97 0.004 85);
+  --base-100: oklch(0.93 0.004 85);
+  --base-200: oklch(0.87 0.005 80);
+  --base-300: oklch(0.78 0.006 75);
+  --base-400: oklch(0.67 0.007 75);
+  --base-500: oklch(0.55 0.007 70);
+  --base-600: oklch(0.44 0.007 70);
+  --base-700: oklch(0.35 0.007 70);
+  --base-800: oklch(0.28 0.006 70);
+  --base-900: oklch(0.225 0.005 70);
+  --base-950: oklch(0.185 0.004 70);
+  --canvas: oklch(0.155 0.004 70);
+  --shade: oklch(0.06 0.004 70);
+  --signal: oklch(0.71 0.19 42);
 }`,
   },
   {
@@ -100,9 +104,10 @@ export function cn(...inputs: ClassValue[]) {
 export default function SetupPage() {
   return (
     <>
-      <main className="mx-auto w-full max-w-3xl px-6 pt-28 pb-24">
-        <p className="text-sm font-medium text-blue-600 dark:text-blue-400">Setup</p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-[-0.03em] text-base-50 sm:text-5xl">Five minutes, once.</h1>
+      <main className="mx-auto w-full max-w-3xl px-6 pt-36 pb-24">
+        <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-base-50 sm:text-6xl">
+          Five minutes, <span className="font-serif font-normal tracking-[-0.02em] italic">once.</span>
+        </h1>
         <p className="mt-5 text-lg leading-8 text-base-400">
           Do this once per project. After that every component and block is a straight copy and paste. Assumes React 19 and
           Tailwind CSS v4.
@@ -110,14 +115,16 @@ export default function SetupPage() {
 
         <ol className="mt-14 space-y-14">
           {steps.map((s, i) => (
-            <li key={s.title} className="grid gap-5 sm:grid-cols-[2.5rem_1fr]">
-              <span className="grid size-8 place-items-center rounded-full bg-base-900 text-sm text-base-300 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/10 tabular-nums">
-                {i + 1}
+            <li key={s.title} className="grid gap-5 sm:grid-cols-[3rem_1fr]">
+              <span className="inline-flex size-fit rounded-[11px] bg-base-700 pb-[3px] dark:bg-black">
+                <span className="grid size-9 place-items-center rounded-[10px] bg-linear-to-b from-white to-base-900 font-mono text-sm font-medium text-base-100 shadow-[inset_0_1px_0_rgb(255_255_255/0.6)] ring-1 ring-black/10 dark:from-base-700 dark:to-base-800 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.1)]">
+                  {i + 1}
+                </span>
               </span>
               <div className="min-w-0">
-                <h2 className="text-lg font-medium text-base-100">{s.title}</h2>
+                <h2 className="font-serif text-2xl tracking-[-0.01em] text-base-50 italic">{s.title}</h2>
                 <p className="mt-1.5 leading-7 text-base-500">{s.body}</p>
-                <div className="mt-5 overflow-hidden rounded-2xl bg-base-950 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5">
+                <div className="mt-5 overflow-hidden rounded-[22px] bg-base-950 shadow-[0_1px_0_white_inset,0_24px_48px_-36px_var(--color-shade)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.05)_inset]">
                   <div className="flex h-11 items-center border-b border-base-50/5 pr-2 pl-4">
                     <span className="font-mono text-[13px] text-base-400">{s.file}</span>
                     <CopyButton value={s.code} className="ml-auto" />

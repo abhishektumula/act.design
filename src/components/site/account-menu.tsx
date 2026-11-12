@@ -27,11 +27,11 @@ export function AccountMenu({ user }: { user: Account }) {
         onClick={() => setOpen((o) => !o)}
         className="flex h-9 items-center gap-2 rounded-xl bg-base-900/80 pr-3 pl-1 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5 transition-colors hover:bg-base-800"
       >
-        <span className="grid size-7 place-items-center rounded-lg bg-linear-to-br from-amber-300 to-rose-500 text-xs font-semibold text-neutral-950 inset-shadow-2xs inset-shadow-white/50">
+        <span className="grid size-7 place-items-center rounded-lg bg-linear-to-b from-[color-mix(in_oklab,var(--signal)_75%,white)] to-signal text-xs font-semibold text-white inset-shadow-2xs inset-shadow-white/40">
           {user.firstName[0]}
         </span>
         <span className="text-sm text-base-200">{user.firstName}</span>
-        <span className="rounded-md bg-linear-to-b from-blue-500 to-blue-600 px-1.5 py-px text-[10px] font-semibold tracking-wider text-white ring-1 ring-blue-600 inset-shadow-2xs inset-shadow-white/30">
+        <span className="rounded-md bg-linear-to-b from-signal to-signal px-1.5 py-px text-[10px] font-semibold tracking-wider text-white ring-1 ring-signal inset-shadow-2xs inset-shadow-white/30">
           MAX
         </span>
       </button>

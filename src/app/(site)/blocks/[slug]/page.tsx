@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/blocks/[slug]">): Promise<Metadata> {
   const block = getBlock((await params).slug);
-  return { title: block ? `${block.name} block · Tasteful UI` : "Not found" };
+  return { title: block ? `${block.name} block · act.design` : "Not found" };
 }
 
 const code = "rounded bg-base-900 px-1.5 py-0.5 font-mono text-[13px] text-base-200";
@@ -36,14 +36,14 @@ async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "p
           Blocks
         </Link>
         <span className="text-base-700">/</span>
-        <Link href={`/blocks#${block.category.toLowerCase().replace(/\s/g, "-")}`} className="transition-colors hover:text-base-200">
+        <Link href="/blocks" className="transition-colors hover:text-base-200">
           {block.category}
         </Link>
       </nav>
       <div className="mt-5 flex items-center gap-3">
-        <h1 className="text-4xl font-semibold tracking-[-0.03em] text-base-50">{block.name}</h1>
+        <h1 className="text-5xl font-semibold tracking-[-0.045em] text-base-50">{block.name}</h1>
         {block.isNew && (
-          <span className="rounded-full bg-blue-500/10 px-2.5 py-0.5 text-xs font-medium text-blue-600 ring-1 ring-blue-500/20 dark:text-blue-300">
+          <span className="rounded-full bg-signal/10 px-2.5 py-0.5 text-xs font-medium text-signal ring-1 ring-signal/25">
             New
           </span>
         )}
@@ -62,7 +62,7 @@ async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "p
       </div>
 
       <section className="mt-16 max-w-3xl">
-        <h2 className="text-lg font-medium text-base-100">Installation</h2>
+        <h2 className="font-serif text-3xl tracking-[-0.01em] text-base-50 italic">Installation</h2>
         <ol className="mt-6 space-y-6 border-l border-base-50/10 pl-6">
           <li>
             <p className="text-sm text-base-400">
@@ -98,8 +98,8 @@ async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "p
           )}
           <li>
             <p className="text-sm text-base-400">
-              Copy the code into <code className={code}>components/blocks/{slug}.tsx</code> and render the named export. Every
-              string is a prop with a sensible default.
+              Copy the code into <code className={code}>components/blocks/{slug}.tsx</code> and render the named export. All the copy
+              lives in that one file, ready to rewrite.
             </p>
           </li>
         </ol>

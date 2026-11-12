@@ -7,10 +7,10 @@ import { SiteSearch } from "./site-search";
 import { ThemeToggle } from "./theme-toggle";
 import { btnGhost, btnPrimary } from "./styles";
 
-const links = [
-  { href: "/components", label: "Components" },
-  { href: "/blocks", label: "Blocks", badge: "New" },
-  { href: "/components#ai", label: "AI" },
+const links: { href: string; label: string; badge?: string }[] = [
+  { href: "/components", label: "Instruments" },
+  { href: "/blocks", label: "Blocks" },
+  { href: "/setup", label: "Setup" },
   { href: "/pricing", label: "Pricing" },
 ];
 
@@ -22,7 +22,7 @@ async function NavAccount() {
       <Link href="/login" className={`${btnGhost} h-9 rounded-xl px-3 text-sm`}>
         Sign in
       </Link>
-      <Link href="/pricing" className={`${btnPrimary} hidden h-9 rounded-xl px-4 text-sm sm:inline-flex`}>
+      <Link href="/pricing" className={`${btnPrimary} h-9 rounded-xl px-4 text-sm max-sm:hidden`}>
         Get All-Access
       </Link>
     </>
@@ -31,7 +31,7 @@ async function NavAccount() {
 
 export function Navbar() {
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-base-50/5 bg-canvas/70 backdrop-blur-xl">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-base-50/[0.06] bg-canvas/75 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-[1400px] items-center gap-8 px-6">
         <Logo />
         <nav className="hidden items-center gap-1 md:flex">
@@ -43,7 +43,7 @@ export function Navbar() {
             >
               {l.label}
               {l.badge && (
-                <span className="rounded-md bg-blue-500/15 px-1.5 py-px text-[10px] font-medium text-blue-600 dark:text-blue-300 ring-1 ring-blue-500/25">
+                <span className="rounded-md bg-signal/15 px-1.5 py-px text-[10px] font-medium text-signal ring-1 ring-signal/25">
                   {l.badge}
                 </span>
               )}

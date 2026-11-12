@@ -44,7 +44,7 @@ export async function CodePanel({ slug, kind = "components" }: { slug: string; k
               <span className="w-4 text-right font-mono text-xs text-base-800">{i + 1}</span>
               {w > 0 && (
                 <div
-                  className={`h-3 rounded ${i % 3 === 0 ? "bg-blue-500/20" : i % 4 === 1 ? "bg-amber-400/15" : "bg-base-800"}`}
+                  className={`h-3 rounded ${i % 3 === 0 ? "bg-signal/20" : i % 4 === 1 ? "bg-amber-400/15" : "bg-base-800"}`}
                   style={{ width: `${w}%`, marginLeft: `${(i % 4) * 16}px` }}
                 />
               )}

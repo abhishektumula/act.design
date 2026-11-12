@@ -2,18 +2,16 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bot, Component, CreditCard, LayoutGrid, LayoutPanelTop, LayoutTemplate, MousePointerClick, Search, TextCursorInput } from "lucide-react";
+import { Bot, Component, LayoutTemplate, MousePointerClick, Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { CommandPalette, type Command } from "@/components/ui/command-palette";
 import { blocks, registry, type Category } from "@/registry/meta";
 
 const icons: Record<Category, Command["icon"]> = {
-  AI: Bot,
-  Cards: CreditCard,
+  Controls: SlidersHorizontal,
   Actions: MousePointerClick,
-  Inputs: TextCursorInput,
+  Motion: Sparkles,
+  AI: Bot,
   Navigation: Component,
-  Overlays: LayoutPanelTop,
-  "Data Display": LayoutGrid,
 };
 
 const commands: Command[] = [

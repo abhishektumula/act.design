@@ -15,7 +15,7 @@ export function ComponentView({ slug, code }: { slug: string; code: ReactNode })
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
-        <div className="inline-flex rounded-xl bg-base-950 p-1 ring-1 ring-base-50/10 inset-shadow-sm inset-shadow-shade/60">
+        <div className="inline-flex rounded-xl bg-base-50/[0.06] p-1 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-base-50/5">
           {(
             [
               ["preview", "Preview", Eye],
@@ -33,7 +33,7 @@ export function ComponentView({ slug, code }: { slug: string; code: ReactNode })
                 <motion.span
                   layoutId={`${id}-view`}
                   transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-                  className="absolute inset-0 rounded-lg bg-linear-to-b from-base-700 to-base-800 shadow-md shadow-shade/50 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/15"
+                  className="absolute inset-0 rounded-lg bg-linear-to-b from-white to-base-950 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-black/5 dark:from-base-700 dark:to-base-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)_inset] dark:ring-white/5"
                 />
               )}
               <Icon className="relative size-3.5" />
@@ -60,7 +60,7 @@ export function ComponentView({ slug, code }: { slug: string; code: ReactNode })
           transition={{ duration: 0.2 }}
         >
           {view === "preview" ? (
-            <div className="relative flex min-h-[30rem] items-center justify-center overflow-hidden rounded-2xl bg-base-950 p-10 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5">
+            <div className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-[28px] bg-base-950 p-10 shadow-[0_1px_0_white_inset,0_30px_60px_-40px_var(--color-shade)] ring-1 ring-base-50/[0.08] dark:shadow-[0_1px_0_rgb(255_255_255/0.05)_inset]">
               <div key={run} className="relative flex w-full justify-center">
                 <Preview slug={slug} />
               </div>

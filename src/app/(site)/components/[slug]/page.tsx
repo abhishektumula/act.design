@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/components/[slug]">): Promise<Metadata> {
   const item = getItem((await params).slug);
-  return { title: item ? `${item.name} · Tasteful UI` : "Not found" };
+  return { title: item ? `${item.name} · act.design` : "Not found" };
 }
 
 async function ComponentPageContent({ params }: Pick<PageProps<"/components/[slug]">, "params">) {
@@ -42,12 +42,12 @@ async function ComponentPageContent({ params }: Pick<PageProps<"/components/[slu
       </nav>
 
       <div className="mt-5 flex items-center gap-3">
-        <h1 className="text-4xl font-semibold tracking-[-0.03em] text-base-50">{item.name}</h1>
+        <h1 className="text-5xl font-semibold tracking-[-0.045em] text-base-50">{item.name}</h1>
         {item.isNew && (
-          <span className="rounded-full bg-blue-500/10 px-2.5 py-0.5 text-xs font-medium text-blue-600 dark:text-blue-300 ring-1 ring-blue-500/20">New</span>
+          <span className="rounded-full bg-signal/10 px-2.5 py-0.5 text-xs font-medium text-signal ring-1 ring-signal/25">New</span>
         )}
       </div>
-      <p className="mt-4 max-w-2xl text-lg leading-8 text-base-400">{item.description}</p>
+      <p className="mt-4 max-w-2xl text-lg leading-8 text-pretty text-base-400">{item.description}</p>
 
       <div className="mt-12">
         <ComponentView
@@ -61,7 +61,7 @@ async function ComponentPageContent({ params }: Pick<PageProps<"/components/[slu
       </div>
 
       <section className="mt-16">
-        <h2 className="text-lg font-medium text-base-100">Installation</h2>
+        <h2 className="font-serif text-3xl tracking-[-0.01em] text-base-50 italic">Installation</h2>
         <ol className="mt-6 space-y-6 border-l border-base-50/10 pl-6">
           <li>
               <p className="text-sm text-base-400">
