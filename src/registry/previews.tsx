@@ -7,11 +7,11 @@ import CommandPalette from "@/components/ui/command-palette";
 import Dial from "@/components/ui/dial";
 import Fader from "@/components/ui/fader";
 import HoldToConfirm from "@/components/ui/hold-to-confirm";
-import Keycap from "@/components/ui/keycap";
+import Button from "@/components/ui/button";
 import NumberTicker from "@/components/ui/number-ticker";
 import PromptInput from "@/components/ui/prompt-input";
 import SegmentedControl from "@/components/ui/segmented-control";
-import SpotlightCard from "@/components/ui/spotlight-card";
+import FolderCard from "@/components/ui/folder-card";
 import Stepper from "@/components/ui/stepper";
 import Switch from "@/components/ui/switch";
 import TextStagger from "@/components/ui/text-stagger";
@@ -23,11 +23,11 @@ export const previews: Record<string, ComponentType> = {
   "dial": Dial,
   "fader": Fader,
   "hold-to-confirm": HoldToConfirm,
-  "keycap": Keycap,
+  button: Button,
   "number-ticker": NumberTicker,
   "prompt-input": PromptInput,
   "segmented-control": SegmentedControl,
-  "spotlight-card": SpotlightCard,
+  "folder-card": FolderCard,
   "stepper": Stepper,
   "switch": Switch,
   "text-stagger": TextStagger,

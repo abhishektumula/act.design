@@ -2,7 +2,6 @@
 
 import { useId, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { motion } from "motion/react";
 import { BellRing, Moon, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -19,12 +18,11 @@ export const switchVariants = cva(
   },
 );
 
-const sizes = { sm: { thumb: 18, w: 40, grow: 5 }, md: { thumb: 26, w: 54, grow: 7 } };
-const spring = { type: "spring", stiffness: 700, damping: 36, mass: 0.7 } as const;
+const sizes = { sm: { thumb: 18, w: 40 }, md: { thumb: 26, w: 54 } };
 
 /**
- * A toggle with travel. Press and the thumb stretches toward where it is going;
- * release and it lands. You can also drag the thumb across, like the real thing.
+ * A toggle. The thumb and the fill move together on one eased transition, and
+ * you can drag the thumb across as well as tap it.
  */
 export function Switch({
   checked: controlled,
@@ -46,7 +44,6 @@ export function Switch({
 }) {
   const [inner, setInner] = useState(defaultChecked);
   const on = controlled ?? inner;
-  const [pressed, setPressed] = useState(false);
   /** Where a drag would leave the switch, while one is happening. */
   const [dragTo, setDragTo] = useState<boolean | null>(null);
   const start = useRef<{ x: number; moved: boolean } | null>(null);
@@ -57,21 +54,19 @@ export function Switch({
 
   const set = (next: boolean) => {
     if (next === on) return;
-    navigator.vibrate?.(6);
     if (controlled === undefined) setInner(next);
     onCheckedChange?.(next);
   };
 
   const onPointerDown = (e: PointerEvent<HTMLButtonElement>) => {
     if (disabled) return;
-    e.currentTarget.setPointerCapture(e.pointerId);
     start.current = { x: e.clientX, moved: false };
-    setPressed(true);
   };
   const onPointerMove = (e: PointerEvent<HTMLButtonElement>) => {
     if (!start.current) return;
     const dx = e.clientX - start.current.x;
-    if (Math.abs(dx) > 5) {
+    if (Math.abs(dx) > 6) {
+      if (!start.current.moved) e.currentTarget.setPointerCapture(e.pointerId);
       start.current.moved = true;
       setDragTo(dx > 0);
     }
@@ -82,9 +77,10 @@ export function Switch({
       if (dragTo !== null) set(dragTo);
     }
     start.current = null;
-    setPressed(false);
     setDragTo(null);
   };
+
+  const ease = "duration-200 ease-[cubic-bezier(0.3,0.7,0.2,1)]";
 
   return (
     <button
@@ -105,21 +101,17 @@ export function Switch({
       className={cn(switchVariants({ size }), className)}
       {...aria}
     >
-      {/* Fill, timed to land with the thumb */}
-      <motion.span
+      <span
         aria-hidden
-        initial={false}
-        animate={{ opacity: shown ? 1 : 0 }}
-        transition={{ duration: 0.16, ease: "easeOut" }}
-        className="absolute inset-0 rounded-full bg-signal shadow-[inset_0_1px_2px_rgb(0_0_0/0.25),0_0_14px_-3px_var(--signal)]"
+        className={cn("absolute inset-0 rounded-full bg-signal transition-opacity", ease, shown ? "opacity-100" : "opacity-0")}
       />
-      <motion.span
+      <span
         aria-hidden
-        initial={false}
-        animate={{ x: shown ? travel : 0, scaleX: pressed ? (s.thumb + s.grow) / s.thumb : 1 }}
-        transition={spring}
-        style={{ width: s.thumb, height: s.thumb, originX: shown ? 1 : 0 }}
-        className="relative rounded-full bg-white shadow-[inset_0_-1px_1px_rgb(0_0_0/0.06),0_1px_1px_rgb(0_0_0/0.12),0_2px_6px_-1px_rgb(0_0_0/0.22)] dark:bg-base-100"
+        style={{ width: s.thumb, height: s.thumb, transform: `translateX(${shown ? travel : 0}px)` }}
+        className={cn(
+          "relative rounded-full bg-white shadow-[0_1px_1px_rgb(0_0_0/0.12),0_2px_5px_-1px_rgb(0_0_0/0.2)] transition-transform will-change-transform dark:bg-base-100",
+          ease,
+        )}
       />
     </button>
   );

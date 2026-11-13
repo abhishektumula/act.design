@@ -9,8 +9,8 @@
  * `signal` is the single accent: lit ticks, live indicators, primary keys.
  */
 @theme inline {
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
   --font-serif: var(--font-instrument-serif);
 
   --color-base-50: var(--base-50);
@@ -63,6 +63,10 @@
   --canvas: oklch(0.155 0.004 70);
   --shade: oklch(0.06 0.004 70);
   --signal: oklch(0.71 0.19 42);
+}
+
+html {
+  font-feature-settings: "cv11", "ss01";
 }
 
 html,

@@ -19,19 +19,19 @@ export const registry: RegistryItem[] = [
   // Controls
   { slug: "dial", name: "Dial", category: "Controls", description: "A rotary knob with a lit scale, knurled rim and real detents. Drag, scroll or use the arrow keys; Shift for fine control, double-click to reset.", deps: [M, V], isNew: true },
   { slug: "fader", name: "Fader", category: "Controls", description: "A slider drawn as a ruler. Ticks swell around the thumb like a magnifier and pulling past either end stretches it on an elastic.", deps: [M], isNew: true },
-  { slug: "switch", name: "Switch", category: "Controls", description: "A toggle with travel. The thumb stretches toward where it is going while pressed, then lands with a little bounce.", deps: [M, L, V], isNew: true },
+  { slug: "switch", name: "Switch", category: "Controls", description: "A toggle whose thumb and fill move together on one eased transition. Tap it, or drag the thumb across.", deps: [M, L, V], isNew: true },
   { slug: "segmented-control", name: "Segmented Control", category: "Controls", description: "A raised cap that glides between options and sinks a touch under your finger. Full arrow-key support.", deps: [M, L, V], isNew: true },
   { slug: "stepper", name: "Stepper", category: "Controls", description: "A number field whose digits roll in the direction you count. Hold to repeat with acceleration; hit a limit and it shakes its head.", deps: [M, L], isNew: true },
 
   // Actions
-  { slug: "keycap", name: "Keycap", category: "Actions", description: "A button built like a physical key. The face sinks into its wall on press, and bound hotkeys press it from the keyboard.", deps: [M, L, V], isNew: true },
+  { slug: "button", name: "Button", category: "Actions", description: "A quiet button with four tones and a minimal shadow. Bind a hotkey and the key is printed inside it, and pressing it on the keyboard clicks the button.", deps: [M, L, V] },
   { slug: "hold-to-confirm", name: "Hold to Confirm", category: "Actions", description: "For actions that deserve intent. A fill sweeps across and inverts the label; let go early and it springs back with a shake.", deps: [M, L, V] },
 
   // Motion
   { slug: "card-stack", name: "Card Stack", category: "Motion", description: "A deck you deal by hand. Fling the top card and it tucks itself under the pile while the rest rise to meet you.", deps: [M, L], isNew: true },
   { slug: "number-ticker", name: "Number Ticker", category: "Motion", description: "Digits that roll like an odometer whenever the value changes.", deps: [M, L] },
-  { slug: "text-stagger", name: "Text Stagger", category: "Motion", description: "Words or characters that fade, blur and rise into place. Perfect for streamed model output and hero headlines.", deps: [M, L] },
-  { slug: "spotlight-card", name: "Spotlight Card", category: "Motion", description: "A card lit by a soft spotlight that follows the cursor across border and surface.", deps: [L] },
+  { slug: "text-stagger", name: "Text Stagger", category: "Motion", description: "Headlines that rise word by word, and body copy that streams in token by token. Words never split, so it wraps cleanly at any width.", deps: [M, L] },
+  { slug: "folder-card", name: "Folder Card", category: "Motion", description: "A folder you can peek into. Hover or focus it and the front flap tips open while the papers inside slide up and fan out. Tap toggles it on touch screens.", deps: [M], isNew: true },
 
   // AI
   { slug: "orb", name: "Orb", category: "AI", description: "A fluid orb drawn by a small WebGL shader: colour folds through itself like ink in water. Idle, listening, thinking and speaking each flow differently and melt into one another. Liquid and halo variants, and it reacts to real microphone input.", deps: [M, L], isNew: true },
@@ -79,12 +79,12 @@ export type BlockItem = {
 };
 
 export const blocks: BlockItem[] = [
-  { slug: "hero-instrument", name: "Instrument Hero", category: "Hero", description: "A product hero whose visual is a working console. Turn the dial, slide the fader or flip the switch and the screen rewrites its copy on the spot.", deps: [M, L], uses: ["dial", "fader", "switch", "keycap"], isNew: true },
-  { slug: "feature-rack", name: "Feature Rack", category: "Features", description: "Features as rack-mounted 1U modules: screws, a status LED and a live readout each, from a level meter to working role switches.", deps: [M], uses: ["switch", "stepper"], isNew: true },
-  { slug: "gauges", name: "Gauges", category: "Features", description: "Proof points as analog meters. On scroll each needle swings up, overshoots and wobbles to rest while the readout rolls in.", deps: [M], uses: ["number-ticker"], isNew: true },
-  { slug: "pricing-meter", name: "Metered Pricing", category: "Pricing", description: "Usage pricing as a control panel. A fader for traffic and a stepper for seats; tier lights follow and the total rolls to its new number.", deps: [M, L], uses: ["fader", "stepper", "segmented-control", "keycap"], isNew: true },
-  { slug: "testimonials-deck", name: "Testimonial Deck", category: "Social proof", description: "Quotes dealt as a deck of paper, signal and ink cards you can fling, beside a rating and a grid of customer wordmarks.", deps: [M, L], uses: ["card-stack"], isNew: true },
-  { slug: "waitlist-keys", name: "Keycap Waitlist", category: "Conversion", description: "A row of keys that types itself, an email well with a real keycap to submit, and a place in line that rolls into view.", deps: [M, L], uses: ["keycap", "stepper"], isNew: true },
+  { slug: "hero-monitor", name: "Monitoring Hero", category: "Hero", description: "A hero for an uptime-monitoring product whose visual is the product: an endpoint's last hour of checks. Move the alert threshold or the confirmations and it tells you how often you'd have been paged.", deps: [M, L], uses: ["button", "fader", "stepper", "switch"], isNew: true },
+  { slug: "feature-rack", name: "Feature List", category: "Features", description: "Five features, each with a live readout instead of a stock icon: region latencies, a check-frequency control, an incident timeline, alert switches and a certificate countdown.", deps: [M], uses: ["segmented-control", "switch"], isNew: true },
+  { slug: "gauges", name: "Gauges", category: "Features", description: "Proof points as analog meters. On scroll each needle swings up, overshoots and settles while the number rolls in.", deps: [M], uses: ["number-ticker"], isNew: true },
+  { slug: "pricing-meter", name: "Usage Pricing", category: "Pricing", description: "Usage pricing as controls: monitors, check frequency and seats. Plan lights follow along and the total rolls to its new number.", deps: [M, L], uses: ["fader", "segmented-control", "stepper", "button"], isNew: true },
+  { slug: "testimonials-deck", name: "Testimonial Deck", category: "Social proof", description: "Customer quotes with concrete outcomes, dealt as a deck you can fling, beside a review score and customer names.", deps: [M, L], uses: ["card-stack"], isNew: true },
+  { slug: "cta-check", name: "Site Check CTA", category: "Conversion", description: "A closing call to action people actually use: type a domain, get an instant check from four regions with certificate expiry, then start monitoring it.", deps: [M, L], uses: ["button"], isNew: true },
 ];
 
 export function getBlock(slug: string) {

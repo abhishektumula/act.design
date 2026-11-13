@@ -61,7 +61,7 @@ export function ComponentView({ slug, code }: { slug: string; code: ReactNode })
         >
           {view === "preview" ? (
             <div className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-[28px] bg-base-950 p-10 shadow-[0_1px_0_white_inset,0_30px_60px_-40px_var(--color-shade)] ring-1 ring-base-50/[0.08] dark:shadow-[0_1px_0_rgb(255_255_255/0.05)_inset]">
-              <div key={run} className="relative flex w-full justify-center">
+              <div key={run} className="@container relative flex w-full justify-center">
                 <Preview slug={slug} />
               </div>
             </div>

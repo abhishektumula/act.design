@@ -18,7 +18,7 @@ function SectionHeading({ title, body }: { title: React.ReactNode; body: string 
 
 const principles = [
   { word: "Weight", body: "Things should feel like they cost something to move. Springs with mass, never linear tweens." },
-  { word: "Travel", body: "A press goes somewhere. Keys sink into their walls, thumbs stretch toward where they’re headed." },
+  { word: "Quiet", body: "Buttons don’t bounce. The motion is saved for the things you drag, turn and fling, where it tells you something." },
   { word: "Detents", body: "Values click into place. Ticks light up, numbers roll, limits push back instead of going quiet." },
   { word: "Restraint", body: "One accent, warm neutrals, real whitespace. Motion that explains a change, then stops." },
 ];
@@ -28,7 +28,7 @@ const layout: [string, string][] = [
   ["dial", "lg:col-span-2 h-[460px]"],
   ["card-stack", "lg:row-span-2 h-[460px] lg:h-auto"],
   ["fader", "h-[460px]"],
-  ["keycap", "h-[460px]"],
+  ["button", "h-[460px]"],
   ["switch", "h-[420px]"],
   ["segmented-control", "lg:col-span-2 h-[420px]"],
   ["stepper", "h-[420px]"],
@@ -96,7 +96,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="mt-16 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {["hero-instrument", "pricing-meter", "feature-rack", "gauges", "testimonials-deck", "waitlist-keys"].map((slug) => (
+            {["hero-monitor", "pricing-meter", "feature-rack", "gauges", "testimonials-deck", "cta-check"].map((slug) => (
               <BlockCard key={slug} block={getBlock(slug)!} />
             ))}
           </div>
@@ -118,12 +118,9 @@ export default function Home() {
               <div className="mt-10 flex justify-center">
                 <Link
                   href="/components"
-                  className="group inline-flex h-13 items-center gap-3 rounded-2xl bg-signal pr-2 pl-6 text-[15px] font-medium text-white shadow-[0_1px_0_rgb(255_255_255/0.35)_inset,0_4px_0_color-mix(in_oklab,var(--signal)_60%,black),0_20px_40px_-12px_color-mix(in_oklab,var(--signal)_60%,transparent)] transition-[translate,box-shadow] duration-100 hover:-translate-y-px active:translate-y-1 active:shadow-[0_1px_0_rgb(255_255_255/0.35)_inset,0_0_0_color-mix(in_oklab,var(--signal)_60%,black)]"
+                  className="group inline-flex h-12 items-center gap-2 rounded-[14px] bg-signal px-5 text-[15px] font-medium text-white shadow-[0_1px_2px_rgb(0_0_0/0.14),inset_0_1px_0_rgb(255_255_255/0.16)] transition-colors hover:bg-[color-mix(in_oklab,var(--signal)_90%,white)]"
                 >
-                  Open the library
-                  <span className="grid size-9 place-items-center rounded-xl bg-black/15">
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                  </span>
+                  Open the library <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               </div>
             </div>

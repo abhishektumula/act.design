@@ -17,10 +17,10 @@ type Gauge = {
 };
 
 const gauges: Gauge[] = [
-  { label: "Uptime", value: 99.99, reading: 0.97, format: { minimumFractionDigits: 2 }, suffix: "%", caption: "Rolling 12 months, every region", scale: ["99.0", "100"] },
-  { label: "p95 latency", value: 42, reading: 0.18, suffix: "ms", caption: "Edge to origin and back", scale: ["0", "250"] },
-  { label: "Deploys / day", value: 1240, reading: 0.72, caption: "Across 3,000 teams", scale: ["0", "2k"] },
-  { label: "NPS", value: 72, reading: 0.86, caption: "From 4,100 responses", scale: ["−100", "100"] },
+  { label: "Platform uptime", value: 99.995, reading: 0.95, format: { minimumFractionDigits: 3 }, suffix: "%", caption: "Beacon itself, last 12 months", scale: ["99.9", "100"] },
+  { label: "Time to alert", value: 28, reading: 0.23, suffix: "s", caption: "Median, first failed check to page", scale: ["0", "2m"] },
+  { label: "Checks a day", value: 41_000_000, reading: 0.68, format: { notation: "compact", maximumFractionDigits: 0 }, caption: "Across 3,200 teams", scale: ["0", "60M"] },
+  { label: "Acked within 5 min", value: 87, reading: 0.87, suffix: "%", caption: "Of pages sent last quarter", scale: ["0", "100"] },
 ];
 
 const SWEEP = 180;
@@ -80,7 +80,7 @@ export function Gauges({ className }: { className?: string }) {
     <section data-slot="gauges" className={cn("bg-canvas px-6 py-24 sm:py-32", className)}>
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-balance text-base-50 sm:text-6xl">
+          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
             Measured, <span className="font-serif font-normal tracking-[-0.02em] italic">not promised.</span>
           </h2>
         </div>
