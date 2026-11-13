@@ -112,7 +112,6 @@ export function HoldToConfirm({
         }}
         onKeyUp={(e) => (e.key === " " || e.key === "Enter") && cancel()}
         onContextMenu={(e) => e.preventDefault()}
-        whileTap={{ scale: 0.97 }}
         className={cn(holdVariants({ tone }), done && "bg-(--fill) text-white dark:bg-(--fill)", className)}
       >
         <AnimatePresence mode="popLayout" initial={false}>

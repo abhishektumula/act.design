@@ -22,8 +22,8 @@ export const segmentedVariants = cva(
 export type Segment<T extends string> = { value: T; label: ReactNode; icon?: ReactNode; badge?: ReactNode };
 
 /**
- * A row of options with a raised cap that glides to the pick. The cap sinks a
- * touch while you press and arrow keys move the selection.
+ * A row of options with a raised cap that glides to the pick. Arrow keys move
+ * the selection.
  */
 export function SegmentedControl<T extends string>({
   options,
@@ -44,7 +44,6 @@ export function SegmentedControl<T extends string>({
   const id = useId();
   const [inner, setInner] = useState<T>(defaultValue ?? options[0].value);
   const value = controlled ?? inner;
-  const [pressed, setPressed] = useState<T | null>(null);
   const refs = useRef<(HTMLButtonElement | null)[]>([]);
 
   const select = (v: T) => {
@@ -77,9 +76,6 @@ export function SegmentedControl<T extends string>({
             tabIndex={active ? 0 : -1}
             onClick={() => select(o.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
-            onPointerDown={() => setPressed(o.value)}
-            onPointerUp={() => setPressed(null)}
-            onPointerLeave={() => setPressed(null)}
             className={cn(
               "relative flex items-center gap-2 rounded-xl font-medium whitespace-nowrap outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-signal/60",
               active ? "text-base-50" : "text-base-500 hover:text-base-300",
@@ -88,8 +84,7 @@ export function SegmentedControl<T extends string>({
             {active && (
               <motion.span
                 layoutId={`${id}-cap`}
-                animate={{ scale: pressed === o.value ? 0.96 : 1 }}
-                transition={{ type: "spring", stiffness: 520, damping: 34, mass: 0.9 }}
+                                transition={{ type: "spring", stiffness: 520, damping: 34, mass: 0.9 }}
                 className="absolute inset-0 rounded-xl bg-linear-to-b from-white to-base-950 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.12),0_4px_12px_-4px_rgb(0_0_0/0.2)] ring-1 ring-black/5 dark:from-base-700 dark:to-base-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)_inset,0_2px_8px_rgb(0_0_0/0.4)] dark:ring-white/5"
               />
             )}

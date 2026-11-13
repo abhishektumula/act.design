@@ -3,10 +3,10 @@
 import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useAnimate } from "motion/react";
-import { ArrowRight, AtSign, CornerDownLeft, KeyRound, LoaderCircle } from "lucide-react";
+import { ArrowRight, AtSign, KeyRound, LoaderCircle } from "lucide-react";
 import { signIn } from "@/app/actions";
 import { Dial } from "@/components/ui/dial";
-import { Keycap } from "@/components/ui/keycap";
+import { Button } from "@/components/ui/button";
 import { Input, PasswordInput } from "@/components/site/kit/input";
 import { cn } from "@/lib/utils";
 
@@ -74,7 +74,7 @@ export function LoginForm({ next }: { next: string }) {
             }}
             error={failed ? state?.error : undefined}
           />
-          <Keycap type="submit" tone="signal" size="lg" disabled={pending} legend={!pending && <CornerDownLeft />} className="mt-2 w-full">
+          <Button type="submit" tone="signal" size="lg" disabled={pending} className="mt-2 w-full">
             {pending ? (
               <>
                 <LoaderCircle className="animate-spin" /> Opening
@@ -82,7 +82,7 @@ export function LoginForm({ next }: { next: string }) {
             ) : (
               "Sign in"
             )}
-          </Keycap>
+          </Button>
         </motion.form>
 
         <p className="mt-8 flex items-center gap-2 text-sm text-base-500">

@@ -116,10 +116,8 @@ export default function SetupPage() {
         <ol className="mt-14 space-y-14">
           {steps.map((s, i) => (
             <li key={s.title} className="grid gap-5 sm:grid-cols-[3rem_1fr]">
-              <span className="inline-flex size-fit rounded-[11px] bg-base-700 pb-[3px] dark:bg-black">
-                <span className="grid size-9 place-items-center rounded-[10px] bg-linear-to-b from-white to-base-900 font-mono text-sm font-medium text-base-100 shadow-[inset_0_1px_0_rgb(255_255_255/0.6)] ring-1 ring-black/10 dark:from-base-700 dark:to-base-800 dark:shadow-[inset_0_1px_0_rgb(255_255_255/0.1)]">
+              <span className="grid size-8 place-items-center rounded-full bg-base-950 text-sm font-medium text-base-200 tabular-nums shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-base-50/10 dark:bg-base-900">
                   {i + 1}
-                </span>
               </span>
               <div className="min-w-0">
                 <h2 className="font-serif text-2xl tracking-[-0.01em] text-base-50 italic">{s.title}</h2>

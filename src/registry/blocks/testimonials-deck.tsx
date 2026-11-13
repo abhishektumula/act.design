@@ -7,30 +7,30 @@ import { cn } from "@/lib/utils";
 const quotes = [
   {
     id: "1",
-    quote: "It’s the first tool our designers and engineers argue about less, because they can both see the dials.",
-    name: "Ines Moreau",
-    role: "Head of Product, Fieldnote",
+    quote: "Beacon flagged our wildcard certificate nine days before it expired. That one email paid for the year.",
+    name: "Priya Raman",
+    role: "Platform Lead, Ledgerly",
     tone: "paper",
   },
   {
     id: "2",
-    quote: "We replaced three dashboards and a Notion page with one panel. Onboarding went from a week to an afternoon.",
-    name: "Kwame Asante",
-    role: "CTO, Lumen Freight",
+    quote: "We moved 140 monitors over in an afternoon. The 30-second checks found a flaky region our old tool had been averaging away.",
+    name: "Tom Becker",
+    role: "SRE, Parcelbay",
     tone: "signal",
   },
   {
     id: "3",
-    quote: "The little things, like limits pushing back instead of silently failing, saved us from at least two incidents.",
-    name: "Hana Sato",
-    role: "Staff Engineer, Pollen",
+    quote: "On-call used to mean a group chat at 3 a.m. Now one person gets a phone call and everyone else sleeps.",
+    name: "Ana Ruiz",
+    role: "CTO, Fieldkit",
     tone: "ink",
   },
   {
     id: "4",
-    quote: "Nobody asked for an interface that feels expensive. Everybody noticed when we had one.",
-    name: "Diego Alves",
-    role: "Founder, Quietly",
+    quote: "Our status page went from an afterthought to the first thing customers check. Support tickets during incidents dropped by half.",
+    name: "Daniel Okafor",
+    role: "Head of Support, Tandem",
     tone: "paper",
   },
 ];
@@ -50,8 +50,8 @@ export function TestimonialsDeck({ className }: { className?: string }) {
     <section data-slot="testimonials-deck" className={cn("overflow-hidden bg-canvas px-6 py-24 sm:py-32", className)}>
       <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1fr_22rem]">
         <div>
-          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-balance text-base-50 sm:text-6xl">
-            Once they&apos;ve <span className="font-serif font-normal tracking-[-0.02em] italic">touched it,</span> they stay.
+          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
+            Fewer pages. <span className="font-serif font-normal tracking-[-0.01em] italic">Better sleep.</span>
           </h2>
           <div className="mt-10 flex items-center gap-5">
             <div className="flex gap-1">
@@ -60,11 +60,11 @@ export function TestimonialsDeck({ className }: { className?: string }) {
               ))}
             </div>
             <p className="text-sm text-base-400">
-              <span className="font-semibold text-base-50">4.9</span> from 2,100 reviews
+              <span className="font-semibold text-base-50">4.8</span> on G2 from 640 reviews
             </p>
           </div>
           <div className="mt-12 grid max-w-md grid-cols-3 gap-px overflow-hidden rounded-2xl bg-base-50/[0.07] ring-1 ring-base-50/[0.07]">
-            {["Fieldnote", "Lumen", "Pollen", "Quietly", "Northway", "Arcade"].map((l) => (
+            {["Ledgerly", "Parcelbay", "Fieldkit", "Tandem", "Northwind", "Kiln"].map((l) => (
               <span key={l} className="bg-canvas py-4 text-center font-serif text-lg text-base-400 italic transition-colors hover:text-base-50">
                 {l}
               </span>

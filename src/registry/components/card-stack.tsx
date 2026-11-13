@@ -155,7 +155,7 @@ export function CardStack<T extends { id: string }>({
           type="button"
           onClick={prev}
           aria-label="Previous card"
-          className="grid size-9 place-items-center rounded-full text-base-400 ring-1 ring-base-50/10 transition-colors hover:bg-base-50/5 hover:text-base-50 active:scale-95 [&_svg]:size-4"
+          className="grid size-9 place-items-center rounded-full text-base-400 ring-1 ring-base-50/10 transition-colors hover:bg-base-50/5 hover:text-base-50 [&_svg]:size-4"
         >
           <ArrowLeft />
         </button>
@@ -166,7 +166,7 @@ export function CardStack<T extends { id: string }>({
           type="button"
           onClick={next}
           aria-label="Next card"
-          className="grid size-9 place-items-center rounded-full text-base-400 ring-1 ring-base-50/10 transition-colors hover:bg-base-50/5 hover:text-base-50 active:scale-95 [&_svg]:size-4"
+          className="grid size-9 place-items-center rounded-full text-base-400 ring-1 ring-base-50/10 transition-colors hover:bg-base-50/5 hover:text-base-50 [&_svg]:size-4"
         >
           <ArrowRight />
         </button>

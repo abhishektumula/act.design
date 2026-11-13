@@ -35,7 +35,7 @@ export function RollingNumber({ value, className }: { value: string; className?:
               transition={{ type: "spring", stiffness: 420, damping: 32 }}
               className="inline-block"
             >
-              {c}
+              {c === " " ? "\u00a0" : c}
             </motion.span>
           </AnimatePresence>
         </span>
@@ -113,7 +113,6 @@ export function Stepper({
       type="button"
       aria-label={dir > 0 ? "Increase" : "Decrease"}
       aria-disabled={disabled}
-      whileTap={{ scale: 0.9 }}
       onPointerDown={(e) => {
         e.preventDefault();
         start(dir);

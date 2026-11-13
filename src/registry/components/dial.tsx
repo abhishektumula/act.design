@@ -225,7 +225,7 @@ export default function Demo() {
   const [mix, setMix] = useState(40);
 
   return (
-    <div className="relative flex items-end gap-6 rounded-[28px] bg-base-950 px-8 pt-8 pb-6 shadow-[0_1px_0_white_inset,0_20px_40px_-20px_color-mix(in_oklab,var(--color-shade)_60%,transparent)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset,0_20px_40px_-20px_black] sm:gap-8">
+    <div className="relative flex items-end gap-6 rounded-[28px] bg-base-950 px-8 pt-8 pb-6 shadow-[0_1px_0_white_inset,0_20px_40px_-20px_color-mix(in_oklab,var(--color-shade)_60%,transparent)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset,0_20px_40px_-20px_black] @sm:gap-8">
       {[
         "top-3 left-3",
         "top-3 right-3",

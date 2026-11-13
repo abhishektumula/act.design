@@ -36,7 +36,7 @@ export function Fit({ children }: { children: ReactNode }) {
     <div ref={box} className="flex size-full items-center justify-center">
       <div
         ref={content}
-        className="flex w-full shrink-0 justify-center"
+        className="@container flex w-full shrink-0 justify-center"
         style={{ transform: `scale(${scale})` }}
       >
         {children}

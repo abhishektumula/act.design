@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { ArrowRight, RotateCcw } from "lucide-react";
 import { Dial } from "@/components/ui/dial";
 import { Fader } from "@/components/ui/fader";
-import { Keycap } from "@/components/ui/keycap";
+import { Button } from "@/components/ui/button";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
@@ -73,11 +73,8 @@ export function Hero() {
               A small set of React components that behave like well-made objects: they have weight, travel and detents.{" "}
               <span className="text-base-200">Every control on the panel below is one of them</span>, wired to the headline. Go on.
             </p>
-            <Link href="/components" className={`${btnPrimary} group mt-8 h-12 rounded-2xl pr-2 pl-5 text-[15px]`}>
-              Browse the instruments
-              <span className="grid size-8 place-items-center rounded-xl bg-base-950/10 ring-1 ring-base-950/10">
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-              </span>
+            <Link href="/components" className={`${btnPrimary} group mt-8 h-12 rounded-[14px] px-5 text-[15px]`}>
+              Browse the instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
           </div>
         </div>
@@ -136,12 +133,12 @@ export function Hero() {
             <Module name="Stepper" slug="stepper">
               <div className="flex flex-col items-center gap-5">
                 <Stepper label="Size" min={70} max={110} step={5} value={s.size} onValueChange={set("size")} format={(v) => `${v}%`} />
-                <Keycap tone="paper" size="sm" hotkey="r" legend="R" disabled={!dirty} onClick={() => {
+                <Button size="sm" hotkey="r" disabled={!dirty} onClick={() => {
                     setS(initial);
                     setAccent("signal");
                   }}>
                   <RotateCcw /> Reset
-                </Keycap>
+                </Button>
               </div>
             </Module>
           </div>

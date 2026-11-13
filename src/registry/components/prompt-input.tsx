@@ -94,12 +94,12 @@ function Picker({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex h-8 items-center gap-1.5 rounded-lg px-2 text-xs font-medium text-base-400 transition-colors hover:bg-base-50/5 hover:text-base-100 data-[open=true]:bg-base-50/5 data-[open=true]:text-base-100"
+        className="flex h-8 shrink-0 items-center gap-1.5 rounded-lg px-2 text-xs font-medium whitespace-nowrap text-base-400 transition-colors hover:bg-base-50/5 hover:text-base-100 data-[open=true]:bg-base-50/5 data-[open=true]:text-base-100"
         data-open={open}
       >
         {icon?.(value)}
         <span className={hideLabel ? "hidden @md:inline" : ""}>{value.name}</span>
-        <ChevronDown className={`size-3 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`hidden size-3 transition-transform duration-200 @sm:block ${open ? "rotate-180" : ""}`} />
       </button>
       <AnimatePresence>
         {open && (
@@ -143,7 +143,7 @@ export function PromptInput({
   onSubmit,
   onStop,
   busy = false,
-  placeholder = "Ask anything, @ to mention files…",
+  placeholder = "Ask anything…",
   modelOptions = models,
   effortOptions = efforts,
   accessOptions = accessModes,
@@ -240,7 +240,7 @@ export function PromptInput({
           className={cn("block min-h-14 w-full resize-none bg-transparent px-4 pt-4 pb-2 text-[15px] leading-6 text-base-100 outline-none placeholder:text-base-500", classNames?.textarea)}
         />
 
-        <div className="flex items-center gap-1 px-2 pb-2">
+        <div className="flex min-w-0 items-center gap-0.5 px-2 pb-2 @sm:gap-1">
           <input
             ref={fileInput}
             type="file"
@@ -274,7 +274,7 @@ export function PromptInput({
             icon={(o) => <EffortBars level={effortOptions.findIndex((e) => e.id === o.id)} />}
           />
 
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ml-auto flex shrink-0 items-center gap-0.5 @sm:gap-1">
             <Picker
               options={accessOptions}
               value={access}
@@ -286,7 +286,7 @@ export function PromptInput({
             <button
               type="button"
               aria-label="Dictate"
-              className="grid size-8 place-items-center rounded-lg text-base-400 transition-colors hover:bg-base-50/5 hover:text-base-100"
+              className="hidden size-8 @xs:grid place-items-center rounded-lg text-base-400 transition-colors hover:bg-base-50/5 hover:text-base-100"
             >
               <Mic className="size-4" />
             </button>
@@ -295,7 +295,7 @@ export function PromptInput({
               onClick={submit}
               disabled={!busy && !canSend}
               aria-label={busy ? "Stop" : "Send"}
-              className={cn("relative grid size-8 place-items-center overflow-hidden rounded-full bg-base-50 text-base-950 shadow-md shadow-shade/40 inset-shadow-2xs inset-shadow-white transition-[background,transform] active:scale-95 disabled:bg-base-800 disabled:text-base-500 disabled:shadow-none", classNames?.send)}
+              className={cn("relative grid size-8 shrink-0 place-items-center overflow-hidden rounded-full bg-base-50 text-base-950 shadow-[0_1px_2px_rgb(0_0_0/0.14)] transition-colors disabled:bg-base-800 disabled:text-base-500 disabled:shadow-none", classNames?.send)}
             >
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span

@@ -58,34 +58,33 @@ export default function Demo() {
   const [revenue, setRevenue] = useState(48290);
   const [users, setUsers] = useState(1284);
 
+  // A live-feeling wobble that stays in a believable range.
   useEffect(() => {
     const t = setInterval(() => {
-      setRevenue((r) => r + Math.round(Math.random() * 900 + 40));
-      setUsers((u) => u + Math.round(Math.random() * 12 + 1));
+      setRevenue((r) => Math.min(52900, Math.max(47100, r + Math.round(Math.random() * 1500 - 600))));
+      setUsers((u) => Math.min(1420, Math.max(1190, u + Math.round(Math.random() * 30 - 12))));
     }, 2200);
     return () => clearInterval(t);
   }, []);
 
+  const stats = [
+    { label: "Revenue this month", value: revenue, format: { style: "currency", currency: "USD", maximumFractionDigits: 0 } as const, change: "12.4%" },
+    { label: "Active users", value: users, change: "3.1%" },
+  ];
+
   return (
-    <div className="grid w-full max-w-md grid-cols-2 gap-3">
-      <div className="rounded-2xl bg-base-900/60 p-5 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5">
-        <p className="text-xs text-base-500">Revenue</p>
-        <p className="mt-3 text-3xl font-semibold tracking-tight text-base-50">
-          <NumberTicker value={revenue} format={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }} />
-        </p>
-        <p className="mt-3 flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
-          <TrendingUp className="size-3" /> 12.4%
-        </p>
-      </div>
-      <div className="rounded-2xl bg-base-900/60 p-5 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5">
-        <p className="text-xs text-base-500">Active users</p>
-        <p className="mt-3 text-3xl font-semibold tracking-tight text-base-50">
-          <NumberTicker value={users} />
-        </p>
-        <p className="mt-3 flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400">
-          <TrendingUp className="size-3" /> 3.1%
-        </p>
-      </div>
+    <div className="grid w-full max-w-md gap-3 @md:grid-cols-2">
+      {stats.map((s) => (
+        <div key={s.label} className="min-w-0 rounded-2xl bg-base-950 p-5 shadow-[0_1px_2px_rgb(0_0_0/0.05)] ring-1 ring-base-50/10 dark:bg-base-900">
+          <p className="text-[13px] text-base-500">{s.label}</p>
+          <p className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-base-50">
+            <NumberTicker value={s.value} format={s.format} />
+          </p>
+          <p className="mt-3 flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+            <TrendingUp className="size-3" /> {s.change} vs last month
+          </p>
+        </div>
+      ))}
     </div>
   );
 }
