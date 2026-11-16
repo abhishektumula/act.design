@@ -3,25 +3,22 @@ import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { BlockCard } from "@/components/site/block-card";
+import { Features } from "@/components/site/features";
 import { PreviewTile } from "@/components/site/preview-tile";
 import { btnSecondary } from "@/components/site/styles";
 import { blocks, getBlock, registry } from "@/registry/meta";
 
-function SectionHeading({ title, body }: { title: React.ReactNode; body: string }) {
+function SectionHeading({ eyebrow, title, body }: { eyebrow: string; title: React.ReactNode; body: string }) {
   return (
     <div className="max-w-2xl">
+      <p className="mb-6 font-mono text-[11px] tracking-[0.18em] text-base-500 uppercase">
+        <span className="text-base-700">[</span> {eyebrow} <span className="text-base-700">]</span>
+      </p>
       <h2 className="text-4xl font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">{title}</h2>
       <p className="mt-5 text-lg leading-8 text-pretty text-base-400">{body}</p>
     </div>
   );
 }
-
-const principles = [
-  { word: "Weight", body: "Things should feel like they cost something to move. Springs with mass, never linear tweens." },
-  { word: "Quiet", body: "Buttons don’t bounce. The motion is saved for the things you drag, turn and fling, where it tells you something." },
-  { word: "Detents", body: "Values click into place. Ticks light up, numbers roll, limits push back instead of going quiet." },
-  { word: "Restraint", body: "One accent, warm neutrals, real whitespace. Motion that explains a change, then stops." },
-];
 
 /** Bento placement for the instrument index. */
 const layout: [string, string][] = [
@@ -49,6 +46,7 @@ export default function Home() {
           <div className="mx-auto max-w-[1400px] px-6 py-28 sm:py-36">
             <div className="flex flex-wrap items-end justify-between gap-8">
               <SectionHeading
+                eyebrow="Instruments"
                 title={
                   <>
                     Fewer parts, <span className="font-serif font-normal tracking-[-0.02em] italic">each one finished.</span>
@@ -56,7 +54,7 @@ export default function Home() {
                 }
                 body="No forty flavours of button. Each piece here was rebuilt until it felt right under a thumb, a trackpad and a keyboard. Every tile is live."
               />
-              <Link href="/components" className={`${btnSecondary} h-11 rounded-2xl px-5 text-sm`}>
+              <Link href="/components" className={`${btnSecondary} h-10 rounded-md px-4 text-sm`}>
                 All {registry.length} instruments <ArrowRight className="size-4" />
               </Link>
             </div>
@@ -69,18 +67,18 @@ export default function Home() {
         </section>
 
         {/* Principles */}
-        <section className="border-y border-base-50/[0.06] bg-base-950">
-          <div className="mx-auto max-w-[1400px] px-6 py-28">
-            <div className="grid gap-px overflow-hidden rounded-[28px] bg-base-50/[0.07] ring-1 ring-base-50/[0.07] sm:grid-cols-2 lg:grid-cols-4">
-              {principles.map(({ word, body }) => (
-                <div key={word} className="group bg-base-950 p-8 pt-10">
-                  <h3 className="font-serif text-5xl tracking-[-0.02em] text-base-50 italic transition-colors duration-300 group-hover:text-signal">
-                    {word}
-                  </h3>
-                  <p className="mt-4 leading-7 text-pretty text-base-500">{body}</p>
-                </div>
-              ))}
-            </div>
+        <section className="border-y border-base-50/[0.06] bg-base-950/40">
+          <div className="mx-auto max-w-[1400px] px-6 py-28 sm:py-36">
+            <SectionHeading
+              eyebrow="Principles"
+              title={
+                <>
+                  Built to feel <span className="font-serif font-normal tracking-[-0.02em] italic">like objects.</span>
+                </>
+              }
+              body="Five rules every instrument follows. They are why a dial here turns like a dial, and why the rest of the page stays still while it does."
+            />
+            <Features />
           </div>
         </section>
 
@@ -88,10 +86,11 @@ export default function Home() {
         <section className="mx-auto max-w-[1400px] px-6 py-28 sm:py-36">
           <div className="flex flex-wrap items-end justify-between gap-8">
             <SectionHeading
+              eyebrow="Blocks"
               title="Whole sections, assembled."
               body="Heroes, bento grids, pricing and more, built from the same parts. Responsive, themed and ready to paste as a complete section."
             />
-            <Link href="/blocks" className={`${btnSecondary} h-11 rounded-2xl px-5 text-sm`}>
+            <Link href="/blocks" className={`${btnSecondary} h-10 rounded-md px-4 text-sm`}>
               All {blocks.length} blocks <ArrowRight className="size-4" />
             </Link>
           </div>
@@ -104,7 +103,7 @@ export default function Home() {
 
         {/* Closing */}
         <section className="mx-auto max-w-[1400px] px-6 pb-28">
-          <div className="relative overflow-hidden rounded-[36px] bg-base-50 px-8 py-24 text-center sm:py-32">
+          <div className="relative overflow-hidden rounded-lg bg-base-50 px-8 py-24 text-center sm:py-32">
             <div className="grain pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-overlay" />
             <div className="pointer-events-none absolute -bottom-40 left-1/2 size-[520px] -translate-x-1/2 rounded-full bg-signal/40 blur-[120px]" />
             <div className="relative">
@@ -118,7 +117,7 @@ export default function Home() {
               <div className="mt-10 flex justify-center">
                 <Link
                   href="/components"
-                  className="group inline-flex h-12 items-center gap-2 rounded-[14px] bg-signal px-5 text-[15px] font-medium text-white shadow-[0_1px_2px_rgb(0_0_0/0.14),inset_0_1px_0_rgb(255_255_255/0.16)] transition-colors hover:bg-[color-mix(in_oklab,var(--signal)_90%,white)]"
+                  className="group inline-flex h-12 items-center gap-2 rounded-md bg-signal px-5 text-[15px] font-medium text-white shadow-[0_1px_2px_rgb(0_0_0/0.14),inset_0_1px_0_rgb(255_255_255/0.16)] transition-colors hover:bg-[color-mix(in_oklab,var(--signal)_90%,white)]"
                 >
                   Open the library <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
