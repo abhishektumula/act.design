@@ -3,6 +3,7 @@
 import type { ComponentType } from "react";
 import Orb from "@/components/ui/orb";
 import CardStack from "@/components/ui/card-stack";
+import CodeInput from "@/components/ui/code-input";
 import CommandPalette from "@/components/ui/command-palette";
 import Dial from "@/components/ui/dial";
 import Fader from "@/components/ui/fader";
@@ -19,6 +20,7 @@ import TextStagger from "@/components/ui/text-stagger";
 export const previews: Record<string, ComponentType> = {
   orb: Orb,
   "card-stack": CardStack,
+  "code-input": CodeInput,
   "command-palette": CommandPalette,
   "dial": Dial,
   "fader": Fader,
