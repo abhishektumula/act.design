@@ -9,6 +9,7 @@ import { Dial } from "@/components/ui/dial";
 import { Button } from "@/components/ui/button";
 import { Input, PasswordInput } from "@/components/site/kit/input";
 import { cn } from "@/lib/utils";
+import { Crosses, PanelBar } from "./frame";
 
 const LIGHTS = 12;
 
@@ -18,14 +19,6 @@ function combination(password: string) {
   let h = 7;
   for (const c of password) h = (h * 31 + c.charCodeAt(0)) % 997;
   return 8 + (h % 85);
-}
-
-function Screw({ className }: { className: string }) {
-  return (
-    <span className={cn("absolute size-2.5 rounded-full bg-linear-to-b from-base-800 to-base-700 ring-1 ring-black/10", className)}>
-      <span className="absolute inset-x-[2px] top-1/2 h-px -translate-y-1/2 rotate-45 bg-black/25" />
-    </span>
-  );
 }
 
 export function LoginForm({ next }: { next: string }) {
@@ -74,7 +67,7 @@ export function LoginForm({ next }: { next: string }) {
             }}
             error={failed ? state?.error : undefined}
           />
-          <Button type="submit" tone="signal" size="lg" disabled={pending} className="mt-2 w-full">
+          <Button type="submit" tone="signal" size="lg" disabled={pending} className="mt-2 w-full rounded-md">
             {pending ? (
               <>
                 <LoaderCircle className="animate-spin" /> Opening
@@ -94,17 +87,11 @@ export function LoginForm({ next }: { next: string }) {
       </div>
 
       {/* The lock */}
-      <div
-        aria-hidden
-        className="relative hidden rounded-[36px] bg-base-950 p-2 shadow-[0_1px_0_white_inset,0_50px_90px_-50px_color-mix(in_oklab,var(--color-shade)_90%,transparent)] ring-1 ring-base-50/10 sm:block dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset,0_40px_80px_-30px_black]"
-      >
-        <Screw className="top-4 left-4" />
-        <Screw className="top-4 right-4" />
-        <Screw className="bottom-4 left-4" />
-        <Screw className="right-4 bottom-4" />
-        <div className="flex flex-col items-center rounded-[30px] px-8 pt-10 pb-8 ring-1 ring-base-50/[0.07]">
-          <div className="flex w-full justify-end text-xs text-base-500">
-            <span className="flex items-center gap-2">
+      <div aria-hidden className="relative hidden sm:block">
+        <Crosses />
+        <div className="overflow-hidden bg-base-950 ring-1 ring-base-50/[0.08]">
+          <PanelBar label="Combination lock">
+            <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-base-400 uppercase">
               <span
                 className={cn(
                   "size-1.5 rounded-full transition-colors",
@@ -113,14 +100,15 @@ export function LoginForm({ next }: { next: string }) {
               />
               {status}
             </span>
-          </div>
-
-          <div ref={lock} inert className="pointer-events-none mt-10">
+          </PanelBar>
+          <div className="relative flex flex-col items-center px-8 pt-6 pb-8">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(var(--base-800)_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_70%)] opacity-60" />
+          <div ref={lock} inert className="pointer-events-none relative mt-6">
             <Dial size="lg" ticks={51} min={0} max={100} value={dial} label="Combination" format={(v) => String(Math.round(v)).padStart(2, "0")} />
           </div>
 
           {/* One light per character typed */}
-          <div className="mt-10 flex gap-2">
+          <div className="relative mt-10 flex gap-2">
             {Array.from({ length: LIGHTS }, (_, i) => {
               const lit = i < password.length;
               return (
@@ -130,12 +118,17 @@ export function LoginForm({ next }: { next: string }) {
                   animate={{ scale: lit ? 1 : 0.8 }}
                   transition={{ type: "spring", stiffness: 600, damping: 20 }}
                   className={cn(
-                    "size-2 rounded-full transition-colors duration-150",
+                    "h-3 w-1 rounded-[1px] transition-colors duration-150",
                     lit ? (failed ? "bg-red-500" : "bg-signal shadow-[0_0_8px_var(--signal)]") : "bg-base-50/10",
                   )}
                 />
               );
             })}
+          </div>
+          </div>
+          <div className="flex justify-between border-t border-base-50/[0.06] px-4 py-2.5 font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">
+            <span>{String(Math.min(password.length, LIGHTS)).padStart(2, "0")} / {LIGHTS}</span>
+            <span>pos {String(dial).padStart(2, "0")}</span>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
-import { motion } from "motion/react";
+import { useSyncExternalStore } from "react";
 import { Moon, Sun } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -18,15 +17,26 @@ function subscribe(callback: () => void) {
 
 const isDark = () => document.documentElement.classList.contains("dark");
 
+/**
+ * Switches the theme in a single frame. Transitions are paused for the swap,
+ * so hundreds of `transition-colors` elements don't each fade on their own
+ * and the page doesn't drag behind the click.
+ */
 export function setTheme(theme: "light" | "dark") {
-  const apply = () => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
+  const root = document.documentElement;
+  const pause = document.createElement("style");
+  pause.textContent = ":not([data-theme-icon]),::before,::after{transition:none!important}";
+  document.head.appendChild(pause);
+
+  root.classList.toggle("dark", theme === "dark");
+  try {
     localStorage.setItem("theme", theme);
-    window.dispatchEvent(new Event(EVENT));
-  };
-  // Cross-fade the whole page when the browser supports view transitions.
-  if (document.startViewTransition) document.startViewTransition(apply);
-  else apply();
+  } catch {}
+  window.dispatchEvent(new Event(EVENT));
+
+  // Force a style flush with transitions off, then hand them back.
+  void getComputedStyle(root).color;
+  requestAnimationFrame(() => pause.remove());
 }
 
 export function useTheme() {
@@ -34,57 +44,20 @@ export function useTheme() {
   return { dark, theme: dark ? "dark" : "light", setTheme } as const;
 }
 
-/**
- * A rotary mode selector: a knurled knob between a sun and a moon. The pointer
- * clicks across to the active side with a little overshoot, a lamp lights under
- * the chosen mode, and hovering nudges the pointer toward the other one.
- */
+/** An icon button: the sun turns away as the moon turns in. */
 export function ThemeToggle() {
   const { dark } = useTheme();
-  const [hover, setHover] = useState(false);
-  const angle = (dark ? 55 : -55) + (hover ? (dark ? -10 : 10) : 0);
-
-  const glyph = (on: boolean) =>
-    cn("relative grid size-4 place-items-center transition-colors duration-300 [&_svg]:size-3.5", on ? "text-base-50" : "text-base-500");
-  const lamp = (on: boolean) =>
-    cn(
-      "absolute -bottom-1.5 left-1/2 size-1 -translate-x-1/2 rounded-full transition-all duration-300",
-      on ? "bg-signal shadow-[0_0_6px_var(--signal)]" : "bg-transparent",
-    );
+  const icon = "absolute size-4 transition-[rotate,scale,opacity] duration-200 ease-out";
 
   return (
     <button
       type="button"
-      role="switch"
-      aria-checked={dark}
-      aria-label="Night mode"
+      aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={() => setTheme(dark ? "light" : "dark")}
-      onPointerEnter={() => setHover(true)}
-      onPointerLeave={() => setHover(false)}
-      className="flex h-9 items-center gap-1.5 rounded-full bg-base-50/[0.05] px-2 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-base-50/[0.07] outline-none focus-visible:ring-2 focus-visible:ring-signal/60"
+      className="relative grid size-8 place-items-center rounded-md text-base-400 ring-1 ring-base-50/[0.08] transition-colors outline-none hover:bg-base-50/[0.04] hover:text-base-50 focus-visible:ring-2 focus-visible:ring-signal/60"
     >
-      <span className={glyph(!dark)}>
-        <Sun />
-        <span className={lamp(!dark)} />
-      </span>
-      <span
-        className="relative size-[26px] rounded-full bg-linear-to-b from-white to-base-800 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.18),0_4px_8px_-3px_rgb(0_0_0/0.3)] ring-1 ring-black/10 dark:from-base-600 dark:to-base-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.12)_inset,0_2px_6px_rgb(0_0_0/0.5)] dark:ring-white/5"
-      >
-        <motion.span
-          initial={false}
-          animate={{ rotate: angle }}
-          transition={{ type: "spring", stiffness: 420, damping: 16, mass: 0.8 }}
-          className="absolute inset-0 rounded-full"
-        >
-          <span className="absolute inset-0 rounded-full bg-[repeating-conic-gradient(rgb(0_0_0/0.08)_0deg_2deg,transparent_2deg_9deg)] [mask-image:radial-gradient(circle,transparent_55%,black_58%)] dark:bg-[repeating-conic-gradient(rgb(255_255_255/0.07)_0deg_2deg,transparent_2deg_9deg)]" />
-          <span className="absolute top-[3px] left-1/2 h-[8px] w-[2.5px] -translate-x-1/2 rounded-full bg-signal shadow-[0_0_6px_var(--signal)]" />
-        </motion.span>
-        <span className="absolute inset-[30%] rounded-full bg-linear-to-b from-base-900 to-white ring-1 ring-black/5 dark:from-base-900 dark:to-base-700 dark:ring-white/5" />
-      </span>
-      <span className={glyph(dark)}>
-        <Moon />
-        <span className={lamp(dark)} />
-      </span>
+      <Sun data-theme-icon className={cn(icon, dark ? "scale-50 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100")} />
+      <Moon data-theme-icon className={cn(icon, dark ? "scale-100 rotate-0 opacity-100" : "scale-50 rotate-90 opacity-0")} />
     </button>
   );
 }

@@ -11,16 +11,23 @@ export function PreviewTile({ slug, className = "h-[420px]" }: { slug: string; c
 
   return (
     <div
-      className={`group relative flex flex-col overflow-hidden rounded-[28px] bg-base-950 shadow-[0_1px_0_white_inset,0_24px_48px_-36px_var(--color-shade)] ring-1 ring-base-50/[0.08] transition-[box-shadow] duration-300 hover:ring-base-50/15 dark:shadow-[0_1px_0_rgb(255_255_255/0.05)_inset] ${className}`}
+      className={`group relative flex flex-col overflow-hidden rounded-lg bg-base-950 ring-1 ring-base-50/[0.08] transition-[box-shadow] duration-300 hover:ring-base-50/20 ${className}`}
     >
-
-      <Link href={`/components/${slug}`} className="relative z-10 flex items-start justify-between px-6 pt-5">
-        <span className="flex items-baseline gap-3">
-          <span className="text-[15px] font-medium tracking-tight text-base-100">{item.name}</span>
-          {item.isNew && <span className="size-1.5 -translate-y-0.5 rounded-full bg-signal" aria-label="New" />}
+      <Link
+        href={`/components/${slug}`}
+        className="relative z-10 flex items-center justify-between border-b border-base-50/[0.06] px-5 py-3.5"
+      >
+        <span className="flex items-center gap-3">
+          <span className="text-[14px] font-medium tracking-tight text-base-100">{item.name}</span>
+          {item.isNew && (
+            <span className="text-[12px] font-medium text-signal">
+              New
+            </span>
+          )}
         </span>
-        <span className="grid size-7 place-items-center rounded-full text-base-500 ring-1 ring-base-50/10 transition-all duration-300 group-hover:bg-base-50 group-hover:text-base-950 group-hover:ring-base-50">
-          <ArrowUpRight className="size-3.5" />
+        <span className="flex items-center gap-2 text-[13px] text-base-500">
+          <span className="max-sm:hidden">{item.category}</span>
+          <ArrowUpRight className="size-3.5 transition-[translate,color] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-base-50" />
         </span>
       </Link>
 
@@ -29,7 +36,6 @@ export function PreviewTile({ slug, className = "h-[420px]" }: { slug: string; c
           <Preview slug={slug} />
         </Fit>
       </div>
-
     </div>
   );
 }

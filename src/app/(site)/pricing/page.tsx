@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { Footer } from "@/components/site/footer";
-import { KeyLink } from "@/components/site/key-link";
+import { Crosses, PageHeader } from "@/components/site/frame";
+import { btnBase, btnSecondary, hairGrid, panel } from "@/components/site/styles";
 import { blocks, categories, registry, type Category } from "@/registry/meta";
 import { cn } from "@/lib/utils";
 
@@ -62,14 +63,34 @@ const access: Record<Category | "Blocks", PlanId[]> = {
 
 function Lamp({ on }: { on: boolean }) {
   return on ? (
-    <span className="mx-auto block size-2 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" aria-label="Included" />
+    <span className="mx-auto block size-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" aria-label="Included" />
   ) : (
-    <span className="mx-auto block size-2 rounded-full ring-1 ring-base-50/20" aria-label="Preview only" />
+    <span className="mx-auto block h-px w-3 bg-base-50/20" aria-label="Preview only" />
   );
 }
 
-const panel =
-  "bg-base-950 shadow-[0_1px_0_white_inset,0_40px_70px_-50px_color-mix(in_oklab,var(--color-shade)_80%,transparent)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset,0_30px_60px_-30px_black]";
+const TICKS = 30;
+
+/** How much of the library a plan opens, drawn as a lit scale. */
+function AccessMeter({ share }: { share: number }) {
+  const lit = Math.round(share * TICKS);
+  return (
+    <div aria-label={`${Math.round(share * 100)}% of the library`}>
+      <div className="flex h-6 items-end justify-between">
+        {Array.from({ length: TICKS }, (_, i) => (
+          <span
+            key={i}
+            className={cn("w-[2px] shrink-0 rounded-full", i % 5 === 0 ? "h-full" : "h-3.5", i < lit ? "bg-signal" : "bg-base-50/15")}
+          />
+        ))}
+      </div>
+      <div className="mt-2 flex justify-between font-mono text-[10px] tracking-[0.12em] text-base-500 uppercase">
+        <span>Source access</span>
+        <span className="text-base-200 tabular-nums">{Math.round(share * 100)}%</span>
+      </div>
+    </div>
+  );
+}
 
 export default function PricingPage() {
   const rows: { group: string; items: { name: string; href: string }[]; plans: PlanId[] }[] = [
@@ -80,86 +101,99 @@ export default function PricingPage() {
     })),
     { group: "Blocks", items: blocks.map((b) => ({ name: b.name, href: `/blocks/${b.slug}` })), plans: access.Blocks },
   ];
+  const total = rows.reduce((n, r) => n + r.items.length, 0);
+  const share = (id: PlanId) => rows.reduce((n, r) => n + (r.plans.includes(id) ? r.items.length : 0), 0) / total;
 
   return (
     <>
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 pt-36 pb-32">
-        <div className="max-w-2xl">
-          <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-balance text-base-50 sm:text-7xl">
-            Pay once. <span className="font-serif font-normal tracking-[-0.02em] italic">Keep the feel.</span>
-          </h1>
-          <p className="mt-6 max-w-lg text-lg leading-8 text-pretty text-base-400">
-            No subscription, no seats. Buy the source once and it&apos;s yours, in as many projects as the plan allows.
-          </p>
-        </div>
+        <PageHeader
+          title={
+            <>
+              Pay once. <span className="font-serif font-normal tracking-[-0.02em] italic">Keep the feel.</span>
+            </>
+          }
+          body="No subscription, no seats. Buy the source once and it's yours, in as many projects as the plan allows."
+        />
 
         {/* Plans */}
-        <div className="mt-16 grid gap-4 lg:grid-cols-3">
-          {plans.map((plan) => (
-            <div key={plan.id} className={cn("relative flex flex-col rounded-[32px] p-2", panel, plan.featured && "ring-signal/40")}>
-              <div className="flex flex-1 flex-col rounded-[26px] p-7 ring-1 ring-base-50/[0.07]">
+        <div className="relative mt-16">
+          <Crosses />
+          <div className={cn(hairGrid, "lg:grid-cols-3")}>
+            {plans.map((plan) => (
+              <div key={plan.id} className="relative flex flex-col bg-base-950 p-7 sm:p-8">
+                {plan.featured && <span aria-hidden className="absolute inset-x-0 -top-px h-px bg-signal shadow-[0_0_12px_var(--signal)]" />}
                 <div className="flex items-center justify-between">
-                  <span className="flex items-center gap-2.5 text-[15px] font-medium text-base-50">
-                    <span
-                      className={cn(
-                        "size-2 rounded-full",
-                        plan.featured ? "bg-signal shadow-[0_0_10px_var(--signal)]" : "bg-base-50/15",
-                      )}
-                    />
-                    {plan.name}
-                  </span>
+                  <span className="font-mono text-[11px] tracking-[0.16em] text-base-300 uppercase">{plan.name}</span>
                   {plan.featured && (
-                    <span className="rounded-full bg-signal/10 px-2.5 py-0.5 text-xs font-medium text-signal ring-1 ring-signal/25">
+                    <span className="text-[13px] font-medium text-signal">
                       Most picked
                     </span>
                   )}
                 </div>
                 <p className="mt-10 flex items-baseline gap-2">
-                  <span className="text-6xl font-semibold tracking-[-0.045em] text-base-50">{plan.price}</span>
+                  <span className="text-6xl font-semibold tracking-[-0.045em] text-base-50 tabular-nums">{plan.price}</span>
                   <span className="font-serif text-xl text-base-500 italic">once</span>
                 </p>
                 <p className="mt-3 text-[15px] text-base-400">{plan.body}</p>
-                <ul className="mt-8 flex-1 space-y-3 border-t border-base-50/[0.07] pt-8">
+                <div className="mt-8">
+                  <AccessMeter share={share(plan.id)} />
+                </div>
+                <ul className="mt-8 flex-1 divide-y divide-base-50/[0.06] border-t border-base-50/[0.06]">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-3 text-sm text-base-300">
-                      <Check className={cn("size-4 shrink-0", plan.featured ? "text-signal" : "text-base-500")} />
+                    <li key={f} className="flex items-center gap-3 py-3 text-sm text-base-300">
+                      <Check className={cn("size-3.5 shrink-0", plan.featured ? "text-signal" : "text-base-500")} />
                       {f}
                     </li>
                   ))}
                 </ul>
-                <div className="mt-10">
-                  <KeyLink href={plan.href} tone={plan.featured ? "signal" : "paper"} className="w-full">
-                    {plan.cta} <ArrowRight />
-                  </KeyLink>
-                </div>
+                <Link
+                  href={plan.href}
+                  className={cn(
+                    "group mt-8 h-11 w-full rounded-md text-sm",
+                    plan.featured
+                      ? `${btnBase} bg-signal text-white hover:bg-[color-mix(in_oklab,var(--signal)_90%,white)]`
+                      : btnSecondary,
+                  )}
+                >
+                  {plan.cta} <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
 
         {/* Spec sheet */}
         <section className="mt-32">
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <h2 className="text-4xl font-semibold tracking-[-0.04em] text-base-50 sm:text-5xl">
-              The <span className="font-serif font-normal tracking-[-0.02em] italic">spec sheet.</span>
-            </h2>
-            <p className="flex items-center gap-5 text-xs text-base-500">
+            <div>
+              <h2 className="text-4xl font-semibold tracking-[-0.04em] text-base-50 sm:text-5xl">
+                What each plan <span className="font-serif font-normal tracking-[-0.02em] italic">opens.</span>
+              </h2>
+            </div>
+            <p className="flex items-center gap-5 font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">
               <span className="flex items-center gap-2">
-                <span className="size-2 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" /> Source included
+                <span className="size-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" /> Source
               </span>
               <span className="flex items-center gap-2">
-                <span className="size-2 rounded-full ring-1 ring-base-50/20" /> Preview only
+                <span className="h-px w-3 bg-base-50/20" /> Preview only
               </span>
             </p>
           </div>
 
-          <div className={cn("mt-10 overflow-hidden rounded-[28px]", panel)}>
+          <div className={cn("mt-10 overflow-hidden", panel)}>
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-base-50/[0.07]">
-                  <th className="px-6 py-5 text-xs font-medium text-base-500 sm:px-8">Instrument</th>
+                  <th className="px-6 py-4 font-mono text-[10px] font-normal tracking-[0.14em] text-base-500 uppercase sm:px-8">Instrument</th>
                   {plans.map((p) => (
-                    <th key={p.id} className="w-20 py-5 text-center text-[13px] font-medium text-base-100 sm:w-32">
+                    <th
+                      key={p.id}
+                      className={cn(
+                        "w-20 py-4 text-center font-mono text-[10px] font-normal tracking-[0.14em] uppercase sm:w-32",
+                        p.featured ? "text-signal" : "text-base-300",
+                      )}
+                    >
                       {p.name}
                     </th>
                   ))}
@@ -167,20 +201,20 @@ export default function PricingPage() {
               </thead>
               {rows.map((row) => (
                 <tbody key={row.group}>
-                  <tr className="bg-base-50/[0.025]">
-                    <th colSpan={4} className="px-6 py-3 font-serif text-lg font-normal text-base-200 italic sm:px-8">
+                  <tr className="border-t border-base-50/[0.07] bg-base-50/[0.025]">
+                    <th colSpan={4} className="px-6 py-2.5 font-mono text-[10px] font-normal tracking-[0.16em] text-base-400 uppercase sm:px-8">
                       {row.group}
                     </th>
                   </tr>
                   {row.items.map((item) => (
                     <tr key={item.name} className="group border-t border-base-50/[0.05] transition-colors hover:bg-base-50/[0.02]">
-                      <td className="px-6 py-3.5 sm:px-8">
+                      <td className="px-6 py-3 sm:px-8">
                         <Link href={item.href} className="text-base-300 transition-colors group-hover:text-base-50">
                           {item.name}
                         </Link>
                       </td>
                       {plans.map((p) => (
-                        <td key={p.id} className="py-3.5">
+                        <td key={p.id} className="py-3">
                           <Lamp on={row.plans.includes(p.id)} />
                         </td>
                       ))}

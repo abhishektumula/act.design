@@ -7,7 +7,11 @@ import { cn } from "@/lib/utils";
 
 function Digit({ digit }: { digit: number }) {
   return (
-    <span className="relative inline-block h-[1em] w-[0.62em] overflow-hidden leading-none">
+    // clip-path rather than overflow-hidden: an overflow-hidden inline-block takes its
+    // bottom edge as its baseline, which drops the punctuation beside it below the digits.
+    // The invisible zero gives the slot a real text baseline.
+    <span className="relative inline-block w-[0.62em] text-center leading-none [clip-path:inset(0)]">
+      <span className="invisible">0</span>
       <motion.span
         className="absolute inset-x-0 top-0 flex flex-col items-center"
         initial={false}

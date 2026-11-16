@@ -1,36 +1,124 @@
-/** The member's access card: graphite stock, a mag stripe and a live status lamp. */
-export function MembershipCard({ name, plan, since }: { name: string; plan: string; since: string }) {
-  return (
-    <div className="group relative aspect-[1.586] w-full max-w-sm overflow-hidden rounded-[22px] bg-linear-to-b from-[#3a3631] to-[#1a1815] p-6 text-[#f3efe6] shadow-[0_1px_0_rgb(255_255_255/0.18)_inset,0_30px_60px_-24px_rgb(0_0_0/0.55)] ring-1 ring-black/40 transition-transform duration-500 hover:-translate-y-1 hover:-rotate-1 sm:w-96">
-      <div className="grain pointer-events-none absolute inset-0 opacity-[0.12] mix-blend-overlay" />
-      <div className="pointer-events-none absolute -top-24 -right-20 size-64 rounded-full bg-signal/30 blur-3xl" />
-      <div className="absolute inset-x-0 top-[38%] h-9 bg-linear-to-b from-black/70 to-black/50" />
+"use client";
 
-      <div className="relative flex h-full flex-col justify-between">
-        <div className="flex items-start justify-between">
+import { useRef, type PointerEvent } from "react";
+import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring, useTransform } from "motion/react";
+import { LogoMark } from "./logo";
+
+/** A stable 8-digit member number derived from the name. */
+function memberNo(name: string) {
+  let h = 2166136261;
+  for (const c of name) h = Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0;
+  const n = String(h % 100000000).padStart(8, "0");
+  return `${n.slice(0, 4)} ${n.slice(4)}`;
+}
+
+const TICKS = 48;
+
+/**
+ * The member's access pass. A black card engraved with a dial scale that is lit
+ * as far as the plan reaches. It tilts toward the pointer on a spring and a soft
+ * light follows the cursor across the surface.
+ */
+export function MembershipCard({
+  name,
+  plan,
+  since,
+  unlocked = 1,
+}: {
+  name: string;
+  plan: string;
+  since: string;
+  /** 0–1, how much of the library the plan opens. */
+  unlocked?: number;
+}) {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const px = useMotionValue(0.5);
+  const py = useMotionValue(0.5);
+  const spring = { stiffness: 220, damping: 22, mass: 0.6 };
+  const rotateX = useSpring(useTransform(py, [0, 1], [7, -7]), spring);
+  const rotateY = useSpring(useTransform(px, [0, 1], [-9, 9]), spring);
+  const lx = useTransform(px, (v) => `${v * 100}%`);
+  const ly = useTransform(py, (v) => `${v * 100}%`);
+  const sheen = useMotionTemplate`radial-gradient(420px circle at ${lx} ${ly}, rgb(255 255 255 / 0.10), transparent 45%)`;
+
+  const move = (e: PointerEvent) => {
+    if (reduce || e.pointerType !== "mouse") return;
+    const r = ref.current!.getBoundingClientRect();
+    px.set((e.clientX - r.left) / r.width);
+    py.set((e.clientY - r.top) / r.height);
+  };
+  const leave = () => {
+    px.set(0.5);
+    py.set(0.5);
+  };
+
+  const lit = Math.round(unlocked * TICKS);
+
+  return (
+    <div className="w-full max-w-sm [perspective:1200px] sm:w-[400px]">
+      <motion.div
+        ref={ref}
+        onPointerMove={move}
+        onPointerLeave={leave}
+        style={reduce ? undefined : { rotateX, rotateY }}
+        className="relative aspect-[1.586] overflow-hidden rounded-xl bg-[#0c0b0a] text-[#f1ede6] shadow-[0_1px_0_rgb(255_255_255/0.08)_inset,0_40px_70px_-30px_rgb(0_0_0/0.6)] ring-1 ring-white/10 [transform-style:preserve-3d]"
+      >
+        {/* Engraving: dot grid, hairline rules and the dial scale */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.07)_1px,transparent_1px)] bg-[size:12px_12px] [mask-image:linear-gradient(110deg,black,transparent_70%)]" />
+        <div className="pointer-events-none absolute inset-y-0 left-[58%] w-px bg-white/[0.06]" />
+        {/* The dial: lit as far as the plan reaches, the plan in its hub */}
+        <div className="pointer-events-none absolute top-1/2 right-[5%] aspect-square w-[40%] -translate-y-1/2">
+          <svg viewBox="0 0 200 200" aria-hidden className="absolute inset-0 size-full overflow-visible">
+            <circle cx="100" cy="100" r="58" fill="rgb(255 255 255 / 0.02)" stroke="rgb(255 255 255 / 0.08)" />
+            <circle cx="100" cy="100" r="44" fill="none" stroke="rgb(255 255 255 / 0.05)" strokeDasharray="1 3" />
+            {Array.from({ length: TICKS }, (_, i) => {
+              // A 270° sweep starting bottom-left, like the Dial.
+              const a = ((135 + (i / (TICKS - 1)) * 270) * Math.PI) / 180;
+              const major = i % 6 === 0;
+              const r1 = 70;
+              const r2 = major ? 88 : 80;
+              return (
+                <line
+                  key={i}
+                  x1={100 + r1 * Math.cos(a)}
+                  y1={100 + r1 * Math.sin(a)}
+                  x2={100 + r2 * Math.cos(a)}
+                  y2={100 + r2 * Math.sin(a)}
+                  stroke={i < lit ? "var(--signal)" : "rgb(255 255 255 / 0.14)"}
+                  strokeWidth={major ? 2.2 : 1.4}
+                  strokeLinecap="round"
+                />
+              );
+            })}
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="font-mono text-[9px] tracking-[0.2em] text-white/45 uppercase">{plan}</span>
+            <span className="mt-0.5 text-xl font-medium tracking-[-0.03em] tabular-nums">{Math.round(unlocked * 100)}%</span>
+          </div>
+        </div>
+        <div className="pointer-events-none absolute -top-28 -right-24 size-72 rounded-full bg-signal/25 blur-3xl" />
+        <div className="grain pointer-events-none absolute inset-0 opacity-[0.10] mix-blend-overlay" />
+        <motion.div className="pointer-events-none absolute inset-0" style={{ background: sheen }} />
+
+        <div className="relative flex h-full w-[58%] flex-col justify-between p-6">
           <span className="flex items-center gap-2.5">
-            <span className="relative grid size-7 place-items-center rounded-full bg-linear-to-b from-white to-[#cfc8ba] shadow-[0_1px_0_white_inset,0_2px_6px_rgb(0_0_0/0.4)]">
-              <span className="absolute top-[18%] left-1/2 h-[30%] w-[2.5px] -translate-x-1/2 rotate-[38deg] rounded-full bg-signal [transform-origin:50%_120%]" />
-            </span>
+            <LogoMark className="size-6" />
             <span className="text-sm font-semibold tracking-[-0.02em]">act.design</span>
           </span>
-          <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.16em] uppercase">
-            <span className="size-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" />
-            {plan} · Active
-          </span>
-        </div>
-        <div className="flex items-end justify-between">
+
+          <p className="font-mono text-[13px] tracking-[0.2em] text-white/70 tabular-nums">{memberNo(name)}</p>
+
           <div>
-            <p className="font-mono text-[10px] tracking-[0.16em] text-[#f3efe6]/50 uppercase">Member</p>
-            <p className="mt-1 font-serif text-2xl italic">{name}</p>
+            <p className="font-mono text-[9px] tracking-[0.18em] text-white/40 uppercase">Member</p>
+            <p className="mt-1 truncate text-lg font-medium tracking-[-0.01em]">{name}</p>
+            <p className="mt-2 flex items-center gap-2 font-mono text-[9px] tracking-[0.18em] whitespace-nowrap text-white/40 uppercase">
+              <span className="size-1.5 shrink-0 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" />
+              Since <span className="text-white/75">{since}</span>
+            </p>
           </div>
-          <p className="text-right font-mono text-[10px] tracking-[0.14em] text-[#f3efe6]/50 uppercase">
-            Since
-            <br />
-            <span className="text-[#f3efe6]/80">{since}</span>
-          </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 }

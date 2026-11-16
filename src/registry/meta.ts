@@ -64,7 +64,7 @@ export function installCommand(deps: string[], code?: string) {
 
 /* ---------------------------------- blocks --------------------------------- */
 
-export const blockCategories = ["Hero", "Features", "Pricing", "Social proof", "Conversion"] as const;
+export const blockCategories = ["Hero", "How it works", "Features", "Pricing", "Social proof", "Status", "Conversion"] as const;
 
 export type BlockCategory = (typeof blockCategories)[number];
 
@@ -80,12 +80,14 @@ export type BlockItem = {
 };
 
 export const blocks: BlockItem[] = [
-  { slug: "hero-monitor", name: "Monitoring Hero", category: "Hero", description: "A hero for an uptime-monitoring product whose visual is the product: an endpoint's last hour of checks. Move the alert threshold or the confirmations and it tells you how often you'd have been paged.", deps: [M, L], uses: ["button", "fader", "stepper", "switch"], isNew: true },
-  { slug: "feature-rack", name: "Feature List", category: "Features", description: "Five features, each with a live readout instead of a stock icon: region latencies, a check-frequency control, an incident timeline, alert switches and a certificate countdown.", deps: [M], uses: ["segmented-control", "switch"], isNew: true },
-  { slug: "gauges", name: "Gauges", category: "Features", description: "Proof points as analog meters. On scroll each needle swings up, overshoots and settles while the number rolls in.", deps: [M], uses: ["number-ticker"], isNew: true },
-  { slug: "pricing-meter", name: "Usage Pricing", category: "Pricing", description: "Usage pricing as controls: monitors, check frequency and seats. Plan lights follow along and the total rolls to its new number.", deps: [M, L], uses: ["fader", "segmented-control", "stepper", "button"], isNew: true },
-  { slug: "testimonials-deck", name: "Testimonial Deck", category: "Social proof", description: "Customer quotes with concrete outcomes, dealt as a deck you can fling, beside a review score and customer names.", deps: [M, L], uses: ["card-stack"], isNew: true },
-  { slug: "cta-check", name: "Site Check CTA", category: "Conversion", description: "A closing call to action people actually use: type a domain, get an instant check from four regions with certificate expiry, then start monitoring it.", deps: [M, L], uses: ["button"], isNew: true },
+  { slug: "hero-monitor", name: "Monitoring Hero", category: "Hero", description: "A hero for an uptime-monitoring product whose visual is the product: an endpoint's last hour of checks in a window that runs off the page. Move the alert threshold or the confirmations and it tells you how often you'd have been paged, while a notification on the window's edge shows who the last page reached.", deps: [M, L], uses: ["button", "fader", "stepper", "switch"], isNew: true },
+  { slug: "incident-flow", name: "Incident Flow", category: "How it works", description: "How it works, told as one incident. The steps advance on their own when the block scrolls into view while the incident card changes in place: regions fail, the clock rolls, the on-call phone rings, it recovers. Click a step to jump to it, or replay.", deps: [M, L], uses: ["button", "stepper"], isNew: true },
+  { slug: "feature-rack", name: "Feature List", category: "Features", description: "Five features as a ruled bento grid: an incident timeline leads, beside a single number, a check-frequency control whose daily count rolls, the certificate itself and alert switches.", deps: [M], uses: ["segmented-control", "switch", "number-ticker"], isNew: true },
+  { slug: "gauges", name: "Gauges", category: "Features", description: "Proof points as instruments: the headline number on a large analog gauge, the supporting three on straight meters. On scroll the needles swing past their reading and settle while the numbers roll in.", deps: [M], uses: ["number-ticker"], isNew: true },
+  { slug: "pricing-meter", name: "Usage Pricing", category: "Pricing", description: "Usage pricing as controls: monitors, check frequency and seats. Plan lights follow along, and a receipt shows each line of the quote rolling to its new amount above the total.", deps: [M, L], uses: ["fader", "segmented-control", "stepper", "button"], isNew: true },
+  { slug: "testimonials-deck", name: "Testimonial Deck", category: "Social proof", description: "Customer quotes dealt as a deck you can fling. Each card leads with its outcome in large type, beside a review score and customer names.", deps: [M, L], uses: ["card-stack"], isNew: true },
+  { slug: "status-page", name: "Status Page", category: "Status", description: "A public status page: the headline state, every component's daily uptime as bars you can hover for what happened that day, a 30 or 90 day range, a subscribe form and the latest incident written up update by update.", deps: [M, L], uses: ["button", "segmented-control"], isNew: true },
+  { slug: "cta-check", name: "Site Check CTA", category: "Conversion", description: "A closing call to action people actually use: type a domain, get an instant check from four regions with certificate expiry, then start monitoring it. It opens on an example result, so it never sits empty.", deps: [M, L], uses: ["button"], isNew: true },
 ];
 
 export function getBlock(slug: string) {

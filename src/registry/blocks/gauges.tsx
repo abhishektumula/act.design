@@ -28,7 +28,7 @@ const SWEEP = 180;
 function Face({ g, on, delay }: { g: Gauge; on: boolean; delay: number }) {
   const ticks = 31;
   return (
-    <div className="relative mx-auto aspect-[2/1.15] w-full max-w-[15rem]">
+    <div className="relative mx-auto aspect-[2/1.15] w-full">
       <svg viewBox="0 0 200 115" className="absolute inset-0 size-full overflow-visible">
         {/* Red zone, then ticks */}
         <path d="M 177.9 55 A 90 90 0 0 1 190 100" fill="none" strokeWidth="6" className="stroke-signal/25" strokeLinecap="round" />
@@ -68,40 +68,90 @@ function Face({ g, on, delay }: { g: Gauge; on: boolean; delay: number }) {
   );
 }
 
+/** A straight meter for the supporting numbers: a tick scale with a needle that swings in. */
+function Meter({ g, on, delay }: { g: Gauge; on: boolean; delay: number }) {
+  const ticks = 41;
+  return (
+    <div aria-hidden className="relative mt-5">
+      <div className="flex h-5 items-end justify-between">
+        {Array.from({ length: ticks }, (_, i) => (
+          <span key={i} className={cn("w-px", i % 10 === 0 ? "h-full bg-base-50/40" : i % 5 === 0 ? "h-3 bg-base-50/25" : "h-2 bg-base-50/15")} />
+        ))}
+      </div>
+      <motion.span
+        initial={{ left: "0%" }}
+        animate={{ left: on ? `${g.reading * 100}%` : "0%" }}
+        transition={{ type: "spring", stiffness: 60, damping: 9, mass: 0.9, delay }}
+        className="absolute -top-1.5 bottom-0 w-[2px] -translate-x-1/2 rounded-full bg-signal"
+      />
+      <div className="mt-2 flex justify-between font-mono text-[10px] text-base-500">
+        <span>{g.scale[0]}</span>
+        <span>{g.scale[1]}</span>
+      </div>
+    </div>
+  );
+}
+
+function Readout({ g, on, size }: { g: Gauge; on: boolean; size: "lg" | "md" }) {
+  return (
+    <p
+      className={cn(
+        "inline-flex items-baseline font-semibold whitespace-nowrap text-base-50",
+        size === "lg" ? "text-6xl tracking-[-0.045em] sm:text-7xl" : "text-4xl tracking-[-0.04em]",
+      )}
+    >
+      <NumberTicker value={on ? g.value : 0} format={g.format} />
+      {g.suffix && <span className={cn("ml-1 font-medium tracking-normal text-base-500", size === "lg" ? "text-3xl" : "text-xl")}>{g.suffix}</span>}
+    </p>
+  );
+}
+
 /**
- * Proof points as analog meters. On scroll each needle swings up, overshoots
- * and wobbles to rest while the readout rolls to its number.
+ * Proof points as instruments. The headline number gets the big analog gauge;
+ * the supporting three get straight meters. On scroll the needles swing past
+ * their reading and settle while the numbers roll in.
  */
 export function Gauges({ className }: { className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const on = useInView(ref, { once: true, margin: "-80px" });
+  const [lead, ...rest] = gauges;
 
   return (
     <section data-slot="gauges" className={cn("bg-canvas px-6 py-24 sm:py-32", className)}>
       <div className="mx-auto max-w-6xl">
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
-            Measured, <span className="font-serif font-normal tracking-[-0.02em] italic">not promised.</span>
-          </h2>
-        </div>
+        <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
+          Measured, <span className="font-serif font-normal tracking-[-0.02em] italic">not promised.</span>
+        </h2>
 
-        <div
-          ref={ref}
-          className="mt-14 grid gap-px overflow-hidden rounded-[32px] bg-base-50/[0.07] shadow-[0_40px_80px_-60px_var(--color-shade)] ring-1 ring-base-50/[0.08] sm:grid-cols-2 lg:grid-cols-4"
-        >
-          {gauges.map((g, i) => (
-            <div key={g.label} className="group bg-base-950 px-6 pt-8 pb-7">
-              <Face g={g} on={on} delay={0.15 + i * 0.12} />
-              <div className="mt-6 text-center">
-                <p className="text-sm font-medium text-base-400">{g.label}</p>
-                <p className="mt-2 inline-flex items-baseline text-4xl font-semibold tracking-[-0.04em] text-base-50">
-                  <NumberTicker value={on ? g.value : 0} format={g.format} />
-                  {g.suffix && <span className="ml-1 text-lg font-normal tracking-normal text-base-500">{g.suffix}</span>}
-                </p>
-                <p className="mt-2 text-sm text-base-500">{g.caption}</p>
-              </div>
+        <div ref={ref} className="mt-14 grid gap-px overflow-hidden rounded-[20px] bg-base-50/[0.08] ring-1 ring-base-50/[0.08] lg:grid-cols-[1.25fr_1fr]">
+          {/* The one that matters most */}
+          <div className="flex flex-col bg-base-950 px-7 pt-8 pb-9 sm:px-10 sm:pt-10 dark:bg-base-900">
+            <p className="text-[17px] text-base-500">
+              <span className="font-medium text-base-50">{lead.label}.</span> {lead.caption}.
+            </p>
+            <div className="mt-10 w-full max-w-md self-center">
+              <Face g={lead} on={on} delay={0.15} />
             </div>
-          ))}
+            <div className="mt-8 text-center">
+              <Readout g={lead} on={on} size="lg" />
+            </div>
+          </div>
+
+          {/* The supporting three */}
+          <div className="grid gap-px bg-base-50/[0.08]">
+            {rest.map((g, i) => (
+              <div key={g.label} className="bg-base-950 px-7 py-7 sm:px-8 dark:bg-base-900">
+                <div className="flex items-end justify-between gap-6">
+                  <div className="min-w-0">
+                    <p className="text-[15px] font-medium text-base-50">{g.label}</p>
+                    <p className="mt-0.5 text-sm text-base-500">{g.caption}</p>
+                  </div>
+                  <Readout g={g} on={on} size="md" />
+                </div>
+                <Meter g={g} on={on} delay={0.35 + i * 0.12} />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

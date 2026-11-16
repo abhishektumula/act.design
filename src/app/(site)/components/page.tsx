@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { PageHeader } from "@/components/site/frame";
 import { PreviewTile } from "@/components/site/preview-tile";
 import { categories, registry } from "@/registry/meta";
 
@@ -15,22 +16,26 @@ const blurbs: Record<(typeof categories)[number], string> = {
 export default function ComponentsIndex() {
   return (
     <div>
-      <header className="max-w-2xl">
-        <h1 className="text-5xl font-semibold tracking-[-0.045em] text-base-50 sm:text-6xl">
-          The <span className="font-serif font-normal tracking-[-0.02em] italic">instruments</span>
-        </h1>
-        <p className="mt-5 text-lg leading-8 text-base-400">
-          {registry.length} live components. Play with them here, open one for its code and API, then copy it into your app.
-        </p>
-      </header>
+      <PageHeader
+        title={
+          <>
+            The <span className="font-serif font-normal tracking-[-0.02em] italic">instruments</span>
+          </>
+        }
+        body={`${registry.length} live components. Play with them here, open one for its code and API, then copy it into your app.`}
+      />
 
-      {categories.map((cat) => {
+      {categories.map((cat, i) => {
         const items = registry.filter((r) => r.category === cat);
         return (
           <section key={cat} id={cat.toLowerCase().replace(/\s/g, "-")} className="mt-20 scroll-mt-24">
-            <div className="mb-6 flex items-baseline gap-4 border-b border-base-50/[0.07] pb-4">
-              <h2 className="font-serif text-3xl tracking-[-0.01em] text-base-50 italic">{cat}</h2>
+            <div className="mb-6 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-base-50/[0.07] pb-4">
+              <span className="font-mono text-[11px] text-signal tabular-nums">0{i + 1}</span>
+              <h2 className="text-2xl font-medium tracking-[-0.02em] text-base-50">{cat}</h2>
               <span className="text-sm text-base-500">{blurbs[cat]}</span>
+              <span className="ml-auto font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">
+                {items.length} {items.length === 1 ? "piece" : "pieces"}
+              </span>
             </div>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {items.map((item) => (

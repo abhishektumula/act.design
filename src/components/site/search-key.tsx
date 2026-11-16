@@ -9,11 +9,11 @@ export function SearchKey({ label, className = "" }: { label: string; className?
     <button
       type="button"
       onClick={() => window.dispatchEvent(new KeyboardEvent("keydown", { key: "k", metaKey: true }))}
-      className={`${btnSecondary} h-12 rounded-xl pr-2 pl-4 text-[15px] ${className}`}
+      className={`${btnSecondary} h-11 rounded-md pr-2 pl-4 text-[14px] ${className}`}
     >
       <Search className="size-4 text-base-500" />
       <span className="text-base-300">{label}</span>
-      <kbd className="ml-3 rounded-md bg-base-800 px-1.5 py-1 font-mono text-[11px] leading-none text-base-400 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/10">
+      <kbd className="ml-3 rounded-[3px] px-1.5 py-1 font-mono text-[11px] leading-none text-base-500 ring-1 ring-base-50/10">
         ⌘K
       </kbd>
     </button>
