@@ -30,7 +30,6 @@ async function AccountDetails() {
     <>
       <div className="grid gap-14 lg:grid-cols-[1fr_auto] lg:items-end">
         <PageHeader
-          eyebrow="Account"
           title={
             <>
               Hello, <span className="font-serif font-normal tracking-[-0.02em] italic">{user.firstName}.</span>

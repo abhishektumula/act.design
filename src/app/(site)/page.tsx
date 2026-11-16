@@ -3,21 +3,28 @@ import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { BlockCard } from "@/components/site/block-card";
-import { Crosses, Eyebrow } from "@/components/site/frame";
+import { Crosses } from "@/components/site/frame";
 import { Features } from "@/components/site/features";
 import { PreviewTile } from "@/components/site/preview-tile";
-import { btnSecondary } from "@/components/site/styles";
 import { blocks, getBlock, registry } from "@/registry/meta";
 
-function SectionHeading({ eyebrow, title, body }: { eyebrow: string; title: React.ReactNode; body: string }) {
+/** Section header: the claim on the left, what it means and where to go on the right. */
+function SectionHeading({ title, body, action }: { title: React.ReactNode; body: string; action?: React.ReactNode }) {
   return (
-    <div className="max-w-2xl">
-      <Eyebrow className="mb-6">{eyebrow}</Eyebrow>
-      <h2 className="text-4xl font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">{title}</h2>
-      <p className="mt-5 text-lg leading-8 text-pretty text-base-400">{body}</p>
+    <div className="grid gap-x-10 gap-y-6 lg:grid-cols-12 lg:items-end">
+      <h2 className="text-[2.75rem] leading-[1] font-semibold tracking-[-0.045em] text-balance text-base-50 sm:text-6xl lg:col-span-7">
+        {title}
+      </h2>
+      <div className="lg:col-span-4 lg:col-start-9 lg:pb-1.5">
+        <p className="max-w-md text-[17px] leading-7 text-pretty text-base-400">{body}</p>
+        {action && <div className="mt-6">{action}</div>}
+      </div>
     </div>
   );
 }
+
+const linkArrow =
+  "group inline-flex items-center gap-1.5 text-[15px] font-medium text-base-100 transition-colors hover:text-base-50";
 
 /** Bento placement for the instrument index. */
 const layout: [string, string][] = [
@@ -43,20 +50,19 @@ export default function Home() {
         {/* Instruments */}
         <section className="border-t border-base-50/[0.06]">
           <div className="mx-auto max-w-[1400px] px-6 py-28 sm:py-36">
-            <div className="flex flex-wrap items-end justify-between gap-8">
-              <SectionHeading
-                eyebrow="Instruments"
-                title={
-                  <>
-                    Fewer parts, <span className="font-serif font-normal tracking-[-0.02em] italic">each one finished.</span>
-                  </>
-                }
-                body="No forty flavours of button. Each piece here was rebuilt until it felt right under a thumb, a trackpad and a keyboard. Every tile is live."
-              />
-              <Link href="/components" className={`${btnSecondary} h-10 rounded-md px-4 text-sm`}>
-                All {registry.length} instruments <ArrowRight className="size-4" />
-              </Link>
-            </div>
+            <SectionHeading
+              title={
+                <>
+                  Fewer parts, <span className="font-serif font-normal tracking-[-0.02em] italic">each one finished.</span>
+                </>
+              }
+              body="No forty flavours of button. Each piece was rebuilt until it felt right under a thumb, a trackpad and a keyboard. Every tile below is live."
+              action={
+                <Link href="/components" className={linkArrow}>
+                  All {registry.length} instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+              }
+            />
             <div className="mt-16 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {layout.map(([slug, className]) => (
                 <PreviewTile key={slug} slug={slug} className={className} />
@@ -69,7 +75,6 @@ export default function Home() {
         <section className="border-y border-base-50/[0.06] bg-base-950/40">
           <div className="mx-auto max-w-[1400px] px-6 py-28 sm:py-36">
             <SectionHeading
-              eyebrow="Principles"
               title={
                 <>
                   Built to feel <span className="font-serif font-normal tracking-[-0.02em] italic">like objects.</span>
@@ -83,16 +88,19 @@ export default function Home() {
 
         {/* Blocks */}
         <section className="mx-auto max-w-[1400px] px-6 py-28 sm:py-36">
-          <div className="flex flex-wrap items-end justify-between gap-8">
-            <SectionHeading
-              eyebrow="Blocks"
-              title="Whole sections, assembled."
-              body="Heroes, bento grids, pricing and more, built from the same parts. Responsive, themed and ready to paste as a complete section."
-            />
-            <Link href="/blocks" className={`${btnSecondary} h-10 rounded-md px-4 text-sm`}>
-              All {blocks.length} blocks <ArrowRight className="size-4" />
-            </Link>
-          </div>
+          <SectionHeading
+            title={
+              <>
+                Whole sections, <span className="font-serif font-normal tracking-[-0.02em] italic">assembled.</span>
+              </>
+            }
+            body="Heroes, gauges, pricing and more for one made-up uptime product, built from the same parts. Responsive, themed and ready to paste."
+            action={
+              <Link href="/blocks" className={linkArrow}>
+                All {blocks.length} blocks <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            }
+          />
           <div className="mt-16 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {["hero-monitor", "pricing-meter", "feature-rack", "gauges", "testimonials-deck", "cta-check"].map((slug) => (
               <BlockCard key={slug} block={getBlock(slug)!} />

@@ -11,7 +11,6 @@ export default function BlocksIndex() {
     <>
       <main className="mx-auto w-full max-w-[1400px] px-6 pt-32 pb-24">
         <PageHeader
-          eyebrow={`Blocks · ${String(blocks.length).padStart(2, "0")}`}
           title={
             <>
               Whole sections, <span className="font-serif font-normal tracking-[-0.02em] italic">assembled.</span>

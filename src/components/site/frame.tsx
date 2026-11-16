@@ -1,24 +1,13 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
-/** A mono `[ LABEL ]` tag that sits above headings. */
-export function Eyebrow({ children, className }: { children: ReactNode; className?: string }) {
-  return (
-    <p className={cn("font-mono text-[11px] tracking-[0.18em] text-base-500 uppercase", className)}>
-      <span className="text-base-700">[</span> {children} <span className="text-base-700">]</span>
-    </p>
-  );
-}
-
-/** Eyebrow, headline and lede for the top of a page. */
+/** Headline and lede for the top of a page. */
 export function PageHeader({
-  eyebrow,
   title,
   body,
   className,
   children,
 }: {
-  eyebrow: ReactNode;
   title: ReactNode;
   body?: ReactNode;
   className?: string;
@@ -26,8 +15,7 @@ export function PageHeader({
 }) {
   return (
     <header className={cn("max-w-2xl", className)}>
-      <Eyebrow>{eyebrow}</Eyebrow>
-      <h1 className="mt-6 text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-balance text-base-50 sm:text-6xl">{title}</h1>
+      <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-balance text-base-50 sm:text-6xl">{title}</h1>
       {body && <p className="mt-5 text-lg leading-8 text-pretty text-base-400">{body}</p>}
       {children}
     </header>

@@ -31,7 +31,7 @@ export function AccountMenu({ user }: { user: Account }) {
           {user.firstName[0]}
         </span>
         <span className="text-[13px] text-base-200">{user.firstName}</span>
-        <span className="rounded-[3px] px-1 py-px font-mono text-[9px] tracking-[0.14em] text-signal uppercase ring-1 ring-signal/30">
+        <span className="text-[12px] font-medium text-signal">
           MAX
         </span>
       </button>

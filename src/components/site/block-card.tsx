@@ -14,12 +14,12 @@ export function BlockCard({ block, className }: { block: BlockItem; className?: 
         <p className="flex min-w-0 items-center gap-3 text-[14px] font-medium tracking-tight text-base-100">
           {block.name}
           {block.isNew && (
-            <span className="rounded-[3px] px-1.5 py-px font-mono text-[10px] tracking-wider text-signal uppercase ring-1 ring-signal/30">
+            <span className="text-[12px] font-medium text-signal">
               New
             </span>
           )}
         </p>
-        <span className="flex shrink-0 items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">
+        <span className="flex shrink-0 items-center gap-2 text-[13px] text-base-500">
           {block.category}
           <ArrowUpRight className="size-3.5 transition-[translate,color] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-base-50" />
         </span>

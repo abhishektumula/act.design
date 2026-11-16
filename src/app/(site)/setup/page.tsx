@@ -107,7 +107,6 @@ export default function SetupPage() {
     <>
       <main className="mx-auto w-full max-w-4xl px-6 pt-36 pb-28">
         <PageHeader
-          eyebrow={`Setup · ${steps.length} steps`}
           title={
             <>
               Five minutes, <span className="font-serif font-normal tracking-[-0.02em] italic">once.</span>

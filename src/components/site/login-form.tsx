@@ -9,7 +9,7 @@ import { Dial } from "@/components/ui/dial";
 import { Button } from "@/components/ui/button";
 import { Input, PasswordInput } from "@/components/site/kit/input";
 import { cn } from "@/lib/utils";
-import { Crosses, Eyebrow, PanelBar } from "./frame";
+import { Crosses, PanelBar } from "./frame";
 
 const LIGHTS = 12;
 
@@ -44,8 +44,7 @@ export function LoginForm({ next }: { next: string }) {
     <div className="grid w-full max-w-5xl items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
       {/* Form */}
       <div>
-        <Eyebrow>Sign in</Eyebrow>
-        <h1 className="mt-6 text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-base-50 sm:text-6xl">
+        <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-base-50 sm:text-6xl">
           Welcome <span className="font-serif font-normal tracking-[-0.02em] italic">back.</span>
         </h1>
         <p className="mt-5 max-w-sm text-lg leading-8 text-pretty text-base-400">Sign in to copy the source of every instrument and block.</p>

@@ -17,7 +17,6 @@ export default function ComponentsIndex() {
   return (
     <div>
       <PageHeader
-        eyebrow={`Instruments · ${String(registry.length).padStart(2, "0")}`}
         title={
           <>
             The <span className="font-serif font-normal tracking-[-0.02em] italic">instruments</span>

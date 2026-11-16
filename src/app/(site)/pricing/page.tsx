@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { Footer } from "@/components/site/footer";
-import { Crosses, Eyebrow, PageHeader } from "@/components/site/frame";
+import { Crosses, PageHeader } from "@/components/site/frame";
 import { btnBase, btnSecondary, hairGrid, panel } from "@/components/site/styles";
 import { blocks, categories, registry, type Category } from "@/registry/meta";
 import { cn } from "@/lib/utils";
@@ -108,7 +108,6 @@ export default function PricingPage() {
     <>
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 pt-36 pb-32">
         <PageHeader
-          eyebrow="Pricing"
           title={
             <>
               Pay once. <span className="font-serif font-normal tracking-[-0.02em] italic">Keep the feel.</span>
@@ -127,7 +126,7 @@ export default function PricingPage() {
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-[11px] tracking-[0.16em] text-base-300 uppercase">{plan.name}</span>
                   {plan.featured && (
-                    <span className="rounded-[3px] px-1.5 py-px font-mono text-[10px] tracking-[0.14em] text-signal uppercase ring-1 ring-signal/30">
+                    <span className="text-[13px] font-medium text-signal">
                       Most picked
                     </span>
                   )}
@@ -168,8 +167,7 @@ export default function PricingPage() {
         <section className="mt-32">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <Eyebrow>Spec sheet</Eyebrow>
-              <h2 className="mt-6 text-4xl font-semibold tracking-[-0.04em] text-base-50 sm:text-5xl">
+              <h2 className="text-4xl font-semibold tracking-[-0.04em] text-base-50 sm:text-5xl">
                 What each plan <span className="font-serif font-normal tracking-[-0.02em] italic">opens.</span>
               </h2>
             </div>

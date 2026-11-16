@@ -12,9 +12,8 @@ import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
 import { accents, setAccent, useAccent, type Accent } from "./accent";
 import { btnPrimary } from "./styles";
-import { Crosses, Eyebrow } from "./frame";
-
-
+import { Crosses } from "./frame";
+import { HeroStage } from "./hero-stage";
 
 const initial = { weight: 560, tracking: -4.5, serif: true, outline: false, size: 100 };
 
@@ -39,20 +38,16 @@ export function Hero() {
   const headline: CSSProperties = {
     fontWeight: s.weight,
     letterSpacing: `${s.tracking / 100}em`,
-    fontSize: `calc(clamp(3.25rem, 8.6vw, 8.75rem) * ${s.size / 100})`,
+    fontSize: `calc(clamp(3.5rem, 7vw, 6.75rem) * ${s.size / 100})`,
   };
 
   return (
     <section className="relative overflow-hidden pt-16">
-      <div className="mx-auto max-w-[1400px] px-6 pt-14 sm:pt-20">
-        {/* Headline, wired to the panel below */}
-        <Eyebrow className="mb-8">Instruments for the interface</Eyebrow>
-        <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-8">
-            <h1
-              style={headline}
-              className="min-h-[1.9em] leading-[0.92] text-base-50 transition-[color] duration-300 sm:min-h-[1.95em]"
-            >
+      <div className="mx-auto max-w-[1400px] px-6 pt-16 sm:pt-24">
+        <div className="grid items-center gap-y-14 lg:grid-cols-12 lg:gap-x-10">
+          {/* Headline, wired to the panel below */}
+          <div className="lg:col-span-5">
+            <h1 style={headline} className="leading-[0.94] text-base-50">
               <span className="block">Interfaces</span>
               <span className="block">
                 with{" "}
@@ -69,27 +64,35 @@ export function Hero() {
                 </motion.span>
               </span>
             </h1>
-          </div>
-          <div className="lg:col-span-4 lg:pb-4">
-            <p className="max-w-md text-lg leading-8 text-pretty text-base-400">
-              A small set of React components that behave like well-made objects: they have weight, travel and detents.{" "}
-              <span className="text-base-200">Every control on the panel below is one of them</span>, wired to the headline. Go on.
+            <p className="mt-8 max-w-[26rem] text-[17px] leading-7 text-pretty text-base-400">
+              React components that act like well-made objects. Dials with detents, faders with travel, switches you can
+              throw. <span className="text-base-100">Copy the source and keep the feel.</span>
             </p>
-            <Link href="/components" className={`${btnPrimary} group mt-8 h-12 rounded-md px-5 text-[15px]`}>
-              Browse the instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-            </Link>
+            <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-4">
+              <Link href="/components" className={`${btnPrimary} group h-11 rounded-md px-5 text-[15px]`}>
+                Browse the instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+              <Link href="/blocks" className="text-[15px] font-medium text-base-200 underline decoration-base-700 underline-offset-[6px] transition-colors hover:text-base-50 hover:decoration-base-400">
+                See them in a product
+              </Link>
+            </div>
+          </div>
+
+          {/* The product shot */}
+          {/* Runs off the right of the page and fades out at its foot */}
+          <div aria-hidden inert className="relative -mx-6 [clip-path:inset(-120px_-100vw_0_-120px)] sm:mx-0 lg:col-span-7">
+            <HeroStage />
+            <div className="pointer-events-none absolute -right-[100vw] bottom-0 -left-6 h-24 bg-linear-to-b from-transparent to-canvas" />
           </div>
         </div>
 
+        <p className="mt-10 max-w-md text-[15px] leading-6 text-base-400 sm:mt-28">
+          <span className="text-base-100">Your turn.</span> Every control below is one of the components, wired to the headline above.
+        </p>
+
         {/* The panel */}
-        <div className="relative mt-14 mb-20">
+        <div className="relative mt-6 mb-20">
           <Crosses />
-          <div className="flex h-10 items-center justify-between border-x border-t border-base-50/[0.08] bg-base-950 px-4 font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase">
-            <span>Control panel</span>
-            <span className="flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" /> Live<span className="max-sm:hidden"> · wired to headline</span>
-            </span>
-          </div>
           <div className="grid divide-y divide-base-50/[0.08] bg-base-950 ring-1 ring-base-50/[0.08] md:grid-cols-2 md:divide-x lg:grid-cols-[1.1fr_1.5fr_1fr_1fr] lg:divide-y-0">
             <Module name="Dial" slug="dial" className="md:row-span-2 lg:row-span-1">
               <Dial label="Weight" min={100} max={900} step={10} value={s.weight} onValueChange={set("weight")} defaultValue={initial.weight} />

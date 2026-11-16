@@ -2,11 +2,10 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { CopyButton } from "./kit/copy-button";
-import { Eyebrow } from "./frame";
 
 export function NewTag() {
   return (
-    <span className="rounded-[3px] px-1.5 py-px font-mono text-[10px] tracking-[0.14em] text-signal uppercase ring-1 ring-signal/30">
+    <span className="text-[12px] font-medium text-signal">
       New
     </span>
   );
@@ -56,8 +55,8 @@ export function CommandLine({ value }: { value: string }) {
 export function Steps({ steps }: { steps: ReactNode[] }) {
   return (
     <section className="mt-20">
-      <Eyebrow>Installation</Eyebrow>
-      <ol className="mt-6 divide-y divide-base-50/[0.06] border-y border-base-50/[0.06]">
+      <h2 className="text-xl font-semibold tracking-[-0.02em] text-base-50">Installation</h2>
+      <ol className="mt-5 divide-y divide-base-50/[0.06] border-y border-base-50/[0.06]">
         {steps.map((step, i) => (
           <li key={i} className="grid grid-cols-[2.5rem_1fr] gap-4 py-5">
             <span className="pt-0.5 font-mono text-[11px] text-signal tabular-nums">0{i + 1}</span>

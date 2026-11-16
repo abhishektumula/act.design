@@ -37,14 +37,12 @@ function Window({ title, meta, children, className = "" }: { title: string; meta
 
 function Feature({
   index,
-  label,
   title,
   body,
   children,
   className = "",
 }: {
   index: string;
-  label: string;
   title: string;
   body: string;
   children: ReactNode;
@@ -59,10 +57,10 @@ function Feature({
       </div>
       {/* The copy */}
       <div className="mt-auto p-6 pt-8 sm:p-8">
-        <p className="font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase">
-          <span className="text-signal">{index}</span> / {label}
-        </p>
-        <h3 className="mt-3 text-xl font-medium tracking-[-0.02em] text-base-50">{title}</h3>
+        <h3 className="text-xl font-medium tracking-[-0.02em] text-base-50">
+          <span className="mr-2.5 text-base-600 tabular-nums">{index}</span>
+          {title}
+        </h3>
         <p className="mt-2 max-w-md text-[15px] leading-7 text-pretty text-base-500">{body}</p>
       </div>
     </article>
@@ -303,7 +301,6 @@ export function Features() {
       <div className={`${hairGrid} md:grid-cols-2 lg:grid-cols-3`}>
         <Feature
           index="01"
-          label="Weight"
           title="Springs with mass, never linear tweens."
           body="Things should feel like they cost something to move. Every transition is a spring you can tune, so it overshoots a touch and settles."
           className="lg:col-span-2"
@@ -312,7 +309,6 @@ export function Features() {
         </Feature>
         <Feature
           index="02"
-          label="Detents"
           title="Values click into place."
           body="Ticks light up, numbers roll, and limits push back instead of going quiet."
         >
@@ -320,7 +316,6 @@ export function Features() {
         </Feature>
         <Feature
           index="03"
-          label="Quiet"
           title="Motion where it means something."
           body="Buttons don’t bounce. Movement is saved for the things you drag, turn and fling."
         >
@@ -328,7 +323,6 @@ export function Features() {
         </Feature>
         <Feature
           index="04"
-          label="Restraint"
           title="One accent, warm neutrals."
           body="Eleven greys and a single signal colour. Real whitespace does the rest."
         >
@@ -336,7 +330,6 @@ export function Features() {
         </Feature>
         <Feature
           index="05"
-          label="Ownership"
           title="Copy it. It’s yours."
           body="No package to fight. Each piece is one file you paste in and change however you like."
         >
