@@ -22,6 +22,7 @@ export const registry: RegistryItem[] = [
   { slug: "switch", name: "Switch", category: "Controls", description: "A toggle whose thumb and fill move together on one eased transition. Tap it, or drag the thumb across.", deps: [M, L, V], isNew: true },
   { slug: "segmented-control", name: "Segmented Control", category: "Controls", description: "A raised cap that glides between options and sinks a touch under your finger. Full arrow-key support.", deps: [M, L, V], isNew: true },
   { slug: "stepper", name: "Stepper", category: "Controls", description: "A number field whose digits roll in the direction you count. Hold to repeat with acceleration; hit a limit and it shakes its head.", deps: [M, L], isNew: true },
+  { slug: "code-input", name: "Code Input", category: "Controls", description: "A one-time-code field. Digits rise into their slots behind a blinking caret, paste and SMS autofill fill it in one go, and on the last digit it checks: a ripple while it waits, a pop when it passes, a shake and clear when it doesn't.", deps: [M, L], isNew: true },
 
   // Actions
   { slug: "button", name: "Button", category: "Actions", description: "A quiet button with four tones and a minimal shadow. Bind a hotkey and the key is printed inside it, and pressing it on the keyboard clicks the button.", deps: [M, L, V] },
