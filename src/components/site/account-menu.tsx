@@ -19,19 +19,19 @@ export function AccountMenu({ user }: { user: Account }) {
   }, [open]);
 
   const item =
-    "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm text-base-300 transition-colors hover:bg-base-50/5 hover:text-base-50";
+    "flex w-full items-center gap-2.5 rounded-[4px] px-2.5 py-2 text-[13px] text-base-300 transition-colors hover:bg-base-50/5 hover:text-base-50";
 
   return (
     <div ref={root} className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex h-9 items-center gap-2 rounded-xl bg-base-900/80 pr-3 pl-1 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5 transition-colors hover:bg-base-800"
+        className="flex h-8 items-center gap-2 rounded-md bg-base-50/[0.03] pr-2.5 pl-1 ring-1 ring-base-50/[0.08] transition-colors hover:ring-base-50/15"
       >
-        <span className="grid size-7 place-items-center rounded-lg bg-linear-to-b from-[color-mix(in_oklab,var(--signal)_75%,white)] to-signal text-xs font-semibold text-white inset-shadow-2xs inset-shadow-white/40">
+        <span className="grid size-6 place-items-center rounded-[4px] bg-signal text-[11px] font-semibold text-white">
           {user.firstName[0]}
         </span>
-        <span className="text-sm text-base-200">{user.firstName}</span>
-        <span className="rounded-md bg-linear-to-b from-signal to-signal px-1.5 py-px text-[10px] font-semibold tracking-wider text-white ring-1 ring-signal inset-shadow-2xs inset-shadow-white/30">
+        <span className="text-[13px] text-base-200">{user.firstName}</span>
+        <span className="rounded-[3px] px-1 py-px font-mono text-[9px] tracking-[0.14em] text-signal uppercase ring-1 ring-signal/30">
           MAX
         </span>
       </button>
@@ -42,13 +42,14 @@ export function AccountMenu({ user }: { user: Account }) {
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, scale: 0.98, y: -4, filter: "blur(2px)" }}
             transition={{ type: "spring", bounce: 0, duration: 0.25 }}
-            className="absolute top-full right-0 z-50 mt-2 w-64 origin-top-right rounded-2xl bg-base-900 p-1.5 shadow-2xl shadow-shade/70 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/10"
+            className="absolute top-full right-0 z-50 mt-2 w-64 origin-top-right rounded-lg bg-base-950 p-1 shadow-2xl shadow-shade/40 ring-1 ring-base-50/10"
           >
-            <div className="px-2.5 pt-1.5 pb-2.5">
-              <p className="text-sm text-base-100">{user.name}</p>
+            <div className="px-2.5 pt-2 pb-2.5">
+              <p className="font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">Signed in</p>
+              <p className="mt-1.5 text-sm text-base-100">{user.name}</p>
               <p className="truncate text-xs text-base-500">{user.email}</p>
             </div>
-            <div className="mx-2 mb-1.5 h-px bg-base-50/5" />
+            <div className="-mx-1 mb-1 h-px bg-base-50/[0.06]" />
             <Link href="/account" onClick={() => setOpen(false)} className={item}>
               <User className="size-4 opacity-80" /> Account
             </Link>
@@ -58,7 +59,7 @@ export function AccountMenu({ user }: { user: Account }) {
             <Link href="/pricing" onClick={() => setOpen(false)} className={item}>
               <CreditCard className="size-4 opacity-80" /> Plan · {user.plan}
             </Link>
-            <div className="mx-2 my-1.5 h-px bg-base-50/5" />
+            <div className="-mx-1 my-1 h-px bg-base-50/[0.06]" />
             <form action={signOut}>
               <button className={`${item} text-red-600 dark:text-red-400 hover:bg-red-500/10 hover:text-red-500 dark:hover:text-red-300`}>
                 <LogOut className="size-4 opacity-80" /> Sign out

@@ -13,10 +13,10 @@ export const inputVariants = cva(
       variant: {
         // recessed field with an inner shadow
         inset:
-          "rounded-2xl bg-base-50/[0.05] shadow-[inset_0_1px_3px_rgb(0_0_0/0.12)] ring-1 ring-base-50/[0.07] focus-within:ring-signal/60 focus-within:outline-4 focus-within:outline-offset-1 focus-within:outline-signal/15",
+          "rounded-md bg-base-50/[0.03] ring-1 ring-base-50/[0.1] focus-within:ring-signal/60 focus-within:outline-4 focus-within:outline-offset-1 focus-within:outline-signal/15",
         // raised surface, like a secondary button
         raised:
-          "rounded-xl bg-linear-to-b from-base-800 to-base-900 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/10 shadow-md shadow-shade/40 focus-within:ring-signal/60",
+          "rounded-md bg-base-900 ring-1 ring-base-50/10 focus-within:ring-signal/60",
         // just a bottom border — for minimal forms
         underline:
           "rounded-none border-b border-base-50/15 px-0! focus-within:border-base-200 data-[error=true]:border-red-500/60",
@@ -90,7 +90,7 @@ export function PasswordInput(props: Omit<InputProps, "type" | "trailing">) {
           type="button"
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? "Hide password" : "Show password"}
-          className="-mr-1 grid size-7 place-items-center rounded-md text-base-500 transition-colors hover:bg-base-50/5 hover:text-base-200"
+          className="-mr-1 grid size-7 place-items-center rounded-[4px] text-base-500 transition-colors hover:bg-base-50/5 hover:text-base-200"
         >
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.span
@@ -141,7 +141,7 @@ export default function Demo() {
         }}
         error={error}
       />
-      <button className="mt-1 h-10 rounded-xl bg-linear-to-b from-base-50 to-base-200 text-sm font-medium text-base-950 ring-1 ring-base-50/60 inset-shadow-2xs inset-shadow-white transition-transform active:scale-[0.98]">
+      <button className="mt-1 h-10 rounded-md bg-base-50 text-sm font-medium text-base-950 transition-colors hover:bg-base-200">
         Create account
       </button>
     </form>

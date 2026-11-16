@@ -3,6 +3,8 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { Crosses } from "./frame";
+import { hairGrid } from "./styles";
 
 /* ------------------------------------------------------------------ */
 /* Shared bits                                                         */
@@ -294,24 +296,11 @@ function OwnArt() {
 /* Section                                                             */
 /* ------------------------------------------------------------------ */
 
-/** A small "+" sitting on a grid intersection. */
-function Cross({ className }: { className: string }) {
-  return (
-    <span aria-hidden className={`pointer-events-none absolute z-10 size-3 ${className}`}>
-      <span className="absolute top-1/2 left-0 h-px w-full -translate-y-1/2 bg-base-400" />
-      <span className="absolute top-0 left-1/2 h-full w-px -translate-x-1/2 bg-base-400" />
-    </span>
-  );
-}
-
 export function Features() {
   return (
     <div className="relative mt-16">
-      <Cross className="-top-1.5 -left-1.5" />
-      <Cross className="-top-1.5 -right-1.5" />
-      <Cross className="-bottom-1.5 -left-1.5" />
-      <Cross className="-right-1.5 -bottom-1.5" />
-      <div className="grid gap-px bg-base-50/[0.08] ring-1 ring-base-50/[0.08] md:grid-cols-2 lg:grid-cols-3">
+      <Crosses />
+      <div className={`${hairGrid} md:grid-cols-2 lg:grid-cols-3`}>
         <Feature
           index="01"
           label="Weight"

@@ -61,14 +61,14 @@ export function ThemeToggle() {
       onClick={() => setTheme(dark ? "light" : "dark")}
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
-      className="flex h-9 items-center gap-1.5 rounded-full bg-base-50/[0.05] px-2 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-base-50/[0.07] outline-none focus-visible:ring-2 focus-visible:ring-signal/60"
+      className="flex h-8 items-center gap-1.5 rounded-md bg-base-50/[0.03] px-1.5 ring-1 ring-base-50/[0.08] outline-none focus-visible:ring-2 focus-visible:ring-signal/60"
     >
       <span className={glyph(!dark)}>
         <Sun />
         <span className={lamp(!dark)} />
       </span>
       <span
-        className="relative size-[26px] rounded-full bg-linear-to-b from-white to-base-800 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.18),0_4px_8px_-3px_rgb(0_0_0/0.3)] ring-1 ring-black/10 dark:from-base-600 dark:to-base-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.12)_inset,0_2px_6px_rgb(0_0_0/0.5)] dark:ring-white/5"
+        className="relative size-[22px] rounded-full bg-linear-to-b from-white to-base-800 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.18),0_4px_8px_-3px_rgb(0_0_0/0.3)] ring-1 ring-black/10 dark:from-base-600 dark:to-base-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.12)_inset,0_2px_6px_rgb(0_0_0/0.5)] dark:ring-white/5"
       >
         <motion.span
           initial={false}

@@ -2,11 +2,12 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowRight, Check, LogOut } from "lucide-react";
+import { ArrowRight, LogOut } from "lucide-react";
 import { signOut } from "@/app/actions";
+import { Crosses, PageHeader, PanelBar } from "@/components/site/frame";
 import { MembershipCard } from "@/components/site/membership-card";
 import { Preferences } from "@/components/site/preferences";
-import { btnSecondary } from "@/components/site/styles";
+import { btnSecondary, hairGrid } from "@/components/site/styles";
 import { getUser } from "@/lib/session";
 import { blocks, registry } from "@/registry/meta";
 
@@ -14,73 +15,78 @@ export const metadata: Metadata = { title: "Account · act.design" };
 
 const perks = ["Source for every instrument", "Every block, including AI", "New pieces as they ship", "Use in unlimited projects"];
 
-const panel =
-  "rounded-[28px] bg-base-950 shadow-[0_1px_0_white_inset,0_30px_60px_-44px_var(--color-shade)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.05)_inset]";
-
 async function AccountDetails() {
   const user = await getUser();
   if (!user) redirect("/login?next=/account");
 
+  const stats = [
+    ["Plan", user.plan],
+    ["Billing", "Paid once"],
+    ["Instruments", `${registry.length}/${registry.length}`],
+    ["Blocks", `${blocks.length}/${blocks.length}`],
+  ];
+
   return (
     <>
-      <div className="grid gap-12 lg:grid-cols-[1fr_auto] lg:items-end">
-        <div>
-          <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-base-50 sm:text-6xl">
-            Hello, <span className="font-serif font-normal tracking-[-0.02em] italic">{user.firstName}.</span>
-          </h1>
-          <p className="mt-4 text-base-400">{user.email}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/components" className={`${btnSecondary} group h-11 rounded-2xl px-5 text-sm`}>
+      <div className="grid gap-14 lg:grid-cols-[1fr_auto] lg:items-end">
+        <PageHeader
+          eyebrow="Account"
+          title={
+            <>
+              Hello, <span className="font-serif font-normal tracking-[-0.02em] italic">{user.firstName}.</span>
+            </>
+          }
+          body={user.email}
+        >
+          <div className="mt-8 flex flex-wrap gap-2">
+            <Link href="/components" className={`${btnSecondary} group h-10 rounded-md px-4 text-sm`}>
               Open the instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <form action={signOut}>
-              <button className="flex h-11 items-center gap-2 rounded-2xl px-4 text-sm text-base-500 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400">
+              <button className="flex h-10 items-center gap-2 rounded-md px-4 text-sm text-base-500 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400">
                 <LogOut className="size-4" /> Sign out
               </button>
             </form>
           </div>
-        </div>
-        <MembershipCard name={user.name} plan={user.plan} since={user.memberSince} />
+        </PageHeader>
+        <MembershipCard name={user.name} plan={user.plan} since={user.memberSince} unlocked={1} />
       </div>
 
-      <div className="mt-16 grid gap-4 lg:grid-cols-2">
-        <section className={`${panel} p-2`}>
-          <div className="h-full rounded-[22px] p-6 ring-1 ring-base-50/[0.07]">
-            <h2 className="text-sm font-medium text-base-100">Membership</h2>
-            <dl className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-base-50/[0.07] ring-1 ring-base-50/[0.07]">
-              {[
-                ["Plan", user.plan],
-                ["Billing", "Paid once, lifetime"],
-                ["Instruments", `${registry.length} unlocked`],
-                ["Blocks", `${blocks.length} unlocked`],
-              ].map(([label, value]) => (
-                <div key={label} className="bg-base-950 p-4">
-                  <dt className="text-xs text-base-500">{label}</dt>
-                  <dd className="mt-1.5 text-[15px] font-medium text-base-100">{value}</dd>
+      <div className="relative mt-20">
+        <Crosses />
+        <div className={`${hairGrid} lg:grid-cols-2`}>
+          <section className="bg-base-950">
+            <PanelBar label="Membership">
+              <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-signal uppercase">
+                <span className="size-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" /> Active
+              </span>
+            </PanelBar>
+            <dl className="grid grid-cols-2 border-b border-base-50/[0.06] sm:grid-cols-4">
+              {stats.map(([label, value], i) => (
+                <div key={label} className={`p-5 ${i > 0 ? "border-base-50/[0.06] sm:border-l" : ""} ${i % 2 ? "max-sm:border-l" : ""} ${i > 1 ? "max-sm:border-t" : ""}`}>
+                  <dt className="font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">{label}</dt>
+                  <dd className="mt-2 text-lg font-medium tracking-[-0.02em] text-base-50 tabular-nums">{value}</dd>
                 </div>
               ))}
             </dl>
-            <ul className="mt-6 space-y-3">
-              {perks.map((perk) => (
-                <li key={perk} className="flex items-center gap-3 text-sm text-base-300">
-                  <span className="grid size-5 place-items-center rounded-full bg-signal/10 text-signal ring-1 ring-signal/25">
-                    <Check className="size-3" />
-                  </span>
-                  {perk}
+            <ul className="divide-y divide-base-50/[0.06]">
+              {perks.map((perk, i) => (
+                <li key={perk} className="flex items-center gap-4 px-5 py-3.5 text-sm text-base-300">
+                  <span className="font-mono text-[10px] text-base-600 tabular-nums">0{i + 1}</span>
+                  <span className="flex-1">{perk}</span>
+                  <span className="size-1.5 rounded-full bg-signal" />
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
+          </section>
 
-        <section className={`${panel} p-2`}>
-          <div className="h-full rounded-[22px] px-6 pt-6 pb-1 ring-1 ring-base-50/[0.07]">
-            <h2 className="text-sm font-medium text-base-100">Preferences</h2>
-            <div className="mt-2">
+          <section className="bg-base-950">
+            <PanelBar label="Preferences" />
+            <div className="px-5">
               <Preferences />
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     </>
   );
@@ -88,8 +94,8 @@ async function AccountDetails() {
 
 export default function AccountPage() {
   return (
-    <main className="mx-auto w-full max-w-5xl flex-1 px-6 pt-36 pb-24">
-      <Suspense fallback={<div className="h-96 animate-pulse rounded-[28px] bg-base-950" />}>
+    <main className="mx-auto w-full max-w-6xl flex-1 px-6 pt-36 pb-24">
+      <Suspense fallback={<div className="h-96 animate-pulse rounded-lg bg-base-950" />}>
         <AccountDetails />
       </Suspense>
     </main>

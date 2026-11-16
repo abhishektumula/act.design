@@ -12,6 +12,7 @@ import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
 import { accents, setAccent, useAccent, type Accent } from "./accent";
 import { btnPrimary } from "./styles";
+import { Crosses, Eyebrow } from "./frame";
 
 
 
@@ -20,7 +21,7 @@ const initial = { weight: 560, tracking: -4.5, serif: true, outline: false, size
 function Module({ name, slug, children, className = "" }: { name: string; slug: string; children: ReactNode; className?: string }) {
   return (
     <div className={`flex flex-col gap-5 p-6 ${className}`}>
-      <Link href={`/components/${slug}`} className="group flex w-fit items-center gap-1.5 text-[13px] font-medium text-base-500 transition-colors hover:text-base-100">
+      <Link href={`/components/${slug}`} className="group flex w-fit items-center gap-1.5 font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase transition-colors hover:text-base-100">
         {name}
         <ArrowRight className="size-3 -translate-x-1 opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
       </Link>
@@ -45,6 +46,7 @@ export function Hero() {
     <section className="relative overflow-hidden pt-16">
       <div className="mx-auto max-w-[1400px] px-6 pt-14 sm:pt-20">
         {/* Headline, wired to the panel below */}
+        <Eyebrow className="mb-8">Instruments for the interface</Eyebrow>
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
           <div className="lg:col-span-8">
             <h1
@@ -80,13 +82,15 @@ export function Hero() {
         </div>
 
         {/* The panel */}
-        <div className="relative mt-14 mb-20 rounded-xl bg-base-950 p-2 shadow-[0_1px_0_white_inset,0_40px_80px_-40px_color-mix(in_oklab,var(--color-shade)_80%,transparent)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset,0_40px_80px_-30px_black]">
-          {["top-3.5 left-3.5", "top-3.5 right-3.5", "bottom-3.5 left-3.5", "bottom-3.5 right-3.5"].map((p) => (
-            <span key={p} className={`absolute size-2 rounded-full bg-linear-to-b from-base-800 to-base-700 ring-1 ring-black/10 ${p}`}>
-              <span className="absolute inset-x-0.5 top-1/2 h-px -translate-y-1/2 rotate-45 bg-black/20" />
+        <div className="relative mt-14 mb-20">
+          <Crosses />
+          <div className="flex h-10 items-center justify-between border-x border-t border-base-50/[0.08] bg-base-950 px-4 font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase">
+            <span>Control panel</span>
+            <span className="flex items-center gap-2">
+              <span className="size-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" /> Live<span className="max-sm:hidden"> · wired to headline</span>
             </span>
-          ))}
-          <div className="grid divide-y divide-base-50/[0.07] rounded-lg ring-1 ring-base-50/[0.07] md:grid-cols-2 md:divide-x lg:grid-cols-[1.1fr_1.5fr_1fr_1fr] lg:divide-y-0">
+          </div>
+          <div className="grid divide-y divide-base-50/[0.08] bg-base-950 ring-1 ring-base-50/[0.08] md:grid-cols-2 md:divide-x lg:grid-cols-[1.1fr_1.5fr_1fr_1fr] lg:divide-y-0">
             <Module name="Dial" slug="dial" className="md:row-span-2 lg:row-span-1">
               <Dial label="Weight" min={100} max={900} step={10} value={s.weight} onValueChange={set("weight")} defaultValue={initial.weight} />
             </Module>

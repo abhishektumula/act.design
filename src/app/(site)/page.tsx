@@ -3,6 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { BlockCard } from "@/components/site/block-card";
+import { Crosses, Eyebrow } from "@/components/site/frame";
 import { Features } from "@/components/site/features";
 import { PreviewTile } from "@/components/site/preview-tile";
 import { btnSecondary } from "@/components/site/styles";
@@ -11,9 +12,7 @@ import { blocks, getBlock, registry } from "@/registry/meta";
 function SectionHeading({ eyebrow, title, body }: { eyebrow: string; title: React.ReactNode; body: string }) {
   return (
     <div className="max-w-2xl">
-      <p className="mb-6 font-mono text-[11px] tracking-[0.18em] text-base-500 uppercase">
-        <span className="text-base-700">[</span> {eyebrow} <span className="text-base-700">]</span>
-      </p>
+      <Eyebrow className="mb-6">{eyebrow}</Eyebrow>
       <h2 className="text-4xl font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">{title}</h2>
       <p className="mt-5 text-lg leading-8 text-pretty text-base-400">{body}</p>
     </div>
@@ -103,7 +102,10 @@ export default function Home() {
 
         {/* Closing */}
         <section className="mx-auto max-w-[1400px] px-6 pb-28">
-          <div className="relative overflow-hidden rounded-lg bg-base-50 px-8 py-24 text-center sm:py-32">
+          <div className="relative">
+          <Crosses />
+          <div className="relative overflow-hidden bg-base-50 px-8 py-24 text-center sm:py-32">
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--base-900)_1px,transparent_1px),linear-gradient(to_bottom,var(--base-900)_1px,transparent_1px)] bg-[size:64px_64px] opacity-[0.07] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
             <div className="grain pointer-events-none absolute inset-0 opacity-[0.08] mix-blend-overlay" />
             <div className="pointer-events-none absolute -bottom-40 left-1/2 size-[520px] -translate-x-1/2 rounded-full bg-signal/40 blur-[120px]" />
             <div className="relative">
@@ -123,6 +125,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
+          </div>
           </div>
         </section>
       </main>

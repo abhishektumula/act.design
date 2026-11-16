@@ -13,12 +13,12 @@ export const copyButtonVariants = cva(
       variant: {
         ghost: "hover:bg-base-50/5",
         outline: "ring-1 ring-base-50/10 hover:bg-base-50/5",
-        raised: "bg-linear-to-b from-base-800 to-base-900 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/10 shadow-md shadow-shade/40",
+        raised: "bg-base-900 ring-1 ring-base-50/10 hover:ring-base-50/20",
       },
       size: {
-        sm: "size-7 rounded-md [&_svg]:size-3.5",
-        md: "size-8 rounded-lg [&_svg]:size-4",
-        lg: "size-10 rounded-xl [&_svg]:size-4",
+        sm: "size-7 rounded-[4px] [&_svg]:size-3.5",
+        md: "size-8 rounded-md [&_svg]:size-3.5",
+        lg: "size-10 rounded-md [&_svg]:size-4",
       },
     },
     defaultVariants: { variant: "ghost", size: "md" },
@@ -68,7 +68,7 @@ export function CopyButton({
 export default function Demo() {
   return (
     <div className="flex w-full max-w-sm flex-col items-center gap-5">
-      <div className="flex w-full items-center gap-3 rounded-xl bg-base-900 py-1.5 pr-1.5 pl-4 shadow-lg shadow-shade/40 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5">
+      <div className="flex w-full items-center gap-3 rounded-md bg-base-950 py-1 pr-1 pl-4 ring-1 ring-base-50/10">
         <span className="text-base-600 select-none">$</span>
         <code className="flex-1 truncate font-mono text-sm text-base-200">npm i motion lucide-react</code>
         <CopyButton value="npm i motion lucide-react" />

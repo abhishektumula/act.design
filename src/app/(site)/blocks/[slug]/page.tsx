@@ -2,10 +2,9 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight } from "lucide-react";
 import { BlockView } from "@/components/site/block-view";
 import { CodePanel, CodeSkeleton } from "@/components/site/code-panel";
-import { CopyButton } from "@/components/site/kit/copy-button";
+import { CommandLine, DocHeader, PrevNext, Steps } from "@/components/site/doc-parts";
 import sources from "@/registry/sources.json";
 import { blocks, getBlock, getBlockNeighbours, getItem, installCommand } from "@/registry/meta";
 
@@ -18,7 +17,7 @@ export async function generateMetadata({ params }: PageProps<"/blocks/[slug]">):
   return { title: block ? `${block.name} block · act.design` : "Not found" };
 }
 
-const code = "rounded bg-base-900 px-1.5 py-0.5 font-mono text-[13px] text-base-200";
+const code = "rounded-[4px] bg-base-50/[0.06] px-1.5 py-0.5 font-mono text-[12px] text-base-200";
 
 async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "params">) {
   const { slug } = await params;
@@ -31,24 +30,15 @@ async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "p
 
   return (
     <main className="mx-auto w-full max-w-[1400px] px-6 pt-28 pb-24">
-      <nav className="flex items-center gap-2 text-sm text-base-500">
-        <Link href="/blocks" className="transition-colors hover:text-base-200">
-          Blocks
-        </Link>
-        <span className="text-base-700">/</span>
-        <Link href="/blocks" className="transition-colors hover:text-base-200">
-          {block.category}
-        </Link>
-      </nav>
-      <div className="mt-5 flex items-center gap-3">
-        <h1 className="text-5xl font-semibold tracking-[-0.045em] text-base-50">{block.name}</h1>
-        {block.isNew && (
-          <span className="rounded-full bg-signal/10 px-2.5 py-0.5 text-xs font-medium text-signal ring-1 ring-signal/25">
-            New
-          </span>
-        )}
-      </div>
-      <p className="mt-4 max-w-2xl text-lg leading-8 text-base-400">{block.description}</p>
+      <DocHeader
+        crumbs={[
+          { href: "/blocks", label: "Blocks" },
+          { href: "/blocks", label: block.category },
+        ]}
+        title={block.name}
+        isNew={block.isNew}
+        body={block.description}
+      />
 
       <div className="mt-10">
         <BlockView
@@ -61,73 +51,50 @@ async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "p
         />
       </div>
 
-      <section className="mt-16 max-w-3xl">
-        <h2 className="font-serif text-3xl tracking-[-0.01em] text-base-50 italic">Installation</h2>
-        <ol className="mt-6 space-y-6 border-l border-base-50/10 pl-6">
-          <li>
-            <p className="text-sm text-base-400">
+      <div className="max-w-3xl">
+        <Steps
+          steps={[
+            <>
               One-time setup: add the <code className={code}>cn</code> helper and theme tokens.{" "}
               <Link href="/setup" className="text-base-100 underline decoration-base-700 underline-offset-4 hover:decoration-base-400">
                 See setup
               </Link>
               .
-            </p>
-          </li>
-          <li>
-            <p className="text-sm text-base-400">Install the dependencies.</p>
-            <div className="mt-3 flex items-center gap-3 rounded-xl bg-base-950 py-1.5 pr-1.5 pl-4 ring-1 ring-base-50/10">
-              <code className="flex-1 font-mono text-sm text-base-200">{install}</code>
-              <CopyButton value={install} />
-            </div>
-          </li>
-          {uses.length > 0 && (
-            <li>
-              <p className="text-sm text-base-400">Add the components this block is built from:</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {uses.map((u) => (
-                  <Link
-                    key={u.slug}
-                    href={`/components/${u.slug}`}
-                    className="rounded-lg bg-base-950 px-3 py-1.5 font-mono text-[13px] text-base-300 ring-1 ring-base-50/10 transition-colors hover:text-base-50 hover:ring-base-50/20"
-                  >
-                    components/ui/{u.slug}.tsx
-                  </Link>
-                ))}
-              </div>
-            </li>
-          )}
-          <li>
-            <p className="text-sm text-base-400">
+            </>,
+            <>
+              Install the dependencies.
+              <CommandLine value={install} />
+            </>,
+            ...(uses.length > 0
+              ? [
+                  <>
+                    Add the components this block is built from:
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {uses.map((u) => (
+                        <Link
+                          key={u.slug}
+                          href={`/components/${u.slug}`}
+                          className="rounded-[4px] bg-base-950 px-2.5 py-1 font-mono text-[12px] text-base-300 ring-1 ring-base-50/[0.08] transition-colors hover:text-base-50 hover:ring-base-50/20"
+                        >
+                          components/ui/{u.slug}.tsx
+                        </Link>
+                      ))}
+                    </div>
+                  </>,
+                ]
+              : []),
+            <>
               Copy the code into <code className={code}>components/blocks/{slug}.tsx</code> and render the named export. All the copy
               lives in that one file, ready to rewrite.
-            </p>
-          </li>
-        </ol>
-      </section>
+            </>,
+          ]}
+        />
 
-      <nav className="mt-20 grid max-w-3xl grid-cols-2 gap-4 border-t border-base-50/5 pt-8">
-        {prev ? (
-          <Link href={`/blocks/${prev.slug}`} className="group rounded-2xl p-4 ring-1 ring-base-50/5 transition-colors hover:bg-base-50/[0.02] hover:ring-base-50/10">
-            <span className="flex items-center gap-1.5 text-xs text-base-500">
-              <ArrowLeft className="size-3 transition-transform group-hover:-translate-x-0.5" /> Previous
-            </span>
-            <span className="mt-1 block text-sm text-base-200">{prev.name}</span>
-          </Link>
-        ) : (
-          <span />
-        )}
-        {next && (
-          <Link
-            href={`/blocks/${next.slug}`}
-            className="group rounded-2xl p-4 text-right ring-1 ring-base-50/5 transition-colors hover:bg-base-50/[0.02] hover:ring-base-50/10"
-          >
-            <span className="flex items-center justify-end gap-1.5 text-xs text-base-500">
-              Next <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
-            </span>
-            <span className="mt-1 block text-sm text-base-200">{next.name}</span>
-          </Link>
-        )}
-      </nav>
+        <PrevNext
+          prev={prev && { href: `/blocks/${prev.slug}`, name: prev.name }}
+          next={next && { href: `/blocks/${next.slug}`, name: next.name }}
+        />
+      </div>
     </main>
   );
 }
@@ -138,10 +105,10 @@ export default function BlockPage({ params }: PageProps<"/blocks/[slug]">) {
     <Suspense
       fallback={
         <main className="mx-auto w-full max-w-[1400px] animate-pulse px-6 pt-28 pb-24">
-          <div className="h-4 w-40 rounded bg-base-900" />
-          <div className="mt-6 h-10 w-64 rounded-lg bg-base-900" />
-          <div className="mt-5 h-5 w-full max-w-xl rounded bg-base-900" />
-          <div className="mt-12 h-[36rem] rounded-2xl bg-base-950 ring-1 ring-base-50/10" />
+          <div className="h-3 w-40 rounded-[2px] bg-base-50/[0.06]" />
+          <div className="mt-6 h-10 w-64 rounded-[4px] bg-base-50/[0.06]" />
+          <div className="mt-5 h-4 w-full max-w-xl rounded-[2px] bg-base-50/[0.06]" />
+          <div className="mt-12 h-[36rem] rounded-lg bg-base-950 ring-1 ring-base-50/[0.08]" />
         </main>
       }
     >

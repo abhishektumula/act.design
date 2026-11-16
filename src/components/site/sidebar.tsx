@@ -5,31 +5,37 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { blocks, categories, registry } from "@/registry/meta";
 
+const head = "px-3 pb-3 font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase";
+
 export function Sidebar() {
   const pathname = usePathname();
 
+  const top = [
+    { href: "/components", label: "All instruments", count: registry.length },
+    { href: "/blocks", label: "Blocks", count: blocks.length },
+  ];
+
   return (
-    <nav className="scrollbar-thin sticky top-16 hidden h-[calc(100svh-4rem)] w-60 shrink-0 overflow-y-auto py-10 pr-4 lg:block">
-      <Link
-        href="/components"
-        className={`mb-8 block rounded-lg px-3 py-1.5 text-sm transition-colors ${
-          pathname === "/components" ? "text-base-50" : "text-base-400 hover:text-base-100"
-        }`}
-      >
-        All instruments
-        <span className="ml-2 text-base-600">{registry.length}</span>
-      </Link>
-      <Link
-        href="/blocks"
-        className="-mt-7 mb-8 block rounded-lg px-3 py-1.5 text-sm text-base-400 transition-colors hover:text-base-100"
-      >
-        Blocks
-        <span className="ml-2 text-base-600">{blocks.length}</span>
-      </Link>
+    <nav className="scrollbar-thin sticky top-14 hidden h-[calc(100svh-3.5rem)] w-56 shrink-0 overflow-y-auto py-10 pr-4 lg:block">
+      <ul className="mb-9">
+        {top.map((l) => (
+          <li key={l.href}>
+            <Link
+              href={l.href}
+              className={`flex items-center justify-between px-3 py-1.5 text-[13px] transition-colors ${
+                pathname === l.href ? "text-base-50" : "text-base-400 hover:text-base-100"
+              }`}
+            >
+              {l.label}
+              <span className="font-mono text-[10px] text-base-600 tabular-nums">{String(l.count).padStart(2, "0")}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
       {categories.map((cat) => (
         <div key={cat} className="mb-8">
-          <p className="px-3 pb-2 text-xs font-medium text-base-500">{cat}</p>
-          <ul>
+          <p className={head}>{cat}</p>
+          <ul className="ml-3 border-l border-base-50/[0.08]">
             {registry
               .filter((r) => r.category === cat)
               .map((r) => {
@@ -38,19 +44,19 @@ export function Sidebar() {
                   <li key={r.slug}>
                     <Link
                       href={`/components/${r.slug}`}
-                      className={`relative flex items-center justify-between rounded-lg px-3 py-1.5 text-sm transition-colors ${
-                        active ? "text-base-50" : "text-base-400 hover:text-base-100"
+                      className={`relative -ml-px flex items-center justify-between border-l border-transparent py-1.5 pr-2 pl-4 text-[13px] transition-colors ${
+                        active ? "text-base-50" : "text-base-400 hover:border-base-50/30 hover:text-base-100"
                       }`}
                     >
                       {active && (
                         <motion.span
                           layoutId="sidebar-active"
                           transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-                          className="absolute inset-0 rounded-lg bg-base-950 shadow-[0_1px_0_white_inset,0_1px_3px_rgb(0_0_0/0.08)] ring-1 ring-base-50/10 dark:bg-base-900 dark:shadow-none"
+                          className="absolute inset-y-0 -left-px w-px bg-signal"
                         />
                       )}
-                      <span className="relative">{r.name}</span>
-                      {r.isNew && <span className="relative size-1.5 rounded-full bg-signal" aria-label="New" />}
+                      <span>{r.name}</span>
+                      {r.isNew && <span className="font-mono text-[9px] tracking-wider text-signal uppercase">New</span>}
                     </Link>
                   </li>
                 );

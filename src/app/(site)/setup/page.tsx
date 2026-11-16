@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/site/footer";
 import { CopyButton } from "@/components/site/kit/copy-button";
+import { PageHeader, PanelBar } from "@/components/site/frame";
 
 export const metadata: Metadata = { title: "Setup · act.design" };
 
@@ -104,30 +105,34 @@ export function cn(...inputs: ClassValue[]) {
 export default function SetupPage() {
   return (
     <>
-      <main className="mx-auto w-full max-w-3xl px-6 pt-36 pb-24">
-        <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-base-50 sm:text-6xl">
-          Five minutes, <span className="font-serif font-normal tracking-[-0.02em] italic">once.</span>
-        </h1>
-        <p className="mt-5 text-lg leading-8 text-base-400">
-          Do this once per project. After that every component and block is a straight copy and paste. Assumes React 19 and
-          Tailwind CSS v4.
-        </p>
+      <main className="mx-auto w-full max-w-4xl px-6 pt-36 pb-28">
+        <PageHeader
+          eyebrow={`Setup · ${steps.length} steps`}
+          title={
+            <>
+              Five minutes, <span className="font-serif font-normal tracking-[-0.02em] italic">once.</span>
+            </>
+          }
+          body="Do this once per project. After that every component and block is a straight copy and paste. Assumes React 19 and Tailwind CSS v4."
+        />
 
-        <ol className="mt-14 space-y-14">
+        <ol className="relative mt-16">
           {steps.map((s, i) => (
-            <li key={s.title} className="grid gap-5 sm:grid-cols-[3rem_1fr]">
-              <span className="grid size-8 place-items-center rounded-full bg-base-950 text-sm font-medium text-base-200 tabular-nums shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-base-50/10 dark:bg-base-900">
-                  {i + 1}
+            <li key={s.title} className="relative grid gap-5 pb-14 last:pb-0 sm:grid-cols-[4rem_1fr]">
+              {/* The rail */}
+              {i < steps.length - 1 && <span aria-hidden className="absolute top-8 bottom-0 left-[11px] w-px bg-base-50/[0.08] max-sm:hidden" />}
+              <span className="relative grid size-6 place-items-center rounded-[4px] bg-canvas font-mono text-[11px] text-signal tabular-nums ring-1 ring-base-50/15">
+                {i + 1}
               </span>
               <div className="min-w-0">
-                <h2 className="font-serif text-2xl tracking-[-0.01em] text-base-50 italic">{s.title}</h2>
-                <p className="mt-1.5 leading-7 text-base-500">{s.body}</p>
-                <div className="mt-5 overflow-hidden rounded-[22px] bg-base-950 shadow-[0_1px_0_white_inset,0_24px_48px_-36px_var(--color-shade)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.05)_inset]">
-                  <div className="flex h-11 items-center border-b border-base-50/5 pr-2 pl-4">
-                    <span className="font-mono text-[13px] text-base-400">{s.file}</span>
-                    <CopyButton value={s.code} className="ml-auto" />
-                  </div>
-                  <pre className="scrollbar-thin max-h-[28rem] overflow-auto p-4 font-mono text-[13px] leading-relaxed text-base-300">
+                <p className="font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase">Step 0{i + 1}</p>
+                <h2 className="mt-2 text-2xl font-medium tracking-[-0.02em] text-base-50">{s.title}</h2>
+                <p className="mt-2 max-w-2xl leading-7 text-pretty text-base-500">{s.body}</p>
+                <div className="mt-5 overflow-hidden rounded-lg bg-base-950 ring-1 ring-base-50/[0.08]">
+                  <PanelBar label={<span className="tracking-normal normal-case">{s.file}</span>} className="pr-2">
+                    <CopyButton value={s.code} />
+                  </PanelBar>
+                  <pre className="scrollbar-thin max-h-[28rem] overflow-auto p-4 font-mono text-[12.5px] leading-relaxed text-base-300">
                     {s.code}
                   </pre>
                 </div>
