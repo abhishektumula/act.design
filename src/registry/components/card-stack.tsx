@@ -89,10 +89,13 @@ function Card({
 export function CardStack<T extends { id: string }>({
   items,
   renderItem,
+  aspectRatio = "3 / 4",
   className,
 }: {
   items: T[];
   renderItem: (item: T) => ReactNode;
+  /** The cards' shape, as a CSS aspect-ratio. */
+  aspectRatio?: string;
   className?: string;
 }) {
   const [order, setOrder] = useState(() => items.map((i) => i.id));
@@ -134,7 +137,7 @@ export function CardStack<T extends { id: string }>({
       aria-roledescription="carousel"
       className={cn("flex w-full max-w-[18rem] flex-col items-center rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-signal/50 focus-visible:ring-offset-8 focus-visible:ring-offset-base-950", className)}
     >
-      <div className="relative mt-12 aspect-[3/4] w-full">
+      <div className="relative mt-12 w-full" style={{ aspectRatio }}>
         {order
           .map((id, depth) => ({ id, depth }))
           .reverse()

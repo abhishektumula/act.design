@@ -38,12 +38,15 @@ function check(raw: string): Result {
 export function CtaCheck({ className }: { className?: string }) {
   const [url, setUrl] = useState("");
   const [busy, setBusy] = useState(false);
-  const [result, setResult] = useState<Result | null>(null);
+  // Opens on a finished check, so the block shows what it does before anyone types.
+  const [result, setResult] = useState<Result | null>(() => check("northwind.app"));
+  const [sample, setSample] = useState(true);
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (busy || !/\w+\.\w+/.test(url)) return;
     setBusy(true);
+    setSample(false);
     setResult(null);
     setTimeout(() => {
       setResult(check(url));
@@ -79,8 +82,10 @@ export function CtaCheck({ className }: { className?: string }) {
           </Button>
         </form>
 
-        <div className="mx-auto mt-6 max-w-md">
-          <AnimatePresence mode="wait">
+        <p className="mt-4 text-sm text-base-500">Free for 10 monitors. No card needed.</p>
+
+        <div className="mx-auto mt-10 max-w-md">
+          <AnimatePresence mode="wait" initial={false}>
             {result && (
               <motion.div
                 key={result.domain}
@@ -95,7 +100,7 @@ export function CtaCheck({ className }: { className?: string }) {
                     <span className="size-2 rounded-full bg-emerald-500 shadow-[0_0_8px_var(--color-emerald-500)]" />
                     {result.domain} is up
                   </span>
-                  <span className="text-xs text-base-500">200 OK</span>
+                  <span className="text-xs text-base-500">{sample ? "Example check" : "200 OK"}</span>
                 </div>
                 <ul className="divide-y divide-base-50/[0.06] border-y border-base-50/[0.06]">
                   {result.regions.map((r, i) => (
@@ -122,8 +127,11 @@ export function CtaCheck({ className }: { className?: string }) {
                 </ul>
                 <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5">
                   <span className="flex items-center gap-2 text-xs text-base-500">
-                    <Lock className="size-3.5" /> Certificate expires in{" "}
-                    <span className={cn("font-medium", result.tlsDays < 30 ? "text-signal" : "text-base-200")}>{result.tlsDays} days</span>
+                    <Lock className="size-3.5" />
+                    <span>
+                      Certificate expires in{" "}
+                      <span className={cn("font-medium", result.tlsDays < 30 ? "text-signal" : "text-base-200")}>{result.tlsDays} days</span>
+                    </span>
                   </span>
                   <Button size="sm" tone="ink">
                     Monitor it every 30s <ArrowRight />
@@ -132,7 +140,6 @@ export function CtaCheck({ className }: { className?: string }) {
               </motion.div>
             )}
           </AnimatePresence>
-          {!result && <p className="text-sm text-base-500">Free for 10 monitors. No card needed.</p>}
         </div>
       </div>
     </section>
