@@ -26,7 +26,7 @@ export const metadata: Metadata = {
 
 // Runs before paint so there is no flash of the wrong theme or accent. Also keeps
 // block iframes in sync: they hear the `storage` event when the parent changes either.
-const themeScript = `(function(){var d=document.documentElement,A={cobalt:'oklch(0.56 0.2 262)',moss:'oklch(0.6 0.13 138)',violet:'oklch(0.58 0.2 300)'};function a(){var t=null,c=null;try{t=localStorage.getItem('theme');c=localStorage.getItem('accent')}catch(e){}d.classList.toggle('dark',t==='dark');if(A[c])d.style.setProperty('--signal',A[c]);else d.style.removeProperty('--signal')}a();addEventListener('storage',function(e){if(e.key==='theme'||e.key==='accent')a()})})()`;
+const themeScript = `(function(){var d=document.documentElement,A={cobalt:'var(--color-blue-600)',moss:'var(--color-emerald-600)',violet:'var(--color-violet-500)'};function a(){var t=null,c=null;try{t=localStorage.getItem('theme');c=localStorage.getItem('accent')}catch(e){}d.classList.toggle('dark',t==='dark');if(A[c])d.style.setProperty('--signal',A[c]);else d.style.removeProperty('--signal')}a();addEventListener('storage',function(e){if(e.key==='theme'||e.key==='accent')a()})})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (

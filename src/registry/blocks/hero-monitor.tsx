@@ -77,7 +77,7 @@ export function HeroMonitor({ className }: { className?: string }) {
           <div className="overflow-hidden rounded-[14px] bg-base-950 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_8%,transparent),0_30px_60px_-30px_color-mix(in_oklab,var(--color-shade)_55%,transparent)] lg:w-[calc(100%+18rem)] dark:bg-base-900">
             {/* Chrome */}
             <div className="flex h-[38px] items-center gap-[6px] border-b border-base-50/[0.07] px-[14px]">
-              {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+              {["var(--color-red-400)", "var(--color-amber-400)", "var(--color-green-500)"].map((c) => (
                 <span key={c} className="size-[9px] rounded-full" style={{ background: c }} />
               ))}
               <span className="ml-3 text-[13px] font-medium text-base-100">Monitors</span>

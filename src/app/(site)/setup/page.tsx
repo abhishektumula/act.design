@@ -27,14 +27,15 @@ export function cn(...inputs: ClassValue[]) {
     title: "Add the theme tokens",
     body: "base-* is a warm graphite scale, flipped for light mode, and signal is the single accent. Components only use these and Tailwind's own palette, so dark and light come for free. Toggle with a .dark class on <html>.",
     file: "app/globals.css",
-    code: `@import "tailwindcss";
+    code: `@import "tailwindcss" theme(static);
 
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
  * Theme tokens — copy this block into your own globals.css.
- * \`base-*\` is a warm graphite scale, flipped for light mode:
- * base-950 is the darkest surface in dark mode and the lightest in light mode.
+ * Every token points at a stock Tailwind color. \`base-*\` is the neutral scale,
+ * flipped for light mode: base-950 is the darkest surface in dark mode and the
+ * lightest in light mode. \`canvas\` is white in light mode and black in dark.
  * \`signal\` is the single accent: lit ticks, live indicators, primary keys.
  */
 @theme inline {
@@ -56,38 +57,38 @@ export function cn(...inputs: ClassValue[]) {
 
 :root {
   color-scheme: light;
-  --base-50: oklch(0.2 0.008 70);
-  --base-100: oklch(0.26 0.008 70);
-  --base-200: oklch(0.33 0.008 70);
-  --base-300: oklch(0.42 0.008 70);
-  --base-400: oklch(0.51 0.008 70);
-  --base-500: oklch(0.6 0.008 70);
-  --base-600: oklch(0.69 0.008 75);
-  --base-700: oklch(0.8 0.008 75);
-  --base-800: oklch(0.875 0.007 80);
-  --base-900: oklch(0.93 0.006 80);
-  --base-950: oklch(0.985 0.003 85);
-  --canvas: oklch(0.962 0.006 85);
-  --shade: oklch(0.42 0.03 60);
-  --signal: oklch(0.65 0.205 38);
+  --base-50: var(--color-neutral-950);
+  --base-100: var(--color-neutral-900);
+  --base-200: var(--color-neutral-800);
+  --base-300: var(--color-neutral-700);
+  --base-400: var(--color-neutral-600);
+  --base-500: var(--color-neutral-500);
+  --base-600: var(--color-neutral-400);
+  --base-700: var(--color-neutral-300);
+  --base-800: var(--color-neutral-200);
+  --base-900: var(--color-neutral-100);
+  --base-950: var(--color-neutral-50);
+  --canvas: var(--color-white);
+  --shade: var(--color-neutral-600);
+  --signal: var(--color-orange-600);
 }
 
 .dark {
   color-scheme: dark;
-  --base-50: oklch(0.97 0.004 85);
-  --base-100: oklch(0.93 0.004 85);
-  --base-200: oklch(0.87 0.005 80);
-  --base-300: oklch(0.78 0.006 75);
-  --base-400: oklch(0.67 0.007 75);
-  --base-500: oklch(0.55 0.007 70);
-  --base-600: oklch(0.44 0.007 70);
-  --base-700: oklch(0.35 0.007 70);
-  --base-800: oklch(0.28 0.006 70);
-  --base-900: oklch(0.225 0.005 70);
-  --base-950: oklch(0.185 0.004 70);
-  --canvas: oklch(0.155 0.004 70);
-  --shade: oklch(0.06 0.004 70);
-  --signal: oklch(0.71 0.19 42);
+  --base-50: var(--color-neutral-50);
+  --base-100: var(--color-neutral-100);
+  --base-200: var(--color-neutral-200);
+  --base-300: var(--color-neutral-300);
+  --base-400: var(--color-neutral-400);
+  --base-500: var(--color-neutral-500);
+  --base-600: var(--color-neutral-600);
+  --base-700: var(--color-neutral-700);
+  --base-800: var(--color-neutral-800);
+  --base-900: var(--color-neutral-900);
+  --base-950: var(--color-neutral-950);
+  --canvas: var(--color-black);
+  --shade: var(--color-black);
+  --signal: var(--color-orange-500);
 }`,
   },
   {

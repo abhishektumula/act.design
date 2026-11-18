@@ -4,10 +4,10 @@ import { useSyncExternalStore } from "react";
 
 /** Accent presets. `signal` means "use the theme's own --signal". */
 export const accents = {
-  signal: "oklch(0.65 0.205 38)",
-  cobalt: "oklch(0.56 0.2 262)",
-  moss: "oklch(0.6 0.13 138)",
-  violet: "oklch(0.58 0.2 300)",
+  signal: "var(--color-orange-600)",
+  cobalt: "var(--color-blue-600)",
+  moss: "var(--color-emerald-600)",
+  violet: "var(--color-violet-500)",
 } as const;
 
 export type Accent = keyof typeof accents;

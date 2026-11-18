@@ -10,10 +10,10 @@ export type OrbVariant = "liquid" | "halo";
 
 /** Three CSS colours each: body, highlight, depth. `accent` follows your --signal token. */
 export const orbPalettes = {
-  accent: ["var(--signal)", "color-mix(in oklab, var(--signal) 45%, #ffe9c4)", "color-mix(in oklab, var(--signal) 62%, #5b1648)"],
-  ocean: ["#3b7cf6", "#9fe3ff", "#3a2fb8"],
-  moss: ["#5d9c4c", "#e3efa6", "#17594a"],
-  ink: ["#8a8378", "#f1ece2", "#24211d"],
+  accent: ["var(--signal)", "color-mix(in oklab, var(--signal) 45%, var(--color-orange-100))", "color-mix(in oklab, var(--signal) 62%, var(--color-fuchsia-950))"],
+  ocean: ["var(--color-blue-500)", "var(--color-sky-200)", "var(--color-indigo-800)"],
+  moss: ["var(--color-emerald-600)", "var(--color-lime-200)", "var(--color-teal-800)"],
+  ink: ["var(--color-neutral-500)", "var(--color-orange-100)", "var(--color-neutral-800)"],
 } satisfies Record<string, [string, string, string]>;
 
 export type OrbPalette = keyof typeof orbPalettes;

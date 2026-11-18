@@ -36,7 +36,7 @@ function Timeline() {
     <div ref={ref} className="-mb-7 sm:-mb-8">
       <div className="overflow-hidden rounded-t-[12px] bg-canvas shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_8%,transparent)] dark:bg-base-950">
         <div className="flex h-[38px] items-center gap-[6px] border-b border-base-50/[0.07] px-[14px]">
-          {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
+          {["var(--color-red-400)", "var(--color-amber-400)", "var(--color-green-500)"].map((c) => (
             <span key={c} className="size-[9px] rounded-full" style={{ background: c }} />
           ))}
           <span className="ml-3 truncate text-[13px] font-medium text-base-100">checkout-api is down</span>

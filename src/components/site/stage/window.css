@@ -66,11 +66,11 @@
     box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
   }
 
-  .ss-window__dot:nth-child(1) { background: #ff5f57; }
+  .ss-window__dot:nth-child(1) { background: var(--color-red-400); }
 
-  .ss-window__dot:nth-child(2) { background: #febc2e; }
+  .ss-window__dot:nth-child(2) { background: var(--color-amber-400); }
 
-  .ss-window__dot:nth-child(3) { background: #28c840; }
+  .ss-window__dot:nth-child(3) { background: var(--color-green-500); }
 
   .ss-window__url {
     flex: 1;
@@ -117,7 +117,7 @@
 
   /* lights="grey": quiet lights for any chrome */
   .ss-window[data-lights="grey"] .ss-window__dot {
-    background: rgba(186, 200, 218, 0.5);
+    background: color-mix(in oklab, var(--color-neutral-300) 50%, transparent);
     box-shadow: none;
   }
 
@@ -133,13 +133,13 @@
      window, and the page a white card inset in the frame. Nested radii: the
      frame's 12 is the card's 6 plus the 6 inset */
   .ss-window[data-chrome="glass"] {
-    background: rgba(248, 250, 253, 0.45);
+    background: color-mix(in oklab, var(--color-neutral-50) 45%, transparent);
     -webkit-backdrop-filter: blur(12px);
     backdrop-filter: blur(12px);
     border-radius: 12px;
     box-shadow:
-      0 0 0 1px rgba(229, 237, 245, 0.5),
-      0 15px 35px rgba(23, 23, 23, 0.08);
+      0 0 0 1px color-mix(in oklab, var(--color-sky-100) 50%, transparent),
+      0 15px 35px color-mix(in oklab, var(--color-neutral-900) 8%, transparent);
   }
 
   .ss-window[data-chrome="glass"] > .ss-window__bar {
@@ -172,14 +172,14 @@
     padding: 0 8px;
     background: rgba(255, 255, 255, 0.38);
     border-radius: 999px;
-    box-shadow: inset 0 0 0 1px rgba(229, 237, 245, 0.5);
-    color: #50617a;
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-sky-100) 50%, transparent);
+    color: var(--color-cyan-800);
     font-size: 10px;
   }
 
   .ss-window__lock {
     flex-shrink: 0;
-    color: #667691;
+    color: var(--color-neutral-500);
   }
 
   .ss-window__url-text {
@@ -199,19 +199,19 @@
   .ss-window[data-chrome="glass"] > .ss-window__body {
     margin: 0 6px 6px;
     overflow: hidden;
-    background: #fff;
+    background: var(--color-white);
     border-radius: 6px;
-    box-shadow: 0 3px 6px rgba(23, 23, 23, 0.06);
+    box-shadow: 0 3px 6px color-mix(in oklab, var(--color-neutral-900) 6%, transparent);
   }
 
   /* chrome="card": one white card. Pale dots and a wide pale address bar,
      no bar fill and no rule, so the page runs straight up into the chrome;
      the long, soft shadow lifts it */
   .ss-window[data-chrome="card"] {
-    background: #fff;
+    background: var(--color-white);
     border-radius: 8px;
     box-shadow:
-      0 50px 100px -20px rgba(50, 50, 93, 0.25),
+      0 50px 100px -20px color-mix(in oklab, var(--color-blue-950) 25%, transparent),
       0 30px 60px -30px rgba(0, 0, 0, 0.3);
   }
 
@@ -224,7 +224,7 @@
   }
 
   .ss-window[data-chrome="card"]:not([data-lights="color"]) .ss-window__dot {
-    background: #ecf2f7;
+    background: var(--color-indigo-50);
     box-shadow: none;
   }
 
@@ -233,10 +233,10 @@
     height: 24px;
     margin: 0;
     padding: 0 10px;
-    background: #ecf2f7;
+    background: var(--color-indigo-50);
     border-radius: 4px;
     box-shadow: none;
-    color: #425466;
+    color: var(--color-neutral-600);
     font-size: 12px;
     font-weight: 300;
     line-height: 24px;
@@ -247,17 +247,17 @@
   }
 
   .ss-window[data-chrome="card"] > .ss-window__body {
-    background: #fff;
+    background: var(--color-white);
   }
 
   /* chrome="hairline": a short bar over a 1px rule, tiny dots, the address
      as bare centered text */
   .ss-window[data-chrome="hairline"] {
-    background: #fff;
+    background: var(--color-white);
     border-radius: 8px;
     box-shadow:
       0 0 0 1px rgba(0, 0, 0, 0.06),
-      0 12px 28px -12px rgba(50, 50, 93, 0.2);
+      0 12px 28px -12px color-mix(in oklab, var(--color-blue-950) 20%, transparent);
   }
 
   .ss-window[data-chrome="hairline"] > .ss-window__bar {
@@ -280,7 +280,7 @@
   }
 
   .ss-window[data-chrome="hairline"]:not([data-lights="color"]) .ss-window__dot {
-    background: #e3e8ee;
+    background: var(--color-neutral-200);
     box-shadow: none;
   }
 
@@ -291,7 +291,7 @@
     padding: 0;
     background: none;
     box-shadow: none;
-    color: #8792a2;
+    color: var(--color-neutral-400);
     font-size: 9px;
   }
 
@@ -304,7 +304,7 @@
      body with no rule, the title dim and centered on the window; a hairline
      light edge keeps the frame from melting into a dark stage */
   .ss-window[data-chrome="terminal"] {
-    --ss-term-bg: #17171a;
+    --ss-term-bg: var(--color-neutral-900);
     background: var(--ss-term-bg);
     box-shadow:
       inset 0 0 0 1px rgba(255, 255, 255, 0.07),
@@ -340,7 +340,7 @@
     gap: 3px;
     padding: 4px 16px 16px;
     overflow: hidden;
-    color: #9d9da6;
+    color: var(--color-neutral-400);
     font: 11.5px/1.65 var(--ss-mono);
     font-variant-ligatures: none;
   }
@@ -360,22 +360,22 @@
      --ss-term-sigil, --ss-term-ok, --ss-term-err or --ss-term-dim on the
      window (or any parent) to match a product's accent */
   .ss-term__path {
-    color: var(--ss-term-path, #6f8ccf);
+    color: var(--ss-term-path, var(--color-indigo-400));
   }
 
   .ss-term__sigil {
     margin: 0 7px;
-    color: var(--ss-term-sigil, #6ee7a8);
+    color: var(--ss-term-sigil, var(--color-emerald-300));
   }
 
   .ss-term__cmd {
-    color: #f1f1f3;
+    color: var(--color-neutral-100);
   }
 
   /* Status color, sparingly: a pass, a failure, a dim aside */
-  .ss-term .ok { color: var(--ss-term-ok, #6ee7a8); }
-  .ss-term .err { color: var(--ss-term-err, #f87171); }
-  .ss-term .dim { color: var(--ss-term-dim, #63636b); }
+  .ss-term .ok { color: var(--ss-term-ok, var(--color-emerald-300)); }
+  .ss-term .err { color: var(--ss-term-err, var(--color-red-400)); }
+  .ss-term .dim { color: var(--ss-term-dim, var(--color-neutral-500)); }
 
   .ss-term__caret {
     display: inline-block;
@@ -383,7 +383,7 @@
     height: 1.2em;
     margin-left: 1px;
     vertical-align: -0.22em;
-    background: #e8e8ec;
+    background: var(--color-neutral-200);
     animation: ss-term-blink 1.06s steps(1) infinite;
   }
 
@@ -592,7 +592,7 @@
     box-shadow:
       0 0 0 0.5px rgba(0, 0, 0, 0.07),
       inset 0 0.5px 0 rgba(255, 255, 255, 1),
-      0 3px 14px rgba(20, 35, 70, 0.07);
+      0 3px 14px color-mix(in oklab, var(--color-blue-950) 7%, transparent);
   }
 
   .ss-stage[data-theme="dark"] .ss-window[data-side="floating"] > .ss-window__side {

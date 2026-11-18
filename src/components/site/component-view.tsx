@@ -60,7 +60,7 @@ export function ComponentView({ slug, code }: { slug: string; code: ReactNode })
           transition={{ duration: 0.2 }}
         >
           {view === "preview" ? (
-            <div className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-lg bg-base-950 p-10 ring-1 ring-base-50/[0.08]">
+            <div className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-lg bg-base-950 p-4 ring-1 sm:p-10 ring-base-50/[0.08]">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(var(--base-800)_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_70%)] opacity-50" />
               <div key={run} className="@container relative flex w-full justify-center">
                 <Preview slug={slug} />
