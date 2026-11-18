@@ -1,0 +1,114 @@
+/* The install terminal, pinned a gutter from the top and sides of its cell
+   and running well past the bottom. Everything nests under .install-terminal. */
+.install-terminal {
+  --pad: 24px;
+
+  & .it-stage {
+    position: absolute;
+    inset: 0;
+  }
+
+  & .it-stage .ss-stage {
+    overflow: hidden;
+    background: transparent;
+  }
+
+  & .it-window {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+    right: var(--pad);
+    /* Well past the bottom, so the cell cuts it, never a near miss */
+    height: calc(100% + 48px);
+  }
+
+  & .it-window__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .it-body {
+    flex: none;
+    gap: 6px;
+    padding: 8px 20px 20px;
+    font-size: 13px;
+    line-height: 20px;
+    color: var(--color-neutral-300);
+  }
+
+  /* A long command wraps beside the prompt, the way a terminal wraps it,
+     never off the crop */
+  & .it-body .ss-term__prompt:first-child {
+    display: flex;
+  }
+
+  & .it-body .ss-term__prompt:first-child > :not(.ss-term__cmd) {
+    flex: none;
+  }
+
+  & .it-body .ss-term__cmd {
+    flex: 1 1 0;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  /* The whole command laid out from the start; what has been typed sits over it */
+  & .it-cmd {
+    display: grid;
+    min-width: 0;
+  }
+
+  & .it-cmd__ghost,
+  & .it-cmd__typed {
+    grid-area: 1 / 1;
+  }
+
+  & .it-cmd__ghost {
+    visibility: hidden;
+  }
+
+  /* Output arrives line by line once the command is in */
+  & .it-out {
+    opacity: 0;
+    transform: translateY(4px);
+    will-change: transform;
+    transition:
+      opacity 0.3s ease,
+      transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+    transition-delay: calc(var(--i) * 0.32s);
+  }
+
+  & .it-body[data-done] .it-out {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* The next step's file, in front of the terminal's lower half: a light card
+     on light, a raised one on dark, so it always reads in front */
+  & .it-card {
+    flex: none;
+    max-width: 440px;
+    margin: 4px 20px 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--ss-surface);
+    box-shadow: var(--ss-shadow-satellite);
+  }
+
+  & .ss-stage[data-theme="dark"] .it-card {
+    background: var(--ss-raised);
+  }
+
+  & .it-card__head {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--ss-line);
+    font: 500 12px/16px var(--ss-mono);
+    color: var(--ss-text);
+  }
+
+  & .it-code {
+    padding: 10px 14px 12px;
+    font-size: 12px;
+  }
+}

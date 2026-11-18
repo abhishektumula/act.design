@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Vendored Stageshow kit (MIT), kept as upstream ships it.
     "src/components/site/stage/**",
+    // Agent skills (the Stageshow skill and its playground) are tooling, not the site.
+    ".agents/**",
   ]),
 ]);
 

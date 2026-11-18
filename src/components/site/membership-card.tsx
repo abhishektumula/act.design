@@ -62,7 +62,7 @@ export function MembershipCard({
         onPointerMove={move}
         onPointerLeave={leave}
         style={reduce ? undefined : { rotateX, rotateY }}
-        className="relative aspect-[1.586] overflow-hidden rounded-xl bg-[#0c0b0a] text-[#f1ede6] shadow-[0_1px_0_rgb(255_255_255/0.08)_inset,0_40px_70px_-30px_rgb(0_0_0/0.6)] ring-1 ring-white/10 [transform-style:preserve-3d]"
+        className="relative aspect-[1.586] overflow-hidden rounded-xl bg-neutral-950 text-neutral-100 shadow-[0_1px_0_rgb(255_255_255/0.08)_inset,0_40px_70px_-30px_rgb(0_0_0/0.6)] ring-1 ring-white/10 [transform-style:preserve-3d]"
       >
         {/* Engraving: dot grid, hairline rules and the dial scale */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgb(255_255_255/0.07)_1px,transparent_1px)] bg-[size:12px_12px] [mask-image:linear-gradient(110deg,black,transparent_70%)]" />

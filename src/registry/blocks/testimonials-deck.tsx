@@ -44,9 +44,9 @@ const quotes = [
 ];
 
 const tones = {
-  paper: "bg-linear-to-b from-[#fbf8f1] to-[#ece5d6] text-[#2a2620]",
+  paper: "bg-linear-to-b from-orange-50 to-neutral-200 text-neutral-800",
   signal: "bg-linear-to-b from-[color-mix(in_oklab,var(--signal)_78%,white)] to-[color-mix(in_oklab,var(--signal)_88%,black)] text-white",
-  ink: "bg-linear-to-b from-[#34312c] to-[#1b1a17] text-[#f3efe6]",
+  ink: "bg-linear-to-b from-neutral-800 to-neutral-900 text-neutral-100",
 } as const;
 
 /**

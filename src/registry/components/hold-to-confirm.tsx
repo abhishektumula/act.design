@@ -12,7 +12,7 @@ export const holdVariants = cva(
     variants: {
       tone: {
         signal: "[--fill:var(--signal)] focus-visible:ring-signal/60",
-        danger: "[--fill:oklch(0.56_0.17_29)] focus-visible:ring-red-500/60",
+        danger: "[--fill:var(--color-red-600)] focus-visible:ring-red-500/60",
       },
     },
     defaultVariants: { tone: "danger" },

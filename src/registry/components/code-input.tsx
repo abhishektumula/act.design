@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 
 type Status = "idle" | "verifying" | "success" | "error";
 
-const DANGER = "oklch(0.58 0.19 27)";
+const DANGER = "var(--color-red-600)";
 
 /**
  * A one-time-code field. Characters rise into their slots and a caret blinks
@@ -115,6 +115,9 @@ export function CodeInput({
   };
 
   const locked = disabled || status === "verifying" || status === "success";
+  // Full size is 2.75rem slots with 0.5rem gaps; below that the slots shrink to fit.
+  const dividers = groupSize > 0 ? Math.ceil(length / groupSize) - 1 : 0;
+  const maxWidth = `calc(${length} * 2.75rem + ${dividers} * 0.625rem + ${length + dividers - 1} * 0.5rem)`;
   const active = Math.min(value.length, length - 1);
 
   const message =
@@ -127,9 +130,13 @@ export function CodeInput({
           : null;
 
   return (
-    <div data-slot="code-input" className={cn("inline-flex flex-col items-center gap-3", className)}>
-      <div ref={scope} className="relative">
-        <div className="flex items-center gap-2" aria-hidden>
+    <div
+      data-slot="code-input"
+      style={{ maxWidth }}
+      className={cn("@container inline-flex w-full flex-col items-center gap-3", className)}
+    >
+      <div ref={scope} className="relative w-full">
+        <div className="flex w-full items-center justify-center gap-[min(0.5rem,2.4cqi)]" aria-hidden>
           {Array.from({ length }, (_, i) => {
             const char = value[i];
             const isActive = focused && status === "idle" && i === active && !disabled;
@@ -137,7 +144,7 @@ export function CodeInput({
             const divider = groupSize > 0 && i > 0 && i % groupSize === 0;
             return (
               <Fragment key={i}>
-                {divider && <span className="h-0.5 w-2.5 rounded-full bg-base-50/20" />}
+                {divider && <span className="h-0.5 w-[min(0.625rem,3cqi)] shrink-0 rounded-full bg-base-50/20" />}
                 <motion.div
                   animate={
                     status === "verifying"
@@ -148,7 +155,7 @@ export function CodeInput({
                   }
                   style={status === "error" ? { ["--ring" as string]: DANGER } : undefined}
                   className={cn(
-                    "relative grid h-14 w-11 place-items-center overflow-hidden rounded-xl bg-base-50/[0.06] font-mono text-2xl font-medium text-base-50 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-base-50/10 transition-[box-shadow,background-color,color] duration-200",
+                    "relative grid aspect-[11/14] max-w-11 min-w-0 flex-1 place-items-center overflow-hidden rounded-[min(0.75rem,3.5cqi)] bg-base-50/[0.06] font-mono text-[clamp(1rem,7.2cqi,1.5rem)] font-medium text-base-50 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-base-50/10 transition-[box-shadow,background-color,color] duration-200",
                     isActive && "bg-base-50/[0.03] ring-2 ring-signal/70",
                     status === "success" && "bg-signal/15 text-signal ring-signal/40",
                     status === "error" && "text-(--ring) ring-(--ring)/60",
@@ -172,7 +179,7 @@ export function CodeInput({
                     <motion.span
                       animate={{ opacity: [1, 1, 0, 0] }}
                       transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1], ease: "linear" }}
-                      className="absolute h-6 w-0.5 rounded-full bg-signal"
+                      className="absolute h-[43%] w-0.5 rounded-full bg-signal"
                     />
                   )}
                 </motion.div>
@@ -223,7 +230,7 @@ export function CodeInput({
               transition={{ duration: 0.18 }}
               style={status === "error" ? { color: DANGER } : undefined}
               className={cn(
-                "flex items-center gap-1.5 font-mono text-[11px] tracking-[0.12em] uppercase [&_svg]:size-3.5",
+                "flex items-center gap-1.5 font-mono text-[11px] tracking-[0.12em] whitespace-nowrap uppercase [&_svg]:size-3.5",
                 status === "success" ? "text-signal" : "text-base-500",
               )}
             >
@@ -248,7 +255,7 @@ export default function Demo() {
   }, [wait]);
 
   return (
-    <div className="flex w-full max-w-sm flex-col items-center rounded-3xl bg-base-950 px-6 pt-7 pb-5 text-center shadow-[0_1px_0_white_inset,0_20px_40px_-24px_var(--color-shade)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset]">
+    <div className="flex w-full max-w-sm flex-col items-center rounded-3xl bg-base-950 px-[clamp(1rem,6%,1.5rem)] pt-7 pb-5 text-center shadow-[0_1px_0_white_inset,0_20px_40px_-24px_var(--color-shade)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset]">
       <p className="text-base font-semibold text-base-50">Check your phone</p>
       <p className="mt-1 text-sm text-balance text-base-500">
         We sent a 6-digit code to •••• 4821. Try <span className="font-mono text-base-300">424242</span>.

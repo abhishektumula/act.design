@@ -42,3 +42,6 @@ next-env.d.ts
 
 # generated
 /src/registry/sources.json
+
+# agent skills (installed locally)
+/.agents/

@@ -16,13 +16,13 @@ const fan = [
 /** A sheet of paper with a few lines on it. Pass your own content to replace the lines. */
 function Sheet({ children }: { children?: ReactNode }) {
   return (
-    <div className="size-full overflow-hidden rounded-[10px] bg-[#fbfaf7] p-3 shadow-[0_1px_2px_rgb(0_0_0/0.12),0_6px_14px_-6px_rgb(0_0_0/0.25)] ring-1 ring-black/5">
+    <div className="size-full overflow-hidden rounded-[10px] bg-neutral-50 p-3 shadow-[0_1px_2px_rgb(0_0_0/0.12),0_6px_14px_-6px_rgb(0_0_0/0.25)] ring-1 ring-black/5">
       {children ?? (
         <div className="space-y-1.5">
-          <div className="h-1.5 w-1/2 rounded-full bg-[#2a2620]/70" />
-          <div className="h-1 w-full rounded-full bg-[#2a2620]/15" />
-          <div className="h-1 w-5/6 rounded-full bg-[#2a2620]/15" />
-          <div className="h-1 w-2/3 rounded-full bg-[#2a2620]/15" />
+          <div className="h-1.5 w-1/2 rounded-full bg-neutral-800/70" />
+          <div className="h-1 w-full rounded-full bg-neutral-800/15" />
+          <div className="h-1 w-5/6 rounded-full bg-neutral-800/15" />
+          <div className="h-1 w-2/3 rounded-full bg-neutral-800/15" />
         </div>
       )}
     </div>
@@ -111,10 +111,10 @@ function Uptime() {
   const bars = [9, 9, 9, 8, 9, 9, 3, 9, 9, 9, 9, 7, 9, 9];
   return (
     <div>
-      <div className="h-1.5 w-2/5 rounded-full bg-[#2a2620]/70" />
+      <div className="h-1.5 w-2/5 rounded-full bg-neutral-800/70" />
       <div className="mt-2.5 flex h-6 items-end gap-[2px]">
         {bars.map((h, i) => (
-          <span key={i} style={{ height: `${h * 11}%` }} className={cn("flex-1 rounded-[1px]", h < 5 ? "bg-[#e2401c]" : "bg-[#3f8a5a]")} />
+          <span key={i} style={{ height: `${h * 11}%` }} className={cn("flex-1 rounded-[1px]", h < 5 ? "bg-orange-600" : "bg-emerald-600")} />
         ))}
       </div>
     </div>
@@ -125,7 +125,7 @@ export default function Demo() {
   return (
     <div className="grid w-full max-w-xl justify-items-center gap-x-6 gap-y-14 pt-10 @md:grid-cols-2">
       <FolderCard title="Incident reports" meta="12 postmortems · updated today" sheets={[undefined, <Uptime key="u" />]} />
-      <FolderCard title="Status page" meta="4 components · 312 subscribers" color="oklch(0.5 0.13 250)" />
+      <FolderCard title="Status page" meta="4 components · 312 subscribers" color="var(--color-sky-700)" />
     </div>
   );
 }

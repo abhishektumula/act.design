@@ -1,0 +1,53 @@
+/*
+ * The act.design look for every Stageshow stage on the site: the site's own
+ * tokens mapped onto the kit's (references/looks.md). Neutral greys, white
+ * and black grounds, Inter and JetBrains Mono, and the signal accent.
+ */
+.look-act .ss-stage {
+  --ss-font: var(--font-inter), system-ui, sans-serif;
+  --ss-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --ss-canvas: var(--color-neutral-100);
+  --ss-surface: var(--color-white);
+  --ss-chrome: var(--color-neutral-50);
+  --ss-well: var(--color-neutral-100);
+  --ss-raised: var(--color-white);
+  --ss-fill: var(--color-neutral-200);
+
+  --ss-text-strong: var(--color-neutral-900);
+  --ss-text: var(--color-neutral-500);
+  --ss-text-faint: var(--color-neutral-400);
+  --ss-icon: var(--color-neutral-500);
+  --ss-icon-faint: var(--color-neutral-300);
+
+  --ss-accent: var(--signal);
+  --ss-accent-2: var(--signal);
+  --ss-accent-soft: color-mix(in oklab, var(--signal) 14%, transparent);
+  --ss-accent-text: var(--signal);
+
+  --ss-term-bg: var(--color-neutral-900);
+  --ss-term-sigil: var(--signal);
+  --ss-term-path: var(--color-neutral-500);
+  --ss-term-dim: var(--color-neutral-500);
+  --ss-term-ok: var(--color-emerald-400);
+
+  --ss-radius-window: 12px;
+  --ss-radius-lg: 10px;
+}
+
+.look-act .ss-stage[data-theme="dark"] {
+  --ss-canvas: var(--color-neutral-950);
+  --ss-surface: var(--color-neutral-900);
+  --ss-chrome: var(--color-neutral-900);
+  --ss-well: var(--color-black);
+  --ss-raised: var(--color-neutral-800);
+  --ss-fill: var(--color-neutral-800);
+
+  --ss-text-strong: var(--color-neutral-100);
+  --ss-text: var(--color-neutral-400);
+  --ss-text-faint: var(--color-neutral-500);
+  --ss-icon: var(--color-neutral-400);
+  --ss-icon-faint: var(--color-neutral-600);
+
+  --ss-term-bg: var(--color-neutral-900);
+}

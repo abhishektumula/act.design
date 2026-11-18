@@ -180,10 +180,10 @@ export function CardStack<T extends { id: string }>({
 
 const swatches = [
   { id: "signal", name: "Signal", code: "OK 65 / 205 / 38", note: "For the one thing that matters on screen.", from: "color-mix(in oklab, var(--signal) 78%, white)", to: "color-mix(in oklab, var(--signal) 88%, black)", ink: "white" },
-  { id: "cobalt", name: "Cobalt", code: "OK 52 / 190 / 264", note: "Deep enough to hold white type at any size.", from: "#4a6cff", to: "#1f36c9", ink: "white" },
-  { id: "moss", name: "Moss", code: "OK 58 / 110 / 135", note: "A green that reads as calm, never as success.", from: "#7da15a", to: "#3f6a33", ink: "white" },
-  { id: "bone", name: "Bone", code: "OK 94 / 015 / 85", note: "The paper everything else is printed on.", from: "#f6f1e6", to: "#e3dccb", ink: "#2a2620" },
-  { id: "graphite", name: "Graphite", code: "OK 24 / 008 / 70", note: "Ink for type, wells and the dark of night mode.", from: "#3b3833", to: "#1b1a17", ink: "#f3efe6" },
+  { id: "cobalt", name: "Cobalt", code: "OK 52 / 190 / 264", note: "Deep enough to hold white type at any size.", from: "var(--color-indigo-500)", to: "var(--color-blue-800)", ink: "white" },
+  { id: "moss", name: "Moss", code: "OK 58 / 110 / 135", note: "A green that reads as calm, never as success.", from: "var(--color-lime-600)", to: "var(--color-lime-800)", ink: "white" },
+  { id: "bone", name: "Bone", code: "OK 94 / 015 / 85", note: "The paper everything else is printed on.", from: "var(--color-neutral-100)", to: "var(--color-neutral-300)", ink: "var(--color-neutral-800)" },
+  { id: "graphite", name: "Graphite", code: "OK 24 / 008 / 70", note: "Ink for type, wells and the dark of night mode.", from: "var(--color-neutral-700)", to: "var(--color-neutral-900)", ink: "var(--color-neutral-100)" },
 ];
 
 export default function Demo() {

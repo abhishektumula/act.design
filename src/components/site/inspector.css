@@ -1,7 +1,7 @@
 /* The hero's inspector window. It borrows the Stageshow kit's window chrome
    and tokens (from .ss-stage) but lays out as an ordinary block: no design
    size, no scaling, so the controls inside stay real and full size. The kit's
-   tokens are mapped onto the site's warm graphite scale and accent. */
+   tokens are mapped onto the site's neutral scale and accent. */
 
 .ss-stage.insp {
   position: relative;
@@ -41,4 +41,49 @@
   font-size: 13px;
   font-weight: 500;
   color: var(--base-100);
+}
+
+/* The corner bleed. The column is a container: the controls keep the
+   column's width (less a strip on desktop, where the next panel starts), and
+   the window reaches past the page's right edge at every wide desktop width,
+   so a fixed share of it is always cut. Below xl the column is too narrow to
+   give up that strip, so the window bleeds off the bottom only. */
+.insp--bleed .insp-controls {
+  width: 100cqw;
+}
+
+@media (min-width: 80rem) {
+  .ss-stage.insp.insp--bleed {
+    --insp-more: max(16rem, calc((100vw - 1400px) / 2 + 16rem));
+    width: calc(100cqw - 7rem + var(--insp-more));
+  }
+  .insp--bleed .insp-controls {
+    width: calc(100cqw - 7rem);
+  }
+  .insp--bleed .insp-more {
+    width: var(--insp-more);
+  }
+  /* A window cut by the page keeps square corners where it is cut */
+  .insp--bleed .insp-window {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.insp--bleed .insp-window {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+/* Reset follows the title instead of the far end of the bar, where the bleed
+   would cut it */
+.insp .ss-window__title[data-toolbar] {
+  flex: none;
+  margin-right: 10px;
+}
+
+/* The filler column takes the height the controls set, never sets its own */
+.insp--bleed .insp-more {
+  contain: size;
+  overflow: hidden;
 }
