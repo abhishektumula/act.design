@@ -8,6 +8,7 @@
  * flipped for light mode: base-950 is the darkest surface in dark mode and the
  * lightest in light mode. `canvas` is white in light mode and black in dark.
  * `signal` is the single accent: lit ticks, live indicators, primary keys.
+ * `selection` is the text-selection tint.
  */
 @theme inline {
   --font-sans: var(--font-inter);
@@ -46,6 +47,7 @@
   --canvas: var(--color-white);
   --shade: var(--color-neutral-600);
   --signal: var(--color-orange-600);
+  --selection: var(--color-orange-200);
 }
 
 .dark {
@@ -64,6 +66,7 @@
   --canvas: var(--color-black);
   --shade: var(--color-black);
   --signal: var(--color-orange-500);
+  --selection: var(--color-orange-900);
 }
 
 html {
@@ -77,7 +80,7 @@ body {
 }
 
 ::selection {
-  background: color-mix(in oklab, var(--signal) 30%, transparent);
+  background: var(--selection);
 }
 
 /* ---------- site-only utilities (registry components never depend on these) ---------- */
