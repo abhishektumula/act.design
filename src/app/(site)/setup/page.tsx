@@ -25,7 +25,7 @@ export function cn(...inputs: ClassValue[]) {
   },
   {
     title: "Add the theme tokens",
-    body: "base-* is a warm graphite scale, flipped for light mode, and signal is the single accent. Components only use these and Tailwind's own palette, so dark and light come for free. Toggle with a .dark class on <html>.",
+    body: "base-* is Tailwind's neutral scale, flipped for light mode, and signal is the single accent. Components only use these and Tailwind's own palette, so dark and light come for free. Toggle with a .dark class on <html>.",
     file: "app/globals.css",
     code: `@import "tailwindcss" theme(static);
 

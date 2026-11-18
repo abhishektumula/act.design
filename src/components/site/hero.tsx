@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useSyncExternalStore, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowRight, RotateCcw } from "lucide-react";
@@ -12,23 +12,12 @@ import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
 import { accents, setAccent, useAccent, type Accent } from "./accent";
 import { btnPrimary } from "./styles";
-import { Window } from "./stage/window";
+import { Bar, Window } from "./stage/window";
+import { useDark } from "./use-dark";
 import "./stage/stage.css";
 import "./inspector.css";
 
 const initial = { weight: 560, tracking: -4.5, serif: true, outline: false, size: 100 };
-
-const subscribe = (cb: () => void) => {
-  const mo = new MutationObserver(cb);
-  mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-  return () => mo.disconnect();
-};
-const useDark = () =>
-  useSyncExternalStore(
-    subscribe,
-    () => document.documentElement.classList.contains("dark"),
-    () => false,
-  );
 
 /** Design-tool selection marks around the headline: it is the layer the inspector edits. */
 function Selection() {
@@ -68,7 +57,7 @@ export function Hero() {
 
   return (
     <section className="relative overflow-hidden pt-16">
-      <div className="mx-auto grid max-w-[1400px] gap-y-12 px-6 pt-14 pb-24 sm:pt-20 sm:pb-32 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
+      <div className="mx-auto grid max-w-[1400px] gap-y-12 px-6 pt-14 sm:pt-20 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
         {/* The headline: the selected layer */}
         <div className="pl-4 lg:col-span-6 lg:row-start-1 lg:self-end">
           <h1 style={headline} className="relative inline-block leading-[0.94] text-base-50">
@@ -91,84 +80,8 @@ export function Hero() {
           </h1>
         </div>
 
-        {/* Its inspector, made of the components themselves */}
-        <div className="lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:self-center">
-          <div className="ss-stage insp" data-theme={dark ? "dark" : "light"}>
-            <Window
-              title="Headline"
-              className="insp-window"
-              toolbar={
-                <Button size="sm" tone="ghost" hotkey="r" disabled={!dirty} onClick={reset}>
-                  <RotateCcw /> Reset
-                </Button>
-              }
-            >
-              <div className="grid border-b border-base-50/[0.07] sm:grid-cols-[auto_1fr]">
-                <div className="flex justify-center px-8 py-7 max-sm:border-b max-sm:border-base-50/[0.07] sm:border-r sm:border-base-50/[0.07]">
-                  <Dial label="Weight" min={100} max={900} step={10} value={s.weight} onValueChange={set("weight")} defaultValue={initial.weight} />
-                </div>
-                <div className="flex flex-col justify-center gap-5 px-7 py-7">
-                  <div className="flex items-center justify-between gap-4">
-                    <span className="text-sm text-base-200">Size</span>
-                    <Stepper min={70} max={110} step={5} value={s.size} onValueChange={set("size")} format={(v) => `${v}%`} />
-                  </div>
-                  {(
-                    [
-                      ["serif", "Serif italic"],
-                      ["outline", "Outline"],
-                    ] as const
-                  ).map(([k, l]) => (
-                    <label key={k} className="flex cursor-pointer items-center justify-between gap-4 text-sm text-base-200">
-                      <span id={`hero-${k}`}>{l}</span>
-                      <Switch checked={s[k]} onCheckedChange={set(k)} aria-labelledby={`hero-${k}`} />
-                    </label>
-                  ))}
-                </div>
-              </div>
-              <div className="border-b border-base-50/[0.07] px-7 py-6">
-                <Fader
-                  label="Tracking"
-                  min={-10}
-                  max={4}
-                  step={0.5}
-                  value={s.tracking}
-                  onValueChange={set("tracking")}
-                  format={(v) => `${(v / 100).toFixed(3)}em`}
-                  marks={["Tight", "Loose"]}
-                  className="max-w-none"
-                />
-              </div>
-              <div className="flex flex-wrap items-center justify-between gap-4 px-7 py-4">
-                <span className="text-sm text-base-200">Accent</span>
-                <SegmentedControl<Accent>
-                  aria-label="Accent"
-                  size="sm"
-                  value={accent}
-                  onValueChange={setAccent}
-                  options={(Object.keys(accents) as Accent[]).map((a) => ({
-                    value: a,
-                    label: <span className="capitalize max-sm:sr-only">{a}</span>,
-                    icon: <span className="block size-2 rounded-full" style={{ background: accents[a] }} />,
-                  }))}
-                />
-              </div>
-            </Window>
-          </div>
-          <p className="mt-4 text-[13px] leading-6 text-base-500">
-            Made of the{" "}
-            {parts.map(([name, slug], i) => (
-              <span key={slug}>
-                <Link href={`/components/${slug}`} className="text-base-300 underline decoration-base-700 underline-offset-4 transition-colors hover:text-base-50">
-                  {name}
-                </Link>
-                {i < parts.length - 2 ? ", " : i === parts.length - 2 ? " and " : "."}
-              </span>
-            ))}
-          </p>
-        </div>
-
         {/* Copy */}
-        <div className="lg:col-span-5 lg:row-start-2">
+        <div className="lg:col-span-5 lg:row-start-2 lg:pb-32">
           <p className="max-w-[28rem] text-[17px] leading-7 text-pretty text-base-400">
             React components that act like well-made objects. Dials with detents, faders with travel, switches you can
             throw. <span className="text-base-100">Turn any of them and the headline answers.</span>
@@ -183,6 +96,131 @@ export function Hero() {
             >
               See them in a product
             </Link>
+          </div>
+          <p className="mt-10 text-[13px] leading-6 text-base-500">
+            The inspector is made of the{" "}
+            {parts.map(([name, slug], i) => (
+              <span key={slug}>
+                <Link href={`/components/${slug}`} className="text-base-300 underline decoration-base-700 underline-offset-4 transition-colors hover:text-base-50">
+                  {name}
+                </Link>
+                {i < parts.length - 2 ? ", " : i === parts.length - 2 ? " and " : "."}
+              </span>
+            ))}
+          </p>
+        </div>
+
+        {/*
+          Its inspector, made of the components themselves. Framed as a corner
+          bleed (Stageshow, references/framing.md): inset at the top and left,
+          running off the right edge of the page and the bottom of the hero. The
+          crop only ever cuts filler, the panel's other properties; every live
+          control stays whole.
+        */}
+        <div className="@container -mb-28 sm:-mb-32 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:-mb-24 lg:self-start">
+          <div className="ss-stage insp insp--bleed" data-theme={dark ? "dark" : "light"}>
+            <Window
+              title="Headline"
+              className="insp-window"
+              // Reset sits after the title, on the side of the window the crop never
+              // reaches. The empty toolbar left-aligns the title, as a unified toolbar does.
+              toolbar={<span aria-hidden />}
+              lead={
+                <Button size="sm" tone="ghost" hotkey="r" disabled={!dirty} onClick={reset}>
+                  <RotateCcw /> Reset
+                </Button>
+              }
+            >
+              <div className="flex">
+                <div className="insp-controls min-w-0 shrink-0">
+                  <div className="grid border-b border-base-50/[0.07] sm:grid-cols-[auto_1fr]">
+                    <div className="flex justify-center px-8 py-7 max-sm:border-b max-sm:border-base-50/[0.07] sm:border-r sm:border-base-50/[0.07]">
+                      <Dial label="Weight" min={100} max={900} step={10} value={s.weight} onValueChange={set("weight")} defaultValue={initial.weight} />
+                    </div>
+                    <div className="flex flex-col justify-center gap-5 px-7 py-7">
+                      <div className="flex items-center justify-between gap-4">
+                        <span className="text-sm text-base-200">Size</span>
+                        <Stepper min={70} max={110} step={5} value={s.size} onValueChange={set("size")} format={(v) => `${v}%`} />
+                      </div>
+                      {(
+                        [
+                          ["serif", "Serif italic"],
+                          ["outline", "Outline"],
+                        ] as const
+                      ).map(([k, l]) => (
+                        <label key={k} className="flex cursor-pointer items-center justify-between gap-4 text-sm text-base-200">
+                          <span id={`hero-${k}`}>{l}</span>
+                          <Switch checked={s[k]} onCheckedChange={set(k)} aria-labelledby={`hero-${k}`} />
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="border-b border-base-50/[0.07] px-7 py-6">
+                    <Fader
+                      label="Tracking"
+                      min={-10}
+                      max={4}
+                      step={0.5}
+                      value={s.tracking}
+                      onValueChange={set("tracking")}
+                      format={(v) => `${(v / 100).toFixed(3)}em`}
+                      marks={["Tight", "Loose"]}
+                      className="max-w-none"
+                    />
+                  </div>
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-base-50/[0.07] px-7 py-4">
+                    <span className="text-sm text-base-200">Accent</span>
+                    <SegmentedControl<Accent>
+                      aria-label="Accent"
+                      size="sm"
+                      value={accent}
+                      onValueChange={setAccent}
+                      options={(Object.keys(accents) as Accent[]).map((a) => ({
+                        value: a,
+                        label: <span className="capitalize max-sm:sr-only">{a}</span>,
+                        icon: <span className="block size-2 rounded-full" style={{ background: accents[a] }} />,
+                      }))}
+                    />
+                  </div>
+                  {/* Filler: the panel's next section, where the hero's crop falls */}
+                  <div aria-hidden className="flex flex-col gap-4 px-7 pt-6 pb-16">
+                    <Bar w={56} tone={3} />
+                    <div className="flex items-center justify-between gap-6">
+                      <Bar w={72} tone={2} />
+                      <Bar w={120} h={24} r={6} tone={1} />
+                    </div>
+                    <div className="flex items-center justify-between gap-6">
+                      <Bar w={60} tone={2} />
+                      <Bar w={120} h={24} r={6} tone={1} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Filler: the layer's other properties, running off the page (wide desktop only) */}
+                <div aria-hidden className="insp-more hidden shrink-0 auto-rows-min grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-x-10 gap-y-7 border-l border-base-50/[0.07] px-6 py-7 xl:grid">
+                  {[
+                    [64, [88, 72]],
+                    [48, [96, 64, 80]],
+                    [56, [76, 92]],
+                    [44, [84, 70, 90]],
+                    [52, [80, 66]],
+                    [60, [74, 90, 68]],
+                    [46, [92, 70]],
+                    [58, [68, 84, 76]],
+                  ].map(([head, rows], i) => (
+                    <div key={i} className="flex flex-col gap-3.5">
+                      <Bar w={head as number} tone={3} />
+                      {(rows as number[]).map((w, j) => (
+                        <div key={j} className="flex items-center gap-4">
+                          <Bar w={w} tone={2} />
+                          <Bar w={56} h={22} r={6} tone={1} />
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Window>
           </div>
         </div>
       </div>

@@ -1,0 +1,347 @@
+/*
+ * The principles bento. A ruled grid in the site's hairline language: 1px
+ * rules are the grid's own color showing through the gaps. Every picture is a
+ * Stage pinned to its cell and cropped by it. Everything nests under
+ * .principles (craft.md, Recipes: scope the CSS to the demo).
+ */
+.principles {
+  --pad: 28px;
+  --rule: color-mix(in oklab, var(--base-50) 8%, transparent);
+  display: grid;
+  gap: 1px;
+  background: var(--rule);
+  box-shadow: 0 0 0 1px var(--rule);
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 420px 330px 330px 380px 410px;
+  grid-template-areas: "hero" "stat" "spring" "quiet" "palette";
+
+  @media (max-width: 47.99rem) {
+    --pad: 24px;
+  }
+
+  /* Tablet: the hero across, a pair, then two bands */
+  @media (min-width: 48rem) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 430px 400px 340px 380px;
+    grid-template-areas: "hero hero" "stat quiet" "spring spring" "palette palette";
+  }
+
+  /* Desktop: 2 + 1, 1 + 2, then the full-width band */
+  @media (min-width: 64rem) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: 430px 380px 270px;
+    grid-template-areas: "stat hero hero" "quiet spring spring" "palette palette palette";
+  }
+
+  /* ---- The cell: one frame for all five ---- */
+
+  & .pr-cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--base-950);
+  }
+
+  & .pr-cell--hero { grid-area: hero; }
+  & .pr-cell--stat { grid-area: stat; }
+  & .pr-cell--spring { grid-area: spring; }
+  & .pr-cell--quiet { grid-area: quiet; }
+  & .pr-cell--palette { grid-area: palette; }
+
+  /* ---- Pictures: pinned to the cell's bottom ---- */
+
+  /* The picture takes the rest of the cell under the copy; its stage is
+     measured to it, so a gutter inside the stage is a gutter on the page */
+  & .pr-picture {
+    position: relative;
+    flex: 1 1 0;
+    min-height: 0;
+    width: 100%;
+  }
+
+  & .pr-stage .ss-stage {
+    overflow: hidden;
+    background: transparent;
+  }
+
+  /* ---- Detents (hero): the one window ---- */
+
+  & .pr-window {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+    right: var(--pad);
+    height: 360px;
+    box-shadow: var(--ss-shadow-hero);
+  }
+
+  & .pr-window__body {
+    background: var(--ss-surface);
+    padding: 24px 24px 0;
+  }
+
+  & .pr-fader {
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .pr-fader--filler {
+    gap: 12px;
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ss-line);
+  }
+
+  & .pr-fader__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  & .pr-fader__label {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 500;
+    color: var(--ss-text-strong);
+  }
+
+  & .pr-fader__value {
+    font: 500 15px/20px var(--ss-mono);
+    color: var(--ss-text-strong);
+    font-variant-numeric: tabular-nums;
+  }
+
+  & .pr-fader__track {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    height: 52px;
+    margin-top: 20px;
+  }
+
+  & .pr-tick {
+    width: 2px;
+    height: 18px;
+    border-radius: 1px;
+    background: var(--ss-ink-4);
+    transition: background-color 120ms ease;
+  }
+
+  & .pr-tick[data-major] {
+    height: 34px;
+  }
+
+  & .pr-tick[data-lit] {
+    background: var(--ss-accent);
+  }
+
+  /* The knob steps from detent to detent while held, and springs back from
+     past the end when it lets go */
+  & .pr-knob {
+    position: absolute;
+    bottom: -9px;
+    width: 18px;
+    height: 18px;
+    margin-left: -9px;
+    border-radius: 9px;
+    background: var(--ss-surface);
+    box-shadow:
+      0 0 0 1px var(--ss-ink-4),
+      0 1px 2px rgb(0 0 0 / 0.16),
+      0 4px 10px -4px rgb(0 0 0 / 0.3);
+    transition:
+      left 70ms ease-out,
+      translate 520ms cubic-bezier(0.3, 1.7, 0.5, 1);
+  }
+
+  & .pr-knob::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    border-radius: 3px;
+    background: var(--ss-accent);
+  }
+
+  & .pr-knob[data-held] {
+    transition: left 70ms ease-out;
+  }
+
+  & .pr-fader__scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    font: 11px/14px var(--ss-mono);
+    color: var(--ss-text-faint);
+  }
+
+  /* ---- Spring (diagram) ---- */
+
+  & .pr-plot {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+  }
+
+  & .pr-plot__target {
+    stroke: var(--ss-ink-4);
+    stroke-dasharray: 2 4;
+  }
+
+  & .pr-plot__linear {
+    fill: none;
+    stroke: var(--ss-ink-5);
+    stroke-width: 1.25;
+    stroke-dasharray: 3 4;
+  }
+
+  & .pr-plot__label {
+    font: 11px var(--ss-mono);
+    fill: var(--ss-text-faint);
+  }
+
+  & .pr-plot__spring {
+    fill: none;
+    stroke: var(--ss-accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+  }
+
+  & .pr-plot__dot {
+    fill: var(--ss-accent);
+  }
+
+  & .pr-plot__halo {
+    fill: none;
+    stroke: var(--ss-accent);
+    stroke-opacity: 0.3;
+  }
+
+  /* ---- Quiet (component): the sheet, off the bottom ---- */
+
+  & .pr-sheet {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+    right: var(--pad);
+    height: 340px;
+    overflow: hidden;
+    border-radius: 14px;
+    background: var(--ss-surface);
+    box-shadow: var(--ss-shadow-ground);
+  }
+
+  & .pr-sheet__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 56px;
+    padding: 0 12px 0 20px;
+    border-bottom: 1px solid var(--ss-line);
+  }
+
+  & .pr-sheet__title {
+    font-size: 15px;
+    line-height: 20px;
+    font-weight: 600;
+    color: var(--ss-text-strong);
+  }
+
+  & .pr-sheet__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 52px;
+    padding: 0 20px;
+  }
+
+  & .pr-sheet__row + .pr-sheet__row {
+    border-top: 1px solid var(--ss-line-faint);
+  }
+
+  & .pr-sheet__label {
+    font-size: 14px;
+    line-height: 20px;
+    color: var(--ss-text-strong);
+  }
+
+  & .pr-slider {
+    position: relative;
+    flex: 0 1 180px;
+    min-width: 96px;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--ss-ink-3);
+  }
+
+  & .pr-slider__fill {
+    position: absolute;
+    inset: 0 36% 0 0;
+    border-radius: 2px;
+    background: var(--ss-accent);
+  }
+
+  & .pr-slider__knob {
+    position: absolute;
+    top: 50%;
+    left: 64%;
+    width: 16px;
+    height: 16px;
+    margin: -8px 0 0 -8px;
+    border-radius: 8px;
+    background: var(--ss-surface);
+    box-shadow:
+      0 0 0 1px var(--ss-ink-4),
+      0 1px 3px rgb(0 0 0 / 0.2);
+  }
+
+  /* ---- Palette (collection): the scale, whole, at every width ---- */
+
+  & .pr-chips {
+    position: absolute;
+    top: var(--pad);
+    left: var(--pad);
+    right: var(--pad);
+    display: grid;
+    gap: 20px 12px;
+  }
+
+  & .pr-chip {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  & .pr-chip__swatch {
+    height: 64px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 1px var(--ss-line);
+    transform-origin: bottom;
+    transition:
+      opacity 0.4s ease,
+      transform 0.6s cubic-bezier(0.3, 1.4, 0.5, 1);
+    transition-delay: calc(var(--i) * 60ms);
+  }
+
+  & .pr-chips:not([data-on]) .pr-chip__swatch {
+    opacity: 0;
+    transform: scaleY(0.6);
+  }
+
+  & .pr-chip__name {
+    font: 500 12px/16px var(--ss-mono);
+    color: var(--ss-text);
+    white-space: nowrap;
+  }
+
+  & .pr-chip[data-signal] .pr-chip__name {
+    color: var(--ss-text-strong);
+  }
+}
