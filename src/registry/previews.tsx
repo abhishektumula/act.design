@@ -16,6 +16,7 @@ import FolderCard from "@/components/ui/folder-card";
 import Stepper from "@/components/ui/stepper";
 import Switch from "@/components/ui/switch";
 import TextStagger from "@/components/ui/text-stagger";
+import Toast from "@/components/ui/toast";
 
 export const previews: Record<string, ComponentType> = {
   orb: Orb,
@@ -33,6 +34,7 @@ export const previews: Record<string, ComponentType> = {
   "stepper": Stepper,
   "switch": Switch,
   "text-stagger": TextStagger,
+  toast: Toast,
 };
 
 export function Preview({ slug }: { slug: string }) {
