@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform, type MotionValue, type PanInfo } from "motion/react";
-import { Check, CircleAlert, LoaderCircle, X } from "lucide-react";
+import { Check, LoaderCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /* ---------------------------------- store ---------------------------------- */
@@ -230,16 +230,98 @@ export function Toaster({
 
 /* --------------------------------- ticket ---------------------------------- */
 
-const icons: Record<Kind, ReactNode> = {
-  default: null,
-  success: (
-    <span className="grid size-5 place-items-center rounded-full bg-emerald-600 text-white">
-      <Check className="size-3" strokeWidth={3} />
-    </span>
-  ),
-  error: <CircleAlert className="size-5 fill-red-600 text-white dark:text-black" />,
-  loading: <LoaderCircle className="size-5 animate-spin text-base-500" />,
-};
+/** The declined mark: a red badge whose cross draws itself stroke by stroke, then shakes its head. */
+function DeclineMark({ still }: { still?: boolean }) {
+  const stroke = (delay: number) =>
+    still ? {} : { initial: { pathLength: 0 }, animate: { pathLength: 1 }, transition: { duration: 0.2, delay, ease: "easeOut" as const } };
+  return (
+    <motion.span
+      initial={false}
+      animate={still ? undefined : { x: [0, -3, 3, -2, 2, 0] }}
+      transition={{ duration: 0.42, delay: 0.62, ease: "easeInOut" }}
+      className="grid size-5 place-items-center rounded-full bg-red-600 text-white"
+    >
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" className="size-2.5">
+        <motion.path d="M3 3l6 6" {...stroke(0.2)} />
+        <motion.path d="M9 3l-6 6" {...stroke(0.4)} />
+      </svg>
+    </motion.span>
+  );
+}
+
+function icon(kind: Kind, still = false): ReactNode {
+  if (kind === "success")
+    return (
+      <span className="grid size-5 place-items-center rounded-full bg-emerald-600 text-white">
+        <Check className="size-3" strokeWidth={3} />
+      </span>
+    );
+  if (kind === "error") return <DeclineMark still={still} />;
+  if (kind === "loading") return <LoaderCircle className={cn("size-5 text-base-500", !still && "animate-spin")} />;
+  return null;
+}
+
+/* --------------------------------- shredder -------------------------------- */
+
+const STRIPS = 10;
+const GRIP = 0.16; // the shredder catches the sheet
+const STAGGER = 0.035;
+const PULL = 0.5;
+const SHRED_TIME = (GRIP + (STRIPS - 1) * STAGGER + PULL) * 1000 + 40;
+
+/**
+ * A declined ticket going through a shredder: cut into strips, each pulled
+ * back down into the slot a beat apart, swaying a little as it goes.
+ */
+function Shred({ height, bottom, children }: { height: number; bottom: boolean; children: ReactNode }) {
+  return (
+    <motion.div
+      aria-hidden
+      inert
+      animate={{ x: [0, -2, 2, -1, 0] }}
+      transition={{ duration: GRIP }}
+      style={{ height }}
+      className={cn("pointer-events-none absolute inset-x-0", bottom ? "bottom-0" : "top-0")}
+    >
+      {Array.from({ length: STRIPS }, (_, i) => (
+        <Strip key={i} i={i} height={height} bottom={bottom}>
+          {children}
+        </Strip>
+      ))}
+    </motion.div>
+  );
+}
+
+function Strip({ i, height, bottom, children }: { i: number; height: number; bottom: boolean; children: ReactNode }) {
+  const pulled = useMotionValue(0);
+  const left = (i / STRIPS) * 100;
+  const right = 100 - ((i + 1) / STRIPS) * 100;
+  const y = useTransform(pulled, (v) => (bottom ? v : -v));
+  const clipPath = useTransform(pulled, (v) => (bottom ? `inset(0 ${right}% ${v}px ${left}%)` : `inset(${v}px ${right}% 0 ${left}%)`));
+  const sway = (i % 2 ? 1 : -1) * (0.8 + ((i * 5) % 3) * 0.5);
+  const rotate = useTransform(pulled, [0, height], [0, sway]);
+
+  useEffect(() => {
+    // A scrambled order, so the strips don't go in like a wipe
+    const run = animate(pulled, height + 2, { duration: PULL, delay: GRIP + ((i * 7) % STRIPS) * STAGGER, ease: [0.5, 0, 0.75, 0] });
+    return () => run.stop();
+  }, [pulled, height, i]);
+
+  return (
+    <motion.div style={{ y, rotate, clipPath, transformOrigin: `${left + 5}% ${bottom ? "100%" : "0%"}` }} className="absolute inset-0">
+      {children}
+      {i > 0 && (
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: GRIP }}
+          style={{ left: `${left}%` }}
+          className="absolute inset-y-0 w-px bg-base-50/15"
+        />
+      )}
+    </motion.div>
+  );
+}
 
 function TicketView({
   ticket,
@@ -266,6 +348,7 @@ function TicketView({
   const content = useRef<HTMLDivElement>(null);
   const [own, setOwn] = useState(0);
   const [torn, setTorn] = useState(false);
+  const [shred, setShred] = useState(false);
   const side = bottom ? 1 : -1;
 
   // Feeding: 1 is still inside the slot, 0 is all the way out
@@ -312,15 +395,30 @@ function TicketView({
     life.set(1);
   }, [ticket.version, ticket.kind, life]);
 
+  const live = depth === 0 || expanded;
+  const tucked = !expanded && depth > 0;
+  // Declined tickets go through the shredder, unless they're tucked in the pile or motion is reduced
+  const shreddable = ticket.kind === "error" && !reduced && !tucked && own > 0;
+  const latest = useRef(shreddable);
+  useLayoutEffect(() => {
+    latest.current = shreddable;
+  });
+
   useEffect(() => {
-    if (!timed || paused || torn) return;
+    if (!timed || paused || torn || shred) return;
     const run = animate(life, 0, {
       duration: (life.get() * duration) / 1000,
       ease: "linear",
-      onComplete: () => toast.dismiss(ticket.id),
+      onComplete: () => (latest.current ? setShred(true) : toast.dismiss(ticket.id)),
     });
     return () => run.stop();
-  }, [timed, paused, torn, duration, life, ticket.id, ticket.version]);
+  }, [timed, paused, torn, shred, duration, life, ticket.id, ticket.version]);
+
+  useEffect(() => {
+    if (!shred) return;
+    const t = setTimeout(() => toast.dismiss(ticket.id), SHRED_TIME);
+    return () => clearTimeout(t);
+  }, [shred, ticket.id]);
 
   const tear = (dir: 1 | -1, velocity = 0) => {
     setTorn(true);
@@ -335,14 +433,83 @@ function TicketView({
     });
   };
 
+  /** Closed by hand (button or Escape): declined tickets are shredded, the rest torn off. */
+  const close = () => {
+    if (torn || shred) return;
+    if (shreddable) setShred(true);
+    else tear(1);
+  };
+
   const onDragEnd = (_: unknown, info: PanInfo) => {
     const dir = (info.offset.x + info.velocity.x * 0.15 >= 0 ? 1 : -1) as 1 | -1;
     if (Math.abs(info.offset.x) > TEAR_DISTANCE || Math.abs(info.velocity.x) > TEAR_VELOCITY) tear(dir, info.velocity.x);
     else animate(x, 0, { type: "spring", stiffness: 520, damping: 30 });
   };
 
-  const live = depth === 0 || expanded;
-  const tucked = !expanded && depth > 0;
+  /** The ticket's printed face. `still` is a copy for the shredder: no typing, no motion. */
+  const face = (still: boolean) => (
+    <>
+      <div className={cn("flex items-start gap-3 py-3.5 pr-10 pl-4", bottom ? "pb-5" : "pt-5")}>
+        {still ? (
+          icon(ticket.kind, true) && <span className="mt-px flex shrink-0">{icon(ticket.kind, true)}</span>
+        ) : (
+          <AnimatePresence mode="popLayout" initial={false}>
+            {icon(ticket.kind) && (
+              <motion.span
+                key={ticket.kind}
+                initial={{ scale: 0.3, opacity: 0, rotate: -30 }}
+                animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                exit={{ scale: 0.3, opacity: 0 }}
+                transition={{ type: "spring", stiffness: 520, damping: 22 }}
+                className="mt-px flex shrink-0"
+              >
+                {icon(ticket.kind)}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        )}
+        <Typewriter
+          key={still ? "still" : ticket.version}
+          title={ticket.title}
+          description={ticket.description}
+          delay={ticket.version === 0 ? 260 : 90}
+          reduced={still || !!reduced}
+        />
+        {ticket.action && (
+          <button
+            type="button"
+            tabIndex={still ? -1 : undefined}
+            onPointerDownCapture={(e) => e.stopPropagation()}
+            onClick={() => {
+              ticket.action?.onClick();
+              tear(1);
+            }}
+            className="-my-0.5 h-7 shrink-0 cursor-pointer rounded-lg bg-base-50 px-2.5 text-[13px] font-medium text-base-950 transition-colors outline-none hover:bg-base-200 focus-visible:ring-2 focus-visible:ring-signal/60"
+          >
+            {ticket.action.label}
+          </button>
+        )}
+      </div>
+
+      {!still && (
+        <button
+          type="button"
+          aria-label="Dismiss"
+          onPointerDownCapture={(e) => e.stopPropagation()}
+          onClick={close}
+          className="absolute top-2.5 right-2.5 grid size-6 cursor-pointer place-items-center rounded-md text-base-500 opacity-0 transition-[opacity,color,background-color] outline-none group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-base-50/[0.06] hover:text-base-50 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-signal/60 max-sm:opacity-100"
+        >
+          <X className="size-3.5" />
+        </button>
+      )}
+
+      {/* The perforation at the slot edge, burning down as time runs out */}
+      <TearLine life={life} timed={timed} bottom={bottom} />
+    </>
+  );
+
+  const shell =
+    "rounded-2xl bg-white shadow-lg ring-1 shadow-black/[0.08] ring-base-50/[0.08] dark:bg-base-900 dark:shadow-black/40";
 
   return (
     <motion.li
@@ -353,7 +520,7 @@ function TicketView({
         scale: tucked ? 1 - depth * 0.05 : 1,
         opacity: 1,
       }}
-      exit={torn ? { opacity: 0, transition: { duration: 0.1 } } : { opacity: 0, scale: 0.94, filter: "blur(2px)", transition: { duration: 0.2 } }}
+      exit={torn || shred ? { opacity: 0, transition: { duration: 0.1 } } : { opacity: 0, scale: 0.94, filter: "blur(2px)", transition: { duration: 0.2 } }}
       transition={reduced ? { duration: 0 } : springy}
       style={{ zIndex: 50 - depth, transformOrigin: bottom ? "50% 0%" : "50% 100%" }}
       className={cn("absolute inset-x-0", bottom ? "bottom-0" : "top-0")}
@@ -372,7 +539,7 @@ function TicketView({
             e.preventDefault();
             const next = (e.currentTarget.closest("li")?.nextElementSibling ?? e.currentTarget.closest("li")?.previousElementSibling)?.querySelector<HTMLElement>("[data-ticket]");
             next?.focus();
-            tear(1);
+            close();
           }
         }}
         initial={false}
@@ -380,62 +547,22 @@ function TicketView({
         transition={reduced ? { duration: 0 } : springy}
         style={{ x, y, rotate, clipPath, transformOrigin: bottom ? "50% 100%" : "50% 0%" }}
         className={cn(
-          "group relative touch-pan-y overflow-hidden rounded-2xl bg-white shadow-lg ring-1 shadow-black/[0.08] ring-base-50/[0.08] outline-none select-none focus-visible:ring-2 focus-visible:ring-signal/60 dark:bg-base-900 dark:shadow-black/40",
+          "group relative touch-pan-y overflow-hidden outline-none select-none focus-visible:ring-2 focus-visible:ring-signal/60",
+          shell,
           live ? "cursor-grab active:cursor-grabbing" : "pointer-events-none",
+          shred && "invisible",
         )}
       >
         <div ref={content} className={cn("transition-opacity duration-200", tucked && "opacity-0")}>
-          <div className={cn("flex items-start gap-3 py-3.5 pr-10 pl-4", bottom ? "pb-5" : "pt-5")}>
-            <AnimatePresence mode="popLayout" initial={false}>
-              {icons[ticket.kind] && (
-                <motion.span
-                  key={ticket.kind}
-                  initial={{ scale: 0.3, opacity: 0, rotate: -30 }}
-                  animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                  exit={{ scale: 0.3, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 520, damping: 22 }}
-                  className="mt-px flex shrink-0"
-                >
-                  {icons[ticket.kind]}
-                </motion.span>
-              )}
-            </AnimatePresence>
-            <Typewriter
-              key={ticket.version}
-              title={ticket.title}
-              description={ticket.description}
-              delay={ticket.version === 0 ? 260 : 90}
-              reduced={!!reduced}
-            />
-            {ticket.action && (
-              <button
-                type="button"
-                onPointerDownCapture={(e) => e.stopPropagation()}
-                onClick={() => {
-                  ticket.action?.onClick();
-                  tear(1);
-                }}
-                className="-my-0.5 h-7 shrink-0 cursor-pointer rounded-lg bg-base-50 px-2.5 text-[13px] font-medium text-base-950 transition-colors outline-none hover:bg-base-200 focus-visible:ring-2 focus-visible:ring-signal/60"
-              >
-                {ticket.action.label}
-              </button>
-            )}
-          </div>
-
-          <button
-            type="button"
-            aria-label="Dismiss"
-            onPointerDownCapture={(e) => e.stopPropagation()}
-            onClick={() => tear(1)}
-            className="absolute top-2.5 right-2.5 grid size-6 cursor-pointer place-items-center rounded-md text-base-500 opacity-0 transition-[opacity,color,background-color] outline-none group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-base-50/[0.06] hover:text-base-50 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-signal/60 max-sm:opacity-100"
-          >
-            <X className="size-3.5" />
-          </button>
-
-          {/* The perforation at the slot edge, burning down as time runs out */}
-          <TearLine life={life} timed={timed} bottom={bottom} />
+          {face(false)}
         </div>
       </motion.div>
+
+      {shred && (
+        <Shred height={own} bottom={bottom}>
+          <div className={cn("relative h-full overflow-hidden", shell)}>{face(true)}</div>
+        </Shred>
+      )}
     </motion.li>
   );
 }
