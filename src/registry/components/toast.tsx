@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import { AnimatePresence, animate, motion, useMotionValue, useReducedMotion, useTransform, type MotionValue, type PanInfo } from "motion/react";
-import { Check, LoaderCircle, X } from "lucide-react";
+import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /* ---------------------------------- store ---------------------------------- */
@@ -249,15 +249,50 @@ function DeclineMark({ still }: { still?: boolean }) {
   );
 }
 
-function icon(kind: Kind, still = false): ReactNode {
-  if (kind === "success")
+/** The approved mark: a rubber stamp that slams down, leaves a ring of ink, then the tick is drawn in. */
+function StampMark({ still, delay = 0 }: { still?: boolean; delay?: number }) {
+  if (still)
     return (
       <span className="grid size-5 place-items-center rounded-full bg-emerald-600 text-white">
         <Check className="size-3" strokeWidth={3} />
       </span>
     );
+  return (
+    <span className="relative grid size-5 place-items-center">
+      <motion.span
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: [0.9, 1, 2.2], opacity: [0, 0.55, 0] }}
+        transition={{ duration: 0.6, delay: delay + 0.12, times: [0, 0.05, 1], ease: "easeOut" }}
+        className="absolute inset-0 rounded-full ring-2 ring-emerald-500"
+      />
+      <motion.span
+        initial={{ scale: 2.4, rotate: -16, opacity: 0 }}
+        animate={{ scale: 1, rotate: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 760, damping: 22, delay, opacity: { duration: 0.08, delay } }}
+        className="relative grid size-5 place-items-center rounded-full bg-emerald-600 text-white"
+      >
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" className="size-3">
+          <motion.path d="M2.8 6.3l2.2 2.2 4.2-4.6" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.24, delay: delay + 0.16, ease: "easeOut" }} />
+        </svg>
+      </motion.span>
+    </span>
+  );
+}
+
+/** Working: a short pen stroke circling a faint ring. */
+function WorkingMark({ still }: { still?: boolean }) {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" strokeWidth={2} strokeLinecap="round" className={cn("size-5", !still && "animate-spin [animation-duration:900ms]")}>
+      <circle cx="10" cy="10" r="7.5" className="stroke-base-50/10" />
+      <circle cx="10" cy="10" r="7.5" strokeDasharray="12 48" className="stroke-base-400" />
+    </svg>
+  );
+}
+
+function icon(kind: Kind, still = false, delay = 0): ReactNode {
+  if (kind === "success") return <StampMark still={still} delay={delay} />;
   if (kind === "error") return <DeclineMark still={still} />;
-  if (kind === "loading") return <LoaderCircle className={cn("size-5 text-base-500", !still && "animate-spin")} />;
+  if (kind === "loading") return <WorkingMark still={still} />;
   return null;
 }
 
@@ -348,7 +383,8 @@ function TicketView({
   const content = useRef<HTMLDivElement>(null);
   const [own, setOwn] = useState(0);
   const [torn, setTorn] = useState(false);
-  const [shred, setShred] = useState(false);
+  /** How the ticket leaves: declined is shredded, approved is filed back into the slot, the rest flap over. */
+  const [leaving, setLeaving] = useState<"shred" | "file" | "flap" | null>(null);
   const side = bottom ? 1 : -1;
 
   // Feeding: 1 is still inside the slot, 0 is all the way out
@@ -362,6 +398,10 @@ function TicketView({
   // Tearing: dragged sideways, pivoting on the edge still in the slot
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-240, 240], reduced ? [0, 0] : [-side * 9, side * 9]);
+
+  // Flapping over: tips back on the edge in the slot, darkening as it goes edge-on
+  const tilt = useMotionValue(0);
+  const shade = useTransform(tilt, (v) => 1 - (Math.abs(v) / 90) * 0.45);
 
   // Time left, 1 to 0. Drawn as the tear line burning down.
   const life = useMotionValue(1);
@@ -397,28 +437,41 @@ function TicketView({
 
   const live = depth === 0 || expanded;
   const tucked = !expanded && depth > 0;
-  // Declined tickets go through the shredder, unless they're tucked in the pile or motion is reduced
-  const shreddable = ticket.kind === "error" && !reduced && !tucked && own > 0;
-  const latest = useRef(shreddable);
+  /** Leaves the way its kind does. Tucked in the pile, or with reduced motion, it just fades. */
+  const leave = () => {
+    if (torn || leaving) return;
+    if (reduced || tucked || own === 0) toast.dismiss(ticket.id);
+    else setLeaving(ticket.kind === "error" ? "shred" : ticket.kind === "success" ? "file" : "flap");
+  };
+  const latest = useRef(leave);
   useLayoutEffect(() => {
-    latest.current = shreddable;
+    latest.current = leave;
   });
 
   useEffect(() => {
-    if (!timed || paused || torn || shred) return;
+    if (!timed || paused || torn || leaving) return;
     const run = animate(life, 0, {
       duration: (life.get() * duration) / 1000,
       ease: "linear",
-      onComplete: () => (latest.current ? setShred(true) : toast.dismiss(ticket.id)),
+      onComplete: () => latest.current(),
     });
     return () => run.stop();
-  }, [timed, paused, torn, shred, duration, life, ticket.id, ticket.version]);
+  }, [timed, paused, torn, leaving, duration, life, ticket.id, ticket.version]);
 
   useEffect(() => {
-    if (!shred) return;
-    const t = setTimeout(() => toast.dismiss(ticket.id), SHRED_TIME);
-    return () => clearTimeout(t);
-  }, [shred, ticket.id]);
+    if (!leaving) return;
+    if (leaving === "shred") {
+      const t = setTimeout(() => toast.dismiss(ticket.id), SHRED_TIME);
+      return () => clearTimeout(t);
+    }
+    // Filed: rolled back into the slot, quicker than it came out. Flap: tipped over backwards.
+    const run =
+      leaving === "file"
+        ? animate(feed, 1, { duration: 0.5, ease: [0.5, 0, 0.75, 0] })
+        : animate(tilt, side * 90, { duration: 0.42, ease: [0.55, 0, 0.8, 0.3] });
+    run.then(() => toast.dismiss(ticket.id));
+    return () => run.stop();
+  }, [leaving, feed, tilt, side, ticket.id]);
 
   const tear = (dir: 1 | -1, velocity = 0) => {
     setTorn(true);
@@ -433,12 +486,8 @@ function TicketView({
     });
   };
 
-  /** Closed by hand (button or Escape): declined tickets are shredded, the rest torn off. */
-  const close = () => {
-    if (torn || shred) return;
-    if (shreddable) setShred(true);
-    else tear(1);
-  };
+  /** Closed by hand (button or Escape) leaves the same way as running out of time. */
+  const close = leave;
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     const dir = (info.offset.x + info.velocity.x * 0.15 >= 0 ? 1 : -1) as 1 | -1;
@@ -453,17 +502,17 @@ function TicketView({
         {still ? (
           icon(ticket.kind, true) && <span className="mt-px flex shrink-0">{icon(ticket.kind, true)}</span>
         ) : (
-          <AnimatePresence mode="popLayout" initial={false}>
+          <AnimatePresence mode="popLayout">
             {icon(ticket.kind) && (
               <motion.span
                 key={ticket.kind}
-                initial={{ scale: 0.3, opacity: 0, rotate: -30 }}
+                initial={ticket.kind === "success" || ticket.kind === "error" ? false : { scale: 0.3, opacity: 0, rotate: -30 }}
                 animate={{ scale: 1, opacity: 1, rotate: 0 }}
                 exit={{ scale: 0.3, opacity: 0 }}
                 transition={{ type: "spring", stiffness: 520, damping: 22 }}
                 className="mt-px flex shrink-0"
               >
-                {icon(ticket.kind)}
+                {icon(ticket.kind, false, ticket.version === 0 ? 0.5 : 0.08)}
               </motion.span>
             )}
           </AnimatePresence>
@@ -474,6 +523,7 @@ function TicketView({
           description={ticket.description}
           delay={ticket.version === 0 ? 260 : 90}
           reduced={still || !!reduced}
+          hold={ticket.kind === "loading"}
         />
         {ticket.action && (
           <button
@@ -504,7 +554,7 @@ function TicketView({
       )}
 
       {/* The perforation at the slot edge, burning down as time runs out */}
-      <TearLine life={life} timed={timed} bottom={bottom} />
+      <TearLine life={life} timed={timed} working={ticket.kind === "loading" && !still && !reduced} bottom={bottom} />
     </>
   );
 
@@ -520,7 +570,7 @@ function TicketView({
         scale: tucked ? 1 - depth * 0.05 : 1,
         opacity: 1,
       }}
-      exit={torn || shred ? { opacity: 0, transition: { duration: 0.1 } } : { opacity: 0, scale: 0.94, filter: "blur(2px)", transition: { duration: 0.2 } }}
+      exit={torn || leaving ? { opacity: 0, transition: { duration: 0.1 } } : { opacity: 0, scale: 0.94, filter: "blur(2px)", transition: { duration: 0.2 } }}
       transition={reduced ? { duration: 0 } : springy}
       style={{ zIndex: 50 - depth, transformOrigin: bottom ? "50% 0%" : "50% 100%" }}
       className={cn("absolute inset-x-0", bottom ? "bottom-0" : "top-0")}
@@ -545,12 +595,12 @@ function TicketView({
         initial={false}
         animate={{ height: own === 0 ? "auto" : tucked ? frontHeight : own }}
         transition={reduced ? { duration: 0 } : springy}
-        style={{ x, y, rotate, clipPath, transformOrigin: bottom ? "50% 100%" : "50% 0%" }}
+        style={{ x, y, rotate, rotateX: tilt, transformPerspective: 700, opacity: shade, clipPath, transformOrigin: bottom ? "50% 100%" : "50% 0%" }}
         className={cn(
           "group relative touch-pan-y overflow-hidden outline-none select-none focus-visible:ring-2 focus-visible:ring-signal/60",
           shell,
           live ? "cursor-grab active:cursor-grabbing" : "pointer-events-none",
-          shred && "invisible",
+          leaving === "shred" && "invisible",
         )}
       >
         <div ref={content} className={cn("transition-opacity duration-200", tucked && "opacity-0")}>
@@ -558,7 +608,7 @@ function TicketView({
         </div>
       </motion.div>
 
-      {shred && (
+      {leaving === "shred" && (
         <Shred height={own} bottom={bottom}>
           <div className={cn("relative h-full overflow-hidden", shell)}>{face(true)}</div>
         </Shred>
@@ -575,11 +625,24 @@ const pace = (length: number) => Math.min(34, Math.max(12, 560 / Math.max(length
 /**
  * The ticket's words, typed in behind a caret. The title types, the caret
  * returns to the start of the next line, the description types, and the caret
- * goes home and fades. Both lines are laid out in full from the first frame
+ * goes home and fades (or, while `hold`, waits at the end blinking). Both lines are laid out in full from the first frame
  * (an invisible copy under the typed one), so typing never moves anything.
  * Text that isn't a plain string appears whole.
  */
-function Typewriter({ title, description, delay, reduced }: { title: ReactNode; description?: ReactNode; delay: number; reduced: boolean }) {
+function Typewriter({
+  title,
+  description,
+  delay,
+  reduced,
+  hold = false,
+}: {
+  title: ReactNode;
+  description?: ReactNode;
+  delay: number;
+  reduced: boolean;
+  /** Still working: once typed, the caret waits at the end of the line, blinking. */
+  hold?: boolean;
+}) {
   const head = typeof title === "string" ? title : "";
   const body = typeof description === "string" ? description : "";
   const a = head.length;
@@ -598,13 +661,21 @@ function Typewriter({ title, description, delay, reduced }: { title: ReactNode; 
   useEffect(() => {
     if (home) return;
     if (step >= steps) {
+      if (hold) return;
       const t = setTimeout(() => setHome(true), 420);
       return () => clearTimeout(t);
     }
     const wait = step === 0 ? delay : step === a && b > 0 ? 240 : step === a + 1 && b > 0 ? 300 : pace(step < a ? a : b);
     const t = setTimeout(() => setStep(step + 1), wait);
     return () => clearTimeout(t);
-  }, [step, steps, home, delay, a, b]);
+  }, [step, steps, home, delay, a, b, hold]);
+
+  // Waiting at the end of the line
+  useEffect(() => {
+    if (!hold || home || step < steps) return;
+    const blink = animate(caret, [1, 1, 0, 0], { duration: 1, times: [0, 0.5, 0.55, 1], repeat: Infinity });
+    return () => blink.stop();
+  }, [hold, home, step, steps, caret]);
 
   // Follow the insertion point; a new line is a carriage return the caret slides through
   useLayoutEffect(() => {
@@ -674,12 +745,20 @@ function Typewriter({ title, description, delay, reduced }: { title: ReactNode; 
   );
 }
 
-function TearLine({ life, timed, bottom }: { life: MotionValue<number>; timed: boolean; bottom: boolean }) {
+function TearLine({ life, timed, working, bottom }: { life: MotionValue<number>; timed: boolean; working: boolean; bottom: boolean }) {
   const dashes = "bg-[repeating-linear-gradient(90deg,currentColor_0_3px,transparent_3px_7px)]";
   return (
     <span aria-hidden className={cn("absolute inset-x-4 h-px", bottom ? "bottom-2" : "top-2")}>
       <span className={cn("absolute inset-0 text-base-50/[0.12]", dashes)} />
       {timed && <motion.span style={{ scaleX: life }} className={cn("absolute inset-0 origin-left text-base-50/40", dashes)} />}
+      {/* Still working: a print head shuttling along the line */}
+      {working && (
+        <motion.span
+          animate={{ left: ["0%", "78%"] }}
+          transition={{ duration: 0.9, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
+          className={cn("absolute inset-y-0 w-[22%] text-base-50/50", dashes)}
+        />
+      )}
     </span>
   );
 }
