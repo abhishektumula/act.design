@@ -112,9 +112,9 @@ function useDocumentHidden() {
 /**
  * Where tickets print. Render it once, near the root; call `toast()` from anywhere.
  *
- * Each ticket feeds out of a slot at the screen's edge in short mechanical
- * bursts, and pushes the older ones back into a pile. Hover or focus the pile
- * and it fans out and every timer stops. Tear a ticket off sideways to dismiss
+ * Each ticket rolls out of a slot at the screen's edge and its words type in
+ * behind a caret, like a sheet in a typewriter. New tickets push the older
+ * ones back into a pile. Hover or focus the pile and it fans out and every timer stops. Tear a ticket off sideways to dismiss
  * it: a flick sends it, a slow drag snaps back. Alt+T focuses the newest
  * ticket and Escape dismisses the focused one.
  */
@@ -300,14 +300,10 @@ function TicketView({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Feed out of the slot in three bursts, the way a printer advances paper
+  // Roll out of the slot in one long, even motion, the way a typewriter feeds a sheet
   useLayoutEffect(() => {
     if (reduced) return;
-    const run = animate(feed, [1, 0.58, 0.58, 0.24, 0.24, 0], {
-      duration: 0.62,
-      times: [0, 0.22, 0.38, 0.6, 0.74, 1],
-      ease: ["easeOut", "linear", "easeOut", "linear", [0.2, 0.9, 0.3, 1]],
-    });
+    const run = animate(feed, 0, { duration: 0.7, ease: [0.25, 0.8, 0.3, 1] });
     return () => run.stop();
   }, [feed, reduced]);
 
@@ -404,21 +400,13 @@ function TicketView({
                 </motion.span>
               )}
             </AnimatePresence>
-            <div className="min-w-0 flex-1">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.p
-                  key={ticket.version}
-                  initial={{ opacity: 0, y: 6, filter: "blur(3px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -6, filter: "blur(3px)" }}
-                  transition={{ duration: 0.22, ease: "easeOut" }}
-                  className="text-sm leading-5 font-medium text-pretty text-base-50"
-                >
-                  {ticket.title}
-                </motion.p>
-              </AnimatePresence>
-              {ticket.description && <p className="mt-0.5 text-[13px] leading-5 text-pretty text-base-400">{ticket.description}</p>}
-            </div>
+            <Typewriter
+              key={ticket.version}
+              title={ticket.title}
+              description={ticket.description}
+              delay={ticket.version === 0 ? 260 : 90}
+              reduced={!!reduced}
+            />
             {ticket.action && (
               <button
                 type="button"
@@ -449,6 +437,113 @@ function TicketView({
         </div>
       </motion.div>
     </motion.li>
+  );
+}
+
+/* -------------------------------- typewriter -------------------------------- */
+
+/** Milliseconds per character, so a short line types slowly and a long one still finishes in about half a second. */
+const pace = (length: number) => Math.min(34, Math.max(12, 560 / Math.max(length, 1)));
+
+/**
+ * The ticket's words, typed in behind a caret. The title types, the caret
+ * returns to the start of the next line, the description types, and the caret
+ * goes home and fades. Both lines are laid out in full from the first frame
+ * (an invisible copy under the typed one), so typing never moves anything.
+ * Text that isn't a plain string appears whole.
+ */
+function Typewriter({ title, description, delay, reduced }: { title: ReactNode; description?: ReactNode; delay: number; reduced: boolean }) {
+  const head = typeof title === "string" ? title : "";
+  const body = typeof description === "string" ? description : "";
+  const a = head.length;
+  const b = body.length;
+  // Steps: a characters of title, then (with a description) one carriage return, then b characters
+  const steps = b > 0 ? a + 1 + b : a;
+  const [step, setStep] = useState(reduced ? steps : 0);
+  const [home, setHome] = useState(reduced || steps === 0);
+
+  const mark = useRef<HTMLSpanElement>(null);
+  const cx = useMotionValue(0);
+  const cy = useMotionValue(0);
+  const caret = useMotionValue(home ? 0 : 1);
+  const lastTop = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (home) return;
+    if (step >= steps) {
+      const t = setTimeout(() => setHome(true), 420);
+      return () => clearTimeout(t);
+    }
+    const wait = step === 0 ? delay : step === a && b > 0 ? 240 : step === a + 1 && b > 0 ? 300 : pace(step < a ? a : b);
+    const t = setTimeout(() => setStep(step + 1), wait);
+    return () => clearTimeout(t);
+  }, [step, steps, home, delay, a, b]);
+
+  // Follow the insertion point; a new line is a carriage return the caret slides through
+  useLayoutEffect(() => {
+    const node = mark.current;
+    if (!node || home) return;
+    const left = node.offsetLeft;
+    const top = node.offsetTop;
+    if (lastTop.current !== null && top !== lastTop.current) {
+      animate(cx, left, { duration: 0.3, ease: [0.3, 0.7, 0.2, 1] });
+      animate(cy, top, { duration: 0.3, ease: [0.3, 0.7, 0.2, 1] });
+    } else {
+      cx.set(left);
+      cy.set(top);
+    }
+    lastTop.current = top;
+  }, [step, home, cx, cy]);
+
+  // Done: back to the start of the line, and gone
+  useEffect(() => {
+    if (!home || reduced) return;
+    const back = animate(cx, 0, { duration: 0.34, ease: [0.3, 0.7, 0.2, 1] });
+    const fade = animate(caret, 0, { duration: 0.2, delay: 0.26 });
+    return () => {
+      back.stop();
+      fade.stop();
+    };
+  }, [home, reduced, cx, caret]);
+
+  const titleTyped = Math.min(step, a);
+  const bodyTyped = Math.max(0, step - a - 1);
+  const inBody = b > 0 && step > a;
+  const marker = <span ref={mark} className="inline-block h-5 w-0 align-top" />;
+
+  const line = (full: string, typed: number, markHere: boolean, className: string) => (
+    <p aria-hidden className={cn("grid", className)}>
+      <span className="invisible col-start-1 row-start-1">{full}</span>
+      <span className="col-start-1 row-start-1">
+        {full.slice(0, typed)}
+        {markHere && marker}
+      </span>
+    </p>
+  );
+
+  return (
+    <div className="relative min-w-0 flex-1">
+      {head ? (
+        <>
+          <span className="sr-only">{head}</span>
+          {line(head, titleTyped, !inBody, "text-sm leading-5 font-medium text-base-50")}
+        </>
+      ) : (
+        <p className="text-sm leading-5 font-medium text-base-50">{title}</p>
+      )}
+      {description &&
+        (body ? (
+          <>
+            <span className="sr-only">{body}</span>
+            {line(body, bodyTyped, inBody, "mt-0.5 text-[13px] leading-5 text-base-400")}
+          </>
+        ) : (
+          <p className="mt-0.5 text-[13px] leading-5 text-base-400">{description}</p>
+        ))}
+      {steps > 0 && !reduced && (
+        <motion.span aria-hidden style={{ x: cx, y: cy, opacity: caret }} className="pointer-events-none absolute top-0.5 left-0 h-4 w-0.5 rounded-full bg-signal" />
+      )}
+    </div>
   );
 }
 
