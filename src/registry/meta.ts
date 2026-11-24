@@ -32,6 +32,7 @@ export const registry: RegistryItem[] = [
   { slug: "trash-bin", name: "Trash Bin", category: "Actions", description: "Delete by hand. Hold a file and the sheet crumples into a ball under your finger; drag it over the bin and the rim lifts to meet it, let go and it drops in with a wobble. Miss and it rolls home and smooths back out. Delete on the keyboard throws it in an arc.", deps: [M], isNew: true },
 
   // Motion
+  { slug: "burst", name: "Burst", category: "Motion", description: "Everything spreading out of a single point. Rings of cards are thrown from the centre in every direction, growing as they travel while the gaps between them widen, then fade at the edges and are thrown again. Point at it to hold it still. Rings, cards per ring, speed and card size are yours to set.", deps: [M], isNew: true },
   { slug: "card-stack", name: "Card Stack", category: "Motion", description: "A deck you deal by hand. Fling the top card and it tucks itself under the pile while the rest rise to meet you.", deps: [M, L] },
   { slug: "number-ticker", name: "Number Ticker", category: "Motion", description: "Digits that roll like an odometer whenever the value changes.", deps: [M, L] },
   { slug: "text-stagger", name: "Text Stagger", category: "Motion", description: "Headlines that rise word by word, and body copy that streams in token by token. Words never split, so it wraps cleanly at any width.", deps: [M, L] },

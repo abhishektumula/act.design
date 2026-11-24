@@ -48,7 +48,7 @@ export function LoginForm({ next }: { next: string }) {
         <h1 className="text-4xl leading-tight font-semibold tracking-[-0.025em] text-base-50 sm:text-5xl">
           Welcome <Highlight>back</Highlight>
         </h1>
-        <p className="mt-5 max-w-sm text-lg leading-8 text-pretty text-base-400">Sign in to copy the source of every instrument and block.</p>
+        <p className="mt-5 max-w-sm text-lg leading-8 text-pretty text-base-400">Sign in to copy the source of every component and block.</p>
 
         <motion.form ref={form} action={action} className="mt-10 flex max-w-sm flex-col gap-5">
           <input type="hidden" name="next" value={next} />

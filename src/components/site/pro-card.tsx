@@ -12,14 +12,14 @@ export function ProCard() {
         <div className="px-3 pt-4 pb-3">
           <p className="text-sm text-base-500">act.design Max</p>
           <p className="mt-1 text-lg font-semibold tracking-[-0.015em] text-base-50">Build with everything in Max</p>
-          <p className="mt-2 text-sm leading-6 text-base-400">Source for every instrument and every block, ready to copy into React and Next.js.</p>
+          <p className="mt-2 text-sm leading-6 text-base-400">Source for every component and every block, ready to copy into React and Next.js.</p>
           <Link href="/pricing" className={`${btnPrimary} mt-5 h-10 w-full rounded-lg text-sm`}>
             Get All-Access
           </Link>
         </div>
       </div>
       <p className="mt-4 px-1 text-sm leading-6 text-base-500">
-        All-Access includes all {registry.length} instruments and {blocks.length} blocks. Pay once.
+        All-Access includes all {registry.length} components and {blocks.length} blocks. Pay once.
       </p>
     </div>
   );

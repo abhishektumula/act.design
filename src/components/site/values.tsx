@@ -114,7 +114,7 @@ function Field({ control, value, onChange }: { control: Control; value: Value; o
   }
 }
 
-/** Every value an instrument takes, as controls beside a live copy of it, and the code that matches. */
+/** Every value an component takes, as controls beside a live copy of it, and the code that matches. */
 export function Values({ slug }: { slug: string }) {
   const pg = playgrounds[slug];
   const [values, setValues] = useState<V>(() => ({ ...(pg?.defaults ?? {}) }));
@@ -129,7 +129,7 @@ export function Values({ slug }: { slug: string }) {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-2xl font-semibold tracking-[-0.02em] text-base-50">Values</h2>
-          <p className="mt-1.5 text-[15px] text-base-400">Change any of them and the instrument answers live. The code below follows along.</p>
+          <p className="mt-1.5 text-[15px] text-base-400">Change any of them and the component answers live. The code below follows along.</p>
         </div>
         <button
           type="button"

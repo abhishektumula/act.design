@@ -29,11 +29,11 @@ export function Footer() {
         <div>
           <Logo />
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-base-500">
-            Instruments for the interface. A small library of tactile React components. Copy, paste, keep the feel.
+            A small library of tactile React components. Copy, paste, keep the feel.
           </p>
           <p className="mt-6 inline-flex items-center gap-2 rounded-md bg-base-900 px-2.5 py-1 text-xs text-base-400 ring-1 ring-base-50/[0.06]">
             <span className="size-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" />
-            {registry.length} instruments · {blocks.length} blocks
+            {registry.length} components · {blocks.length} blocks
           </p>
         </div>
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4">

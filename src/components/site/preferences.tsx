@@ -3,7 +3,7 @@
 import { Switch } from "@/components/ui/switch";
 import { setTheme, useTheme } from "./theme-toggle";
 
-/** Site preferences, made from the instruments themselves. */
+/** Site preferences, made from the components themselves. */
 export function Preferences() {
   const { dark } = useTheme();
 

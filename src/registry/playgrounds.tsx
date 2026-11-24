@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { CalendarDays, CreditCard, FilePlus2, Kanban, LayoutDashboard, List, Moon, Rows3, Settings, Table2, Trash2, UserPlus } from "lucide-react";
+import { Burst } from "@/components/ui/burst";
 import { Button } from "@/components/ui/button";
 import { CardStack } from "@/components/ui/card-stack";
 import { CodeInput } from "@/components/ui/code-input";
@@ -353,6 +354,40 @@ export const playgrounds: Record<string, Playground> = {
       />
     ),
     code: (v) => `<CardStack\n  aspectRatio="${v.aspectRatio}"\n  items={cards} // ${v.count} items with an id\n  renderItem={(card) => <Card {...card} />}\n/>`,
+  },
+  burst: {
+    component: "Burst",
+    controls: [
+      { type: "number", key: "rings", label: "Rings", min: 2, max: 7, step: 1 },
+      { type: "number", key: "perRing", label: "Cards per ring", min: 3, max: 10, step: 1 },
+      { type: "number", key: "speed", label: "Speed", min: 10, max: 160, step: 2, unit: "px/s" },
+      { type: "number", key: "itemWidth", label: "Card width", min: 100, max: 320, step: 10, unit: "px" },
+      { type: "number", key: "itemHeight", label: "Card height", min: 80, max: 280, step: 10, unit: "px" },
+      { type: "boolean", key: "pauseOnHover", label: "Pause on hover" },
+      { type: "boolean", key: "showOrigin", label: "Show origin" },
+    ],
+    defaults: { rings: 4, perRing: 6, speed: 46, itemWidth: 150, itemHeight: 115, pauseOnHover: true, showOrigin: true },
+    render: (v) => (
+      <Burst
+        items={Array.from({ length: 8 }, (_, i) => i)}
+        rings={n(v.rings)}
+        perRing={n(v.perRing)}
+        speed={n(v.speed)}
+        itemWidth={n(v.itemWidth)}
+        itemHeight={n(v.itemHeight)}
+        pauseOnHover={!!v.pauseOnHover}
+        showOrigin={!!v.showOrigin}
+        className="h-[26rem] rounded-xl bg-base-950"
+        renderItem={(i) => (
+          <div className={`flex size-full items-end rounded-xl p-4 text-2xl font-semibold shadow-lg ring-1 ring-black/5 ${i % 3 === 0 ? "bg-blue-500 text-white" : "bg-base-900 text-base-300"}`}>
+            {String(i + 1).padStart(2, "0")}
+          </div>
+        )}
+      />
+    ),
+    remount: false,
+    code: (v) =>
+      `<Burst\n  items={items}\n  renderItem={(item) => <Card {...item} />}\n  rings={${v.rings}}\n  perRing={${v.perRing}}\n  speed={${v.speed}}\n  itemWidth={${v.itemWidth}}\n  itemHeight={${v.itemHeight}}\n  pauseOnHover={${v.pauseOnHover}}\n  showOrigin={${v.showOrigin}}\n/>`,
   },
   "number-ticker": {
     component: "NumberTicker",

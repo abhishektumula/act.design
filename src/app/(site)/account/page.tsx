@@ -14,7 +14,7 @@ import { blocks, registry } from "@/registry/meta";
 
 export const metadata: Metadata = { title: "Account · act.design" };
 
-const perks = ["Source for every instrument", "Every block, including AI", "New pieces as they ship", "Use in unlimited projects"];
+const perks = ["Source for every component", "Every block, including AI", "New pieces as they ship", "Use in unlimited projects"];
 
 async function AccountDetails() {
   const user = await getUser();
@@ -23,7 +23,7 @@ async function AccountDetails() {
   const stats = [
     ["Plan", user.plan],
     ["Billing", "Paid once"],
-    ["Instruments", `${registry.length}/${registry.length}`],
+    ["Components", `${registry.length}/${registry.length}`],
     ["Blocks", `${blocks.length}/${blocks.length}`],
   ];
 
@@ -40,7 +40,7 @@ async function AccountDetails() {
         >
           <div className="mt-8 flex flex-wrap gap-2">
             <Link href="/components" className={`${btnSecondary} group h-10 rounded-lg px-5 text-sm`}>
-              Open the instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+              Open the components <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <form action={signOut}>
               <button className="flex h-10 items-center gap-2 rounded-lg px-4 text-sm text-base-500 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400">

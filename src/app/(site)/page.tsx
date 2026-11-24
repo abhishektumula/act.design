@@ -18,7 +18,7 @@ import { ExternalLink } from "lucide-react";
 
 const linkArrow = `${btnSecondary} group h-10 rounded-lg px-4 text-sm`;
 
-/** Bento placement for the instrument index: the most hands-on pieces first. Three columns, no holes. */
+/** Bento placement for the component index: the most hands-on pieces first. Three columns, no holes. */
 const layout: [string, string][] = [
   ["layer-text", "lg:col-span-2 h-[460px]"],
   ["prune-reveal-animation", "lg:row-span-2 h-[660px] lg:h-auto"],
@@ -43,17 +43,17 @@ export default function Home() {
           <div className="mx-auto flex max-w-[1400px] flex-col items-center px-6">
             <LayerText text="act.design" size="clamp(4rem, 16vw, 15rem)" weight={800} tracking={-0.05} handle={10} className="text-base-50" />
             <p className="mt-12 text-sm text-base-500">
-              Point at a letter. This is <Link href="/components/layer-text" className="text-base-200 underline decoration-base-700 underline-offset-4 hover:text-base-50">Layer Text</Link>, one of the instruments.
+              Point at a letter. This is <Link href="/components/layer-text" className="text-base-200 underline decoration-base-700 underline-offset-4 hover:text-base-50">Layer Text</Link>, one of the components.
             </p>
           </div>
         </section>
 
-        {/* Instruments */}
+        {/* Components */}
         <section className="relative">
           <div className="mx-auto max-w-[1400px] px-6 py-20 sm:py-28">
             <SectionTitle
               chip={
-                <Chip label="Instruments" count={`${registry.length} live`} />
+                <Chip label="Components" count={`${registry.length} live`} />
               }
               title={
                 <>
@@ -63,7 +63,7 @@ export default function Home() {
               body="No forty flavours of button. Each piece was rebuilt until it felt right under a thumb, a trackpad and a keyboard. Every tile below is live."
               action={
                 <Link href="/components" className={linkArrow}>
-                  All {registry.length} instruments{" "}
+                  All {registry.length} components{" "}
                   <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
               }
@@ -101,7 +101,7 @@ export default function Home() {
                   Open Prune Reveal <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                 </Link>
                 <Link href="/components#ai" className={`${btnSecondary} h-11 rounded-lg px-5 text-[15px]`}>
-                  More AI instruments
+                  More AI components
                 </Link>
               </div>
             </div>
@@ -109,11 +109,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* A camera touring the library: it settles on one instrument, pulls back, travels and closes in on the next */}
+        {/* A camera touring the library: it settles on one component, pulls back, travels and closes in on the next */}
         <section aria-labelledby="tour-title" className="py-20 sm:py-28">
           <div className="mx-auto max-w-[1400px] px-6">
             <h2 id="tour-title" className="text-3xl leading-tight font-semibold tracking-[-0.025em] text-balance text-base-50 sm:text-4xl">
-              Every instrument, <Highlight>one at a time</Highlight>
+              Every component, <Highlight>one at a time</Highlight>
             </h2>
             <p className="mt-4 max-w-2xl text-lg leading-8 text-pretty text-base-400">
               A tour of the whole library. It settles on one piece, steps back, crosses the field and closes in on the next. Click the one in focus to open it.
@@ -137,7 +137,7 @@ export default function Home() {
                   Built to feel <Highlight>like objects</Highlight>
                 </>
               }
-              body="Five rules every instrument follows. They are why a dial here turns like a dial, and why the rest of the page stays still while it does."
+              body="Five rules every component follows. They are why a dial here turns like a dial, and why the rest of the page stays still while it does."
             />
             <Features />
           </div>

@@ -67,7 +67,7 @@ async function ComponentPageContent({
         <div className="flex items-center justify-between gap-4">
           <Breadcrumb
             items={[
-              { href: "/components", label: "Instruments" },
+              { href: "/components", label: "Components" },
               {
                 href: `/components#${item.category.toLowerCase().replace(/\s/g, "-")}`,
                 label: item.category,

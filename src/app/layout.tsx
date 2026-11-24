@@ -20,7 +20,7 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "act.design — Instruments for the interface",
+  title: "act.design — Components for the interface",
   description: "A small set of tactile React components with weight, travel and detents. Built with Tailwind CSS and Motion.",
 };
 

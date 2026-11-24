@@ -2,6 +2,7 @@
 
 import type { ComponentType } from "react";
 import Orb from "@/components/ui/orb";
+import Burst from "@/components/ui/burst";
 import CardStack from "@/components/ui/card-stack";
 import CodeInput from "@/components/ui/code-input";
 import CompareSlider from "@/components/ui/compare-slider";
@@ -25,6 +26,7 @@ import TrashBin from "@/components/ui/trash-bin";
 
 export const previews: Record<string, ComponentType> = {
   orb: Orb,
+  burst: Burst,
   "card-stack": CardStack,
   "code-input": CodeInput,
   "compare-slider": CompareSlider,

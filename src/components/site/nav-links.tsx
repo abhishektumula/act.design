@@ -14,15 +14,15 @@ import { NewMark } from "./fx";
 /* Live demos load only once a menu opens, so the bar stays light on every page. */
 const Preview = dynamic(() => import("@/registry/previews").then((m) => m.Preview), { ssr: false });
 
-type MenuId = "instruments" | "blocks";
+type MenuId = "components" | "blocks";
 type Entry = { slug: string; name: string; href: string; group: string; isNew?: boolean };
 
 const menus: Record<MenuId, { label: string; heading: string; href: string; all: string; entries: Entry[] }> = {
-  instruments: {
-    label: "Instruments",
-    heading: "Instruments by kind",
+  components: {
+    label: "Components",
+    heading: "Components by kind",
     href: "/components",
-    all: `Browse all ${registry.length} instruments`,
+    all: `Browse all ${registry.length} components`,
     // Grouped by category, in the sidebar's order
     entries: categories.flatMap((cat) =>
       registry
