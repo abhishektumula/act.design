@@ -23,6 +23,7 @@ export const registry: RegistryItem[] = [
   { slug: "segmented-control", name: "Segmented Control", category: "Controls", description: "A raised cap that glides between options and sinks a touch under your finger. Full arrow-key support.", deps: [M, L, V] },
   { slug: "stepper", name: "Stepper", category: "Controls", description: "A number field whose digits roll in the direction you count. Hold to repeat with acceleration; hit a limit and it shakes its head.", deps: [M, L] },
   { slug: "code-input", name: "Code Input", category: "Controls", description: "A one-time-code field. Digits rise into their slots behind a blinking caret, paste and SMS autofill fill it in one go, and on the last digit it checks: a ripple while it waits, a pop when it passes, a shake and clear when it doesn't.", deps: [M, L] },
+  { slug: "compare-slider", name: "Compare Slider", category: "Controls", description: "Two views of one thing split by a divider you drag: before and after, light and dark, old and new. It takes anything, an image or a live component. The divider bends with the speed you move it, the views smear with motion blur as they go, and when you let go they glitch for a beat: bands tear sideways and the colour splits before it snaps clean. Click anywhere to glide it there, or use the arrow keys.", deps: [M, L], isNew: true },
 
   // Actions
   { slug: "button", name: "Button", category: "Actions", description: "A quiet button with four tones and a minimal shadow. Bind a hotkey and the key is printed inside it, and pressing it on the keyboard clicks the button.", deps: [M, L, V] },
@@ -35,6 +36,8 @@ export const registry: RegistryItem[] = [
   { slug: "number-ticker", name: "Number Ticker", category: "Motion", description: "Digits that roll like an odometer whenever the value changes.", deps: [M, L] },
   { slug: "text-stagger", name: "Text Stagger", category: "Motion", description: "Headlines that rise word by word, and body copy that streams in token by token. Words never split, so it wraps cleanly at any width.", deps: [M, L] },
   { slug: "folder-card", name: "Folder Card", category: "Motion", description: "A folder you can peek into. Hover or focus it and the front flap tips open while the papers inside slide up and fan out. Tap toggles it on touch screens.", deps: [M] },
+  { slug: "layer-text", name: "Layer Text", category: "Motion", description: "Bold type where every letter is its own layer. Point at one and it turns to an outline and takes a design-tool selection: a hairline frame snaps onto it, a square handle pops onto each corner and its size shows underneath. Size, weight, tracking, outline, handles and colour are all yours to set.", deps: [M], isNew: true },
+  { slug: "prune-reveal-animation", name: "Prune Reveal Animation", category: "AI", description: "An AI image that arrives by being pruned into view. While the model works the frame pulses with the prompt; when the image is ready the surface is touched at a random spot and burns away from there along a path of its own, never the same twice, with a soft glowing edge, the picture heating orange ahead of it and embers and ash rising off it. Regenerate and the pulse fades back in over the old image.", deps: [M], isNew: true },
 
   // AI
   { slug: "orb", name: "Orb", category: "AI", description: "A fluid orb drawn by a small WebGL shader: colour folds through itself like ink in water. Idle, listening, thinking and speaking each flow differently and melt into one another. Liquid and halo variants, and it reacts to real microphone input.", deps: [M, L] },
@@ -42,6 +45,7 @@ export const registry: RegistryItem[] = [
 
   // Navigation
   { slug: "command-palette", name: "Command Palette", category: "Navigation", description: "A keyboard-first command menu with fuzzy filtering, groups and shortcuts.", deps: [M, L] },
+  { slug: "infinite-grid", name: "Infinite Grid", category: "Navigation", description: "A canvas that goes on forever in every direction. Drag it and it carries on with momentum, scroll it with a trackpad or step it with the arrow keys. Only the cells on screen are rendered, staggered like bricks so the same item rarely sits beside itself.", deps: [M], isNew: true },
 ];
 
 export function getItem(slug: string) {

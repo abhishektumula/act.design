@@ -6,7 +6,7 @@ import { getUser } from "@/lib/session";
 import { btnPrimary } from "./styles";
 
 const frame =
-  "overflow-hidden rounded-lg bg-base-950 ring-1 ring-base-50/[0.08]";
+  "overflow-hidden rounded-2xl bg-base-900/60 ring-1 ring-base-50/[0.06]";
 
 const fakeLines = [40, 62, 0, 28, 74, 55, 66, 0, 36, 81, 47, 58, 70, 33, 0, 52, 64, 44, 25, 60];
 
@@ -52,13 +52,13 @@ export async function CodePanel({ slug, kind = "components" }: { slug: string; k
           ))}
         </div>
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-linear-to-b from-base-950/40 via-base-950/80 to-base-950 text-center">
-          <span className="grid size-10 place-items-center rounded-md bg-base-950 text-base-200 ring-1 ring-base-50/10">
+          <span className="grid size-10 place-items-center rounded-lg bg-base-950 text-base-200 ring-1 ring-base-50/10">
             <Lock className="size-4" />
           </span>
           <p className="mt-5 font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase">Members only</p>
           <p className="mt-2 text-base font-medium text-base-100">Sign in to view the code</p>
           <p className="mt-1.5 max-w-xs text-sm text-base-500">Source code is available to signed-in members.</p>
-          <Link href={`/login?next=${paths[kind].page}/${slug}`} className={`${btnPrimary} mt-6 h-9 rounded-md px-4 text-[13px]`}>
+          <Link href={`/login?next=${paths[kind].page}/${slug}`} className={`${btnPrimary} mt-6 h-9 rounded-lg px-5 text-[13px]`}>
             Sign in
           </Link>
         </div>

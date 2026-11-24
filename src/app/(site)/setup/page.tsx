@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Highlight } from "@/components/site/fx";
 import { Footer } from "@/components/site/footer";
 import { CopyButton } from "@/components/site/kit/copy-button";
 import { PageHeader, PanelBar } from "@/components/site/frame";
@@ -70,7 +71,7 @@ export function cn(...inputs: ClassValue[]) {
   --base-950: var(--color-neutral-50);
   --canvas: var(--color-white);
   --shade: var(--color-neutral-600);
-  --signal: var(--color-orange-600);
+  --signal: var(--color-blue-600);
 }
 
 .dark {
@@ -88,7 +89,7 @@ export function cn(...inputs: ClassValue[]) {
   --base-950: var(--color-neutral-950);
   --canvas: var(--color-black);
   --shade: var(--color-black);
-  --signal: var(--color-orange-500);
+  --signal: var(--color-blue-500);
 }`,
   },
   {
@@ -110,7 +111,7 @@ export default function SetupPage() {
         <PageHeader
           title={
             <>
-              Five minutes, <span className="font-serif font-normal tracking-[-0.02em] italic">once.</span>
+              Five minutes, <Highlight>once</Highlight>
             </>
           }
           body="Do this once per project. After that every component and block is a straight copy and paste. Assumes React 19 and Tailwind CSS v4."
@@ -121,14 +122,14 @@ export default function SetupPage() {
             <li key={s.title} className="relative grid gap-5 pb-14 last:pb-0 sm:grid-cols-[4rem_1fr]">
               {/* The rail */}
               {i < steps.length - 1 && <span aria-hidden className="absolute top-8 bottom-0 left-[11px] w-px bg-base-50/[0.08] max-sm:hidden" />}
-              <span className="relative grid size-6 place-items-center rounded-[4px] bg-canvas font-mono text-[11px] text-signal tabular-nums ring-1 ring-base-50/15">
+              <span className="relative grid size-6 place-items-center rounded-md bg-base-900 font-mono text-[11px] text-signal tabular-nums ring-1 ring-base-50/15">
                 {i + 1}
               </span>
               <div className="min-w-0">
                 <p className="font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase">Step 0{i + 1}</p>
                 <h2 className="mt-2 text-2xl font-medium tracking-[-0.02em] text-base-50">{s.title}</h2>
                 <p className="mt-2 max-w-2xl leading-7 text-pretty text-base-500">{s.body}</p>
-                <div className="mt-5 overflow-hidden rounded-lg bg-base-950 ring-1 ring-base-50/[0.08]">
+                <div className="mt-5 overflow-hidden rounded-2xl bg-base-900/60 ring-1 ring-base-50/[0.06]">
                   <PanelBar label={<span className="tracking-normal normal-case">{s.file}</span>} className="pr-2">
                     <CopyButton value={s.code} />
                   </PanelBar>

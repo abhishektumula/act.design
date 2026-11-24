@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 import { Footer } from "@/components/site/footer";
-import { Crosses, PageHeader } from "@/components/site/frame";
-import { btnBase, btnSecondary, hairGrid, panel } from "@/components/site/styles";
+import { PageHeader } from "@/components/site/frame";
+import { btnPrimary, btnSecondary, panel } from "@/components/site/styles";
+import { Highlight } from "@/components/site/fx";
 import { blocks, categories, registry, type Category } from "@/registry/meta";
 import { cn } from "@/lib/utils";
 
@@ -106,11 +107,11 @@ export default function PricingPage() {
 
   return (
     <>
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 pt-36 pb-32">
+      <main className="relative mx-auto w-full max-w-6xl flex-1 px-6 pt-36 pb-32">
         <PageHeader
           title={
             <>
-              Pay once. <span className="font-serif font-normal tracking-[-0.02em] italic">Keep the feel.</span>
+              Pay once. <Highlight>Keep the feel</Highlight>
             </>
           }
           body="No subscription, no seats. Buy the source once and it's yours, in as many projects as the plan allows."
@@ -118,22 +119,24 @@ export default function PricingPage() {
 
         {/* Plans */}
         <div className="relative mt-16">
-          <Crosses />
-          <div className={cn(hairGrid, "lg:grid-cols-3")}>
+          <div className="grid gap-4 lg:grid-cols-3 lg:items-stretch">
             {plans.map((plan) => (
-              <div key={plan.id} className="relative flex flex-col bg-base-950 p-7 sm:p-8">
-                {plan.featured && <span aria-hidden className="absolute inset-x-0 -top-px h-px bg-signal shadow-[0_0_12px_var(--signal)]" />}
+              <div
+                key={plan.id}
+                className={cn(
+                  "relative flex flex-col rounded-2xl bg-base-900/60 p-7 sm:p-8",
+                  plan.featured ? "ring-1 ring-signal/50" : "ring-1 ring-base-50/[0.06]",
+                )}
+              >
                 <div className="flex items-center justify-between">
-                  <span className="font-mono text-[11px] tracking-[0.16em] text-base-300 uppercase">{plan.name}</span>
+                  <span className="text-lg font-semibold text-base-50">{plan.name}</span>
                   {plan.featured && (
-                    <span className="text-[13px] font-medium text-signal">
-                      Most picked
-                    </span>
+                    <span className="rounded-md bg-signal/10 px-2 py-0.5 text-xs font-medium text-signal ring-1 ring-signal/25">Most picked</span>
                   )}
                 </div>
-                <p className="mt-10 flex items-baseline gap-2">
-                  <span className="text-6xl font-semibold tracking-[-0.045em] text-base-50 tabular-nums">{plan.price}</span>
-                  <span className="font-serif text-xl text-base-500 italic">once</span>
+                <p className="mt-8 flex items-baseline gap-2">
+                  <span className="text-5xl font-semibold tracking-[-0.03em] text-base-50 tabular-nums">{plan.price}</span>
+                  <span className="text-lg text-base-500">once</span>
                 </p>
                 <p className="mt-3 text-[15px] text-base-400">{plan.body}</p>
                 <div className="mt-8">
@@ -150,10 +153,8 @@ export default function PricingPage() {
                 <Link
                   href={plan.href}
                   className={cn(
-                    "group mt-8 h-11 w-full rounded-md text-sm",
-                    plan.featured
-                      ? `${btnBase} bg-signal text-white hover:bg-[color-mix(in_oklab,var(--signal)_90%,white)]`
-                      : btnSecondary,
+                    "group mt-8 h-11 w-full rounded-lg text-sm",
+                    plan.featured ? btnPrimary : btnSecondary,
                   )}
                 >
                   {plan.cta} <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
@@ -167,8 +168,8 @@ export default function PricingPage() {
         <section className="mt-32">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div>
-              <h2 className="text-4xl font-semibold tracking-[-0.04em] text-base-50 sm:text-5xl">
-                What each plan <span className="font-serif font-normal tracking-[-0.02em] italic">opens.</span>
+              <h2 className="text-3xl font-semibold tracking-[-0.025em] text-base-50 sm:text-4xl">
+                What each plan <Highlight>opens</Highlight>
               </h2>
             </div>
             <p className="flex items-center gap-5 font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">

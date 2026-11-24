@@ -10,14 +10,19 @@ import { Button } from "@/components/ui/button";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
-import { accents, setAccent, useAccent, type Accent } from "./accent";
-import { btnPrimary } from "./styles";
+import { Chip } from "./fx";
+import { btnPrimary, btnSecondary } from "./styles";
+import { registry } from "@/registry/meta";
 import { Bar, Window } from "./stage/window";
 import { useDark } from "./use-dark";
 import "./stage/stage.css";
 import "./inspector.css";
 
-const initial = { weight: 560, tracking: -4.5, serif: true, outline: false, size: 100 };
+type Case = "none" | "uppercase" | "lowercase";
+const initial = { weight: 600, tracking: -3.5, serif: false, outline: false, size: 100, case: "none" as Case };
+
+/** The newest piece, announced above the headline. */
+const latest = registry.filter((r) => r.isNew).at(-1);
 
 /** Design-tool selection marks around the headline: it is the layer the inspector edits. */
 function Selection() {
@@ -41,26 +46,35 @@ const parts = [
 export function Hero() {
   const [s, setS] = useState(initial);
   const set = <K extends keyof typeof initial>(k: K) => (v: (typeof initial)[K]) => setS((p) => ({ ...p, [k]: v }));
-  const accent = useAccent();
   const dark = useDark();
-  const dirty = JSON.stringify(s) !== JSON.stringify(initial) || accent !== "signal";
-  const reset = () => {
-    setS(initial);
-    setAccent("signal");
-  };
+  const dirty = JSON.stringify(s) !== JSON.stringify(initial);
+  const reset = () => setS(initial);
 
   const headline: CSSProperties = {
     fontWeight: s.weight,
+    textTransform: s.case,
     letterSpacing: `${s.tracking / 100}em`,
-    fontSize: `calc(clamp(3.25rem, 6.6vw, 6.25rem) * ${s.size / 100})`,
+    fontSize: `calc(clamp(3rem, 5.4vw, 5rem) * ${s.size / 100})`,
   };
 
   return (
     <section className="relative overflow-hidden pt-16">
-      <div className="mx-auto grid max-w-[1400px] gap-y-12 px-6 pt-14 sm:pt-20 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
+      <div className="relative mx-auto grid max-w-[1400px] gap-y-12 px-6 pt-14 sm:pt-20 lg:grid-cols-12 lg:gap-x-12 lg:gap-y-10">
         {/* The headline: the selected layer */}
         <div className="pl-4 lg:col-span-6 lg:row-start-1 lg:self-end">
-          <h1 style={headline} className="relative inline-block leading-[0.94] text-base-50">
+          {latest && (
+            <Chip
+              href={`/components/${latest.slug}`}
+              label="New"
+              count={
+                <span className="inline-flex items-center gap-1.5 text-base-200">
+                  {latest.name} <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
+                </span>
+              }
+              className="mb-9"
+            />
+          )}
+          <h1 style={headline} className="relative block w-fit leading-[1.02] text-base-50">
             <Selection />
             <span className="block">Interfaces</span>
             <span className="block">
@@ -82,18 +96,15 @@ export function Hero() {
 
         {/* Copy */}
         <div className="lg:col-span-5 lg:row-start-2 lg:pb-32">
-          <p className="max-w-[28rem] text-[17px] leading-7 text-pretty text-base-400">
+          <p className="max-w-[30rem] text-lg leading-8 text-pretty text-base-400">
             React components that act like well-made objects. Dials with detents, faders with travel, switches you can
             throw. <span className="text-base-100">Turn any of them and the headline answers.</span>
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
-            <Link href="/components" className={`${btnPrimary} group h-11 rounded-md px-5 text-[15px]`}>
+          <div className="mt-9 flex flex-wrap items-center gap-3">
+            <Link href="/components" className={`${btnPrimary} group h-11 rounded-lg px-5 text-[15px]`}>
               Browse the instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <Link
-              href="/blocks"
-              className="text-[15px] font-medium text-base-200 underline decoration-base-700 underline-offset-[6px] transition-colors hover:text-base-50 hover:decoration-base-400"
-            >
+            <Link href="/blocks" className={`${btnSecondary} h-11 rounded-lg px-5 text-[15px]`}>
               See them in a product
             </Link>
           </div>
@@ -169,17 +180,17 @@ export function Hero() {
                     />
                   </div>
                   <div className="flex flex-wrap items-center justify-between gap-4 border-b border-base-50/[0.07] px-7 py-4">
-                    <span className="text-sm text-base-200">Accent</span>
-                    <SegmentedControl<Accent>
-                      aria-label="Accent"
+                    <span className="text-sm text-base-200">Case</span>
+                    <SegmentedControl<Case>
+                      aria-label="Case"
                       size="sm"
-                      value={accent}
-                      onValueChange={setAccent}
-                      options={(Object.keys(accents) as Accent[]).map((a) => ({
-                        value: a,
-                        label: <span className="capitalize max-sm:sr-only">{a}</span>,
-                        icon: <span className="block size-2 rounded-full" style={{ background: accents[a] }} />,
-                      }))}
+                      value={s.case}
+                      onValueChange={set("case")}
+                      options={[
+                        { value: "none", label: "Aa" },
+                        { value: "uppercase", label: "AA" },
+                        { value: "lowercase", label: "aa" },
+                      ]}
                     />
                   </div>
                   {/* Filler: the panel's next section, where the hero's crop falls */}

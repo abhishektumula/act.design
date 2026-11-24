@@ -11,6 +11,8 @@
   gap: 1px;
   background: var(--rule);
   box-shadow: 0 0 0 1px var(--rule);
+  border-radius: 1.5rem;
+  overflow: hidden;
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 420px 330px 330px 380px 410px;
   grid-template-areas: "hero" "stat" "spring" "quiet" "palette";

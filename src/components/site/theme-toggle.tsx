@@ -40,7 +40,7 @@ export function setTheme(theme: "light" | "dark") {
 }
 
 export function useTheme() {
-  const dark = useSyncExternalStore(subscribe, isDark, () => false);
+  const dark = useSyncExternalStore(subscribe, isDark, () => true);
   return { dark, theme: dark ? "dark" : "light", setTheme } as const;
 }
 
@@ -54,7 +54,7 @@ export function ThemeToggle() {
       type="button"
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={() => setTheme(dark ? "light" : "dark")}
-      className="relative grid size-8 place-items-center rounded-md text-base-400 ring-1 ring-base-50/[0.08] transition-colors outline-none hover:bg-base-50/[0.04] hover:text-base-50 focus-visible:ring-2 focus-visible:ring-signal/60"
+      className="relative grid size-8 place-items-center rounded-md text-base-400 transition-colors outline-none hover:bg-base-50/[0.05] hover:text-base-50 focus-visible:ring-2 focus-visible:ring-signal/60"
     >
       <Sun data-theme-icon className={cn(icon, dark ? "scale-50 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100")} />
       <Moon data-theme-icon className={cn(icon, dark ? "scale-100 rotate-0 opacity-100" : "scale-50 rotate-90 opacity-0")} />

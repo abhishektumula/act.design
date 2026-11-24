@@ -1,21 +1,107 @@
 "use client";
 
-import { useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Code2, Eye, RotateCcw } from "lucide-react";
+import { Check, ChevronDown, Code2, Eye, Maximize, Minimize, RotateCcw, Sparkles, Terminal } from "lucide-react";
 import { Preview } from "@/registry/previews";
 
 type View = "preview" | "code";
 
-export function ComponentView({ slug, code }: { slug: string; code: ReactNode }) {
+const tray = "inline-flex items-center gap-0.5 rounded-xl bg-base-900 p-1 ring-1 ring-base-50/[0.06]";
+const key = "flex h-8 items-center gap-2 rounded-lg px-3 text-sm font-medium text-base-300 transition-colors hover:bg-base-800 hover:text-base-50";
+
+/** Copies an agent prompt or the install line, from a small menu. */
+function CopyPrompt({ prompt, install }: { prompt: string; install: string }) {
+  const [open, setOpen] = useState(false);
+  const [done, setDone] = useState<string | null>(null);
+  const root = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: PointerEvent) => !root.current?.contains(e.target as Node) && setOpen(false);
+    document.addEventListener("pointerdown", close);
+    return () => document.removeEventListener("pointerdown", close);
+  }, [open]);
+  useEffect(() => {
+    if (!done) return;
+    const t = setTimeout(() => setDone(null), 1600);
+    return () => clearTimeout(t);
+  }, [done]);
+
+  const copy = async (what: string, text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setDone(what);
+    } catch {}
+    setOpen(false);
+  };
+
+  const options = [
+    { id: "prompt", label: "Copy prompt", hint: "For Claude Code, Codex or Cursor", icon: Sparkles, text: prompt },
+    { id: "install", label: "Copy install command", hint: install, icon: Terminal, text: install },
+  ];
+
+  return (
+    <div ref={root} className={`${tray} relative`}>
+      <button type="button" onClick={() => copy("prompt", prompt)} className={key}>
+        {done ? <Check className="size-4 text-signal" /> : <Sparkles className="size-4" />}
+        {done === "install" ? "Copied command" : done ? "Copied prompt" : "Copy prompt"}
+      </button>
+      <button type="button" aria-label="More copy options" aria-expanded={open} onClick={() => setOpen((o) => !o)} className={`${key} px-2`}>
+        <ChevronDown className={`size-4 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -4, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -4, scale: 0.98 }}
+            transition={{ duration: 0.14 }}
+            className="absolute top-full right-0 z-30 mt-2 w-72 origin-top-right rounded-xl bg-base-950 p-1 shadow-2xl ring-1 ring-base-50/10"
+          >
+            {options.map((o) => (
+              <button
+                key={o.id}
+                type="button"
+                onClick={() => copy(o.id, o.text)}
+                className="flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left transition-colors hover:bg-base-900"
+              >
+                <o.icon className="mt-0.5 size-4 shrink-0 text-base-400" />
+                <span className="min-w-0">
+                  <span className="block text-sm font-medium text-base-50">{o.label}</span>
+                  <span className="block truncate text-xs text-base-500">{o.hint}</span>
+                </span>
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export function ComponentView({ slug, code, prompt, install }: { slug: string; code: ReactNode; prompt: string; install: string }) {
   const id = useId();
   const [view, setView] = useState<View>("preview");
   const [run, setRun] = useState(0);
+  const [full, setFull] = useState(false);
+  const stage = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sync = () => setFull(document.fullscreenElement === stage.current && !!stage.current);
+    document.addEventListener("fullscreenchange", sync);
+    return () => document.removeEventListener("fullscreenchange", sync);
+  }, []);
+
+  const toggleFull = () => {
+    if (document.fullscreenElement) void document.exitFullscreen();
+    else void stage.current?.requestFullscreen?.();
+  };
 
   return (
     <div>
-      <div className="mb-3 flex items-center justify-between">
-        <div className="inline-flex rounded-md bg-base-950 p-0.5 ring-1 ring-base-50/[0.08]">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+        <div className={tray}>
           {(
             [
               ["preview", "Preview", Eye],
@@ -25,43 +111,52 @@ export function ComponentView({ slug, code }: { slug: string; code: ReactNode })
             <button
               key={value}
               onClick={() => setView(value)}
-              className={`relative flex h-7 items-center gap-1.5 rounded-[4px] px-3 font-mono text-[11px] tracking-[0.08em] uppercase transition-colors ${
-                view === value ? "text-base-50" : "text-base-500 hover:text-base-300"
+              className={`relative flex h-8 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors ${
+                view === value ? "text-base-50" : "text-base-400 hover:text-base-200"
               }`}
             >
               {view === value && (
                 <motion.span
                   layoutId={`${id}-view`}
                   transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-                  className="absolute inset-0 rounded-[4px] bg-base-50/[0.07] ring-1 ring-base-50/[0.08]"
+                  className="absolute inset-0 rounded-lg bg-base-800 shadow-[inset_0_1px_0_color-mix(in_oklab,var(--base-50)_8%,transparent)]"
                 />
               )}
-              <Icon className="relative size-3.5" />
+              <Icon className="relative size-4" />
               <span className="relative">{label}</span>
             </button>
           ))}
         </div>
-        {view === "preview" && (
-          <button
-            onClick={() => setRun((r) => r + 1)}
-            className="flex h-8 items-center gap-1.5 rounded-md px-3 font-mono text-[11px] tracking-[0.08em] text-base-500 uppercase ring-1 ring-base-50/[0.08] transition-colors hover:text-base-200 hover:ring-base-50/15"
-          >
-            <RotateCcw className="size-3.5" /> Replay
-          </button>
-        )}
+
+        <div className="flex flex-wrap items-center gap-2">
+          {view === "preview" && (
+            <div className={tray}>
+              <button type="button" onClick={() => setRun((r) => r + 1)} className={key}>
+                <RotateCcw className="size-4" /> Replay
+              </button>
+              <button type="button" onClick={toggleFull} aria-label={full ? "Exit fullscreen" : "Fullscreen"} title="Fullscreen" className={`${key} px-2`}>
+                {full ? <Minimize className="size-4" /> : <Maximize className="size-4" />}
+              </button>
+            </div>
+          )}
+          <CopyPrompt prompt={prompt} install={install} />
+        </div>
       </div>
 
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
           key={view}
-          initial={{ opacity: 0, y: 6, filter: "blur(4px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -4, filter: "blur(4px)" }}
-          transition={{ duration: 0.2 }}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -4 }}
+          transition={{ duration: 0.18 }}
         >
           {view === "preview" ? (
-            <div className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-lg bg-base-950 p-4 ring-1 sm:p-10 ring-base-50/[0.08]">
-              <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(var(--base-800)_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_70%)] opacity-50" />
+            <div
+              ref={stage}
+              className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-2xl bg-canvas p-4 ring-1 ring-base-50/[0.08] sm:p-10"
+            >
+              <div className="pointer-events-none absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,#000_10%,transparent_70%)]" />
               <div key={run} className="@container relative flex w-full justify-center">
                 <Preview slug={slug} />
               </div>

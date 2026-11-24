@@ -4,7 +4,7 @@
   .ss-code {
     --ss-code-key: var(--color-violet-600);
     --ss-code-str: var(--color-green-700);
-    --ss-code-num: var(--color-amber-700);
+    --ss-code-num: var(--color-blue-700);
     --ss-code-fn: var(--color-blue-600);
     font: 11.5px/19px ui-monospace, 'SF Mono', Menlo, monospace;
     color: var(--ss-text-strong);
@@ -13,7 +13,7 @@
   .ss-stage[data-theme="dark"] .ss-code {
     --ss-code-key: var(--color-violet-300);
     --ss-code-str: var(--color-green-300);
-    --ss-code-num: var(--color-orange-300);
+    --ss-code-num: var(--color-blue-300);
     --ss-code-fn: var(--color-blue-300);
   }
 

@@ -4,12 +4,20 @@ import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 /** Listens for the height the framed block reports and returns it. */
-function useFrameHeight(frame: React.RefObject<HTMLIFrameElement | null>, initial: number) {
+function useFrameHeight(frame: React.RefObject<HTMLIFrameElement | null>, initial: number, onReport?: () => void) {
   const [height, setHeight] = useState(initial);
+  const report = useRef(onReport);
+  useEffect(() => {
+    report.current = onReport;
+  });
   useEffect(() => {
     const onMessage = (e: MessageEvent) => {
       if (e.origin !== window.location.origin || e.source !== frame.current?.contentWindow) return;
-      if (e.data?.type === "block-height" && typeof e.data.height === "number") setHeight(Math.ceil(e.data.height));
+      if (e.data?.type === "block-height" && typeof e.data.height === "number") {
+        setHeight(Math.ceil(e.data.height));
+        // A block that reports its height has rendered, even if its load event fired before hydration
+        report.current?.();
+      }
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);
@@ -20,13 +28,13 @@ function useFrameHeight(frame: React.RefObject<HTMLIFrameElement | null>, initia
 /** A live, auto-height iframe of one block. `width` is the simulated viewport. */
 export function BlockFrame({ slug, width, reloadKey }: { slug: string; width: number | "100%"; reloadKey: number }) {
   const ref = useRef<HTMLIFrameElement>(null);
-  const height = useFrameHeight(ref, 560);
   const [loaded, setLoaded] = useState(false);
+  const height = useFrameHeight(ref, 560, () => setLoaded(true));
 
   return (
     <div className="flex justify-center">
       <div
-        className="relative max-w-full overflow-hidden rounded-lg ring-1 ring-base-50/10 transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        className="relative max-w-full overflow-hidden rounded-xl ring-1 ring-base-50/10 transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
         style={{ width: width === "100%" ? "100%" : `${width}px` }}
       >
         {!loaded && <div className="absolute inset-0 animate-pulse bg-base-950" />}

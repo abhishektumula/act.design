@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Highlight } from "@/components/site/fx";
 import { BlockCard } from "@/components/site/block-card";
 import { PageHeader } from "@/components/site/frame";
 import { Footer } from "@/components/site/footer";
@@ -13,7 +14,7 @@ export default function BlocksIndex() {
         <PageHeader
           title={
             <>
-              Whole sections, <span className="font-serif font-normal tracking-[-0.02em] italic">assembled.</span>
+              Whole sections, <Highlight>assembled</Highlight>
             </>
           }
           body={`${blocks.length} landing sections built from the same instruments, so the controls in them actually work. Preview at any width, then paste the whole section.`}

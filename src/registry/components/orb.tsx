@@ -10,7 +10,7 @@ export type OrbVariant = "liquid" | "halo";
 
 /** Three CSS colours each: body, highlight, depth. `accent` follows your --signal token. */
 export const orbPalettes = {
-  accent: ["var(--signal)", "color-mix(in oklab, var(--signal) 45%, var(--color-orange-100))", "color-mix(in oklab, var(--signal) 62%, var(--color-fuchsia-950))"],
+  accent: ["var(--signal)", "color-mix(in oklab, var(--signal) 45%, var(--color-sky-100))", "color-mix(in oklab, var(--signal) 62%, var(--color-fuchsia-950))"],
   ocean: ["var(--color-blue-500)", "var(--color-sky-200)", "var(--color-indigo-800)"],
   moss: ["var(--color-emerald-600)", "var(--color-lime-200)", "var(--color-teal-800)"],
   ink: ["var(--color-neutral-500)", "var(--color-orange-100)", "var(--color-neutral-800)"],

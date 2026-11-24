@@ -29,7 +29,7 @@ async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "p
   const uses = block.uses.map((s) => getItem(s)).filter((i) => i !== undefined);
 
   return (
-    <main className="mx-auto w-full max-w-[1400px] px-6 pt-28 pb-24">
+    <main className="mx-auto w-full max-w-[1400px] px-6 pt-32 pb-24">
       <DocHeader
         crumbs={[
           { href: "/blocks", label: "Blocks" },
@@ -104,7 +104,7 @@ export default function BlockPage({ params }: PageProps<"/blocks/[slug]">) {
   return (
     <Suspense
       fallback={
-        <main className="mx-auto w-full max-w-[1400px] animate-pulse px-6 pt-28 pb-24">
+        <main className="mx-auto w-full max-w-[1400px] animate-pulse px-6 pt-32 pb-24">
           <div className="h-3 w-40 rounded-[2px] bg-base-50/[0.06]" />
           <div className="mt-6 h-10 w-64 rounded-[4px] bg-base-50/[0.06]" />
           <div className="mt-5 h-4 w-full max-w-xl rounded-[2px] bg-base-50/[0.06]" />
