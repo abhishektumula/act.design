@@ -32,7 +32,7 @@ type Window = { c0: number; c1: number; r0: number; r1: number };
 function Card({ slug, live = true }: { slug: string; live?: boolean }) {
   const item = getItem(slug)!;
   return (
-    <div className="flex size-full flex-col rounded-2xl bg-base-900 p-2 ring-1 ring-base-50/[0.08]">
+    <div data-glow className="flex size-full flex-col rounded-2xl bg-base-900 p-2 ring-1 ring-base-50/[0.08]">
       <div inert className="pointer-events-none relative min-h-0 flex-1 overflow-hidden rounded-xl bg-canvas p-4 ring-1 ring-base-50/[0.06]">
         {live ? (
           <Fit>
@@ -192,7 +192,7 @@ export function Tour() {
   const ref = useRef<HTMLDivElement>(null);
   const near = useInView(ref, { once: true, margin: "200px 0px" });
   return (
-    <div ref={ref} className="absolute inset-0">
+    <div ref={ref} data-glow-live className="absolute inset-0">
       {near && <Field />}
     </div>
   );

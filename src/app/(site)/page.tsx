@@ -211,6 +211,7 @@ export default function Home() {
                   <Link
                     href={`/blocks/${b.slug}`}
                     aria-label={`Open ${b.name}`}
+                    data-glow
                     className="group block rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/15"
                   >
                     <BlockThumb
@@ -235,7 +236,7 @@ export default function Home() {
 
         {/* Closing: one lit card, the ask on the left and the install running on the right */}
         <section className="mx-auto max-w-[1400px] px-6 pb-28">
-          <div className="relative overflow-hidden rounded-2xl bg-base-900/60 ring-1 ring-base-50/[0.06]">
+          <div data-glow className="relative overflow-hidden rounded-2xl bg-base-900/60 ring-1 ring-base-50/[0.06]">
             <div className="relative grid xl:grid-cols-[1.35fr_1fr]">
               {/* The ask */}
               <div className="flex min-w-0 flex-col px-6 pt-12 pb-0 sm:px-12 sm:pt-20">

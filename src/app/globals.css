@@ -144,3 +144,63 @@ body {
 .grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
 }
+
+/*
+ * Proximity border glow (see GlowGrid). A spectrum spins around the cursor,
+ * is faded out with distance, then cut down to the card's 1px border ring,
+ * so neighbouring cards light up on the edges that face the pointer.
+ */
+[data-glow] {
+  position: relative;
+}
+
+[data-glow]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  padding: 2px;
+  pointer-events: none;
+  background: conic-gradient(
+    from 210deg at var(--gx, -9999px) var(--gy, -9999px),
+    #ff5f6d,
+    #ffb347,
+    #f9f871,
+    #4ade80,
+    #22d3ee,
+    #6366f1,
+    #d946ef,
+    #ff5f6d
+  );
+  mask:
+    radial-gradient(260px circle at var(--gx, -9999px) var(--gy, -9999px), #000 0%, rgb(0 0 0 / 0.35) 45%, transparent 75%),
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: intersect, exclude, add;
+  opacity: var(--glow, 0);
+  transition: opacity 0.4s ease;
+}
+
+/* A faint wash of light on the face of the card under the cursor. */
+[data-glow]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(420px circle at var(--gx, -9999px) var(--gy, -9999px), color-mix(in oklab, var(--base-50) 4%, transparent), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+[data-glow]:hover::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-glow]::before,
+  [data-glow]::after {
+    transition: none;
+  }
+}

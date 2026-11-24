@@ -4,7 +4,7 @@ import { useState, type ComponentType } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { Bot, ChevronDown, Compass, Download, LayoutTemplate, MousePointerClick, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Bot, ChevronDown, Compass, Download, LayoutTemplate, MousePointerClick, Type, SlidersHorizontal, Sparkles } from "lucide-react";
 import { blocks, categories, registry, type Category } from "@/registry/meta";
 import { NewMark } from "./fx";
 
@@ -13,6 +13,7 @@ type Group = { id: string; label: string; icon: ComponentType<{ className?: stri
 const icons: Record<Category, Group["icon"]> = {
   Controls: SlidersHorizontal,
   Actions: MousePointerClick,
+  Text: Type,
   Motion: Sparkles,
   AI: Bot,
   Navigation: Compass,

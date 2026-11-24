@@ -56,6 +56,7 @@ const plans: {
 const access: Record<Category | "Blocks", PlanId[]> = {
   Controls: ["pro", "max"],
   Actions: ["pro", "max"],
+  Text: ["pro", "max"],
   Motion: ["pro", "max"],
   Navigation: ["pro", "max"],
   AI: ["max"],

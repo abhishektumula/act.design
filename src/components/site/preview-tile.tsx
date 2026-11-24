@@ -9,7 +9,7 @@ export function PreviewTile({ slug, className = "h-[420px]" }: { slug: string; c
   if (!item) return null;
 
   return (
-    <article className={cn("group flex flex-col rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/[0.12]", className)}>
+    <article data-glow className={cn("group flex flex-col rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/[0.12]", className)}>
       <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-canvas px-6 py-6 ring-1 ring-base-50/[0.06]">
         <LivePreview slug={slug} />
       </div>

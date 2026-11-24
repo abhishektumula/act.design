@@ -23,6 +23,7 @@ import FolderCard from "@/components/ui/folder-card";
 import Stepper from "@/components/ui/stepper";
 import Switch from "@/components/ui/switch";
 import TextStagger from "@/components/ui/text-stagger";
+import Typeset from "@/components/ui/typeset";
 import Toast from "@/components/ui/toast";
 import TrashBin from "@/components/ui/trash-bin";
 
@@ -49,6 +50,7 @@ export const previews: Record<string, ComponentType> = {
   "stepper": Stepper,
   "switch": Switch,
   "text-stagger": TextStagger,
+  typeset: Typeset,
   toast: Toast,
   "trash-bin": TrashBin,
 };

@@ -7,7 +7,7 @@ import { btnPrimary } from "./styles";
 export function ProCard() {
   return (
     <div className="sticky top-24">
-      <div className="rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06]">
+      <div data-glow className="rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06]">
         <BlockThumb slug="hero-monitor" className="aspect-[4/3] rounded-xl ring-1 ring-base-50/[0.06]" />
         <div className="px-3 pt-4 pb-3">
           <p className="text-sm text-base-500">act.design Max</p>

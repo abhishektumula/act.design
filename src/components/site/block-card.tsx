@@ -7,6 +7,7 @@ export function BlockCard({ block, className }: { block: BlockItem; className?: 
   return (
     <Link
       href={`/blocks/${block.slug}`}
+      data-glow
       className={cn("group flex flex-col rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/[0.12]", className)}
     >
       <BlockThumb slug={block.slug} className="aspect-[16/10] rounded-xl ring-1 ring-base-50/[0.06]" />

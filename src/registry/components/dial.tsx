@@ -20,6 +20,34 @@ const SWEEP = 270;
 const START = -135;
 
 /**
+ * The level tone's scale, like a volume meter: cool blue at rest, green through the
+ * comfortable range, a short amber warning, then red from the danger point on.
+ * `d` is where danger starts, as a fraction of the sweep.
+ */
+function levelStops(d: number): [number, string][] {
+  return [
+    [0, "var(--color-blue-500)"],
+    [d * 0.62, "var(--color-emerald-500)"],
+    [Math.max(d * 0.62, d - 0.1), "var(--color-amber-400)"],
+    [d, "var(--color-red-500)"],
+    [1, "var(--color-red-600)"],
+  ];
+}
+
+/** The colour at fraction `p` along the stops, mixed in OKLCH so the hues pass cleanly. */
+function colorAt(stops: [number, string][], p: number) {
+  for (let i = 1; i < stops.length; i++) {
+    const [p1, c1] = stops[i];
+    if (p <= p1 || i === stops.length - 1) {
+      const [p0, c0] = stops[i - 1];
+      const t = p1 === p0 ? 1 : Math.min(1, Math.max(0, (p - p0) / (p1 - p0)));
+      return `color-mix(in oklch, ${c1} ${Math.round(t * 100)}%, ${c0})`;
+    }
+  }
+  return stops[0][1];
+}
+
+/**
  * A rotary control. Drag up / right to turn it up, scroll over it, or use the
  * arrow keys. Hold Shift for fine control and double-click to reset. Ticks
  * light up as it turns and each major detent sends a tiny haptic tick on phones.
@@ -34,6 +62,8 @@ export function Dial({
   ticks = 41,
   label,
   format = (v) => String(Math.round(v)),
+  tone = "signal",
+  danger,
   size,
   className,
 }: VariantProps<typeof dialVariants> & {
@@ -47,6 +77,10 @@ export function Dial({
   ticks?: number;
   label?: string;
   format?: (value: number) => string;
+  /** `signal` lights the scale in the accent. `level` runs it blue → green → red, like a volume meter. */
+  tone?: "signal" | "level";
+  /** With `tone="level"`: the value where the red zone starts. Defaults to 85% of the range. */
+  danger?: number;
   className?: string;
 }) {
   const id = useId();
@@ -62,6 +96,13 @@ export function Dial({
   useEffect(() => spring.set(pct), [pct, spring]);
   const angle = useTransform(spring, (p) => START + p * SWEEP);
 
+  const level = tone === "level";
+  const d = Math.min(1, Math.max(0, ((danger ?? min + (max - min) * 0.85) - min) / (max - min)));
+  const stops = levelStops(d);
+  const hot = level && pct > d + 1e-6;
+  const tint = useTransform(spring, (p) => (level ? colorAt(stops, p) : "var(--signal)"));
+  const pointerGlow = useTransform(tint, (c) => `0 0 10px ${c}`);
+
   const C = 2 * Math.PI * 92;
   const arc = useTransform(spring, (p) => `${p * (SWEEP / 360) * C} ${C}`);
 
@@ -72,6 +113,8 @@ export function Dial({
     // A soft haptic tick on every major detent.
     const major = Math.round(((clean - min) / (max - min)) * ((ticks - 1) / 5));
     if (lastMajor.current !== null && major !== lastMajor.current) navigator.vibrate?.(4);
+    // Crossing into the red zone gets a firmer knock.
+    if (level && (clean - min) / (max - min) > d && (value - min) / (max - min) <= d) navigator.vibrate?.(14);
     lastMajor.current = major;
     if (controlled === undefined) setInner(clean);
     onValueChange?.(clean);
@@ -163,14 +206,19 @@ export function Dial({
             strokeWidth="10"
             strokeLinecap="round"
             transform="rotate(135 100 100)"
-            style={{ strokeDasharray: arc }}
-            className="stroke-signal opacity-25 blur-[6px]"
+            style={{ strokeDasharray: arc, stroke: tint }}
+            animate={{ opacity: hot ? [0.35, 0.6, 0.35] : 0.25 }}
+            transition={hot ? { duration: 1.1, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
+            className="blur-[6px]"
           />
           {Array.from({ length: ticks }, (_, i) => {
             const a = START + (i / (ticks - 1)) * SWEEP;
             const major = i % 5 === 0;
             const lit = i <= litUntil + 1e-6;
             const head = Math.abs(i - litUntil) < 0.5;
+            // On the level scale every tick keeps its zone colour, faintly when unlit,
+            // so the red zone is visible before you reach it.
+            const zone = level ? colorAt(stops, i / (ticks - 1)) : undefined;
             return (
               <line
                 key={i}
@@ -181,9 +229,10 @@ export function Dial({
                 transform={`rotate(${a} 100 100)`}
                 strokeWidth={major || head ? 2.2 : 1.4}
                 strokeLinecap="round"
+                style={zone ? { stroke: zone, opacity: lit ? 1 : 0.22 } : undefined}
                 className={cn(
                   "transition-[stroke,opacity] duration-150",
-                  lit ? "stroke-signal" : "stroke-base-50 opacity-20",
+                  !zone && (lit ? "stroke-signal" : "stroke-base-50 opacity-20"),
                 )}
               />
             );
@@ -200,7 +249,10 @@ export function Dial({
             {/* Knurled rim */}
             <div className="absolute inset-0 rounded-full bg-[repeating-conic-gradient(rgb(0_0_0/0.07)_0deg_1.5deg,transparent_1.5deg_6deg)] [mask-image:radial-gradient(circle,transparent_62%,black_64%)] dark:bg-[repeating-conic-gradient(rgb(255_255_255/0.06)_0deg_1.5deg,transparent_1.5deg_6deg)]" />
             {/* Pointer */}
-            <span className="absolute top-[7%] left-1/2 h-[18%] w-[5%] min-w-1 -translate-x-1/2 rounded-full bg-signal shadow-[0_0_10px_var(--signal)]" />
+            <motion.span
+              style={{ backgroundColor: tint, boxShadow: pointerGlow }}
+              className="absolute top-[7%] left-1/2 h-[18%] w-[5%] min-w-1 -translate-x-1/2 rounded-full"
+            />
           </motion.div>
           {/* Machined face */}
           <div className="absolute inset-[24%] rounded-full bg-linear-to-b from-base-900 to-white shadow-[0_1px_1px_rgb(0_0_0/0.08)_inset] ring-1 ring-black/5 dark:from-base-900 dark:to-base-700 dark:ring-white/5" />
@@ -213,7 +265,7 @@ export function Dial({
             {label}
           </span>
         )}
-        <span className="font-mono text-sm font-medium text-base-100 tabular-nums">{format(value)}</span>
+        <span className={cn("font-mono text-sm font-medium tabular-nums transition-colors duration-200", hot ? "text-red-500" : "text-base-100")}>{format(value)}</span>
       </div>
     </div>
   );
@@ -234,7 +286,7 @@ export default function Demo() {
       ].map((p) => (
         <span key={p} className={cn("absolute size-1.5 rounded-full bg-base-800 ring-1 ring-black/5 dark:bg-base-800", p)} />
       ))}
-      <Dial size="sm" ticks={31} label="Gain" min={-24} max={12} step={0.5} value={gain} onValueChange={setGain} defaultValue={-6} format={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)} dB`} />
+      <Dial size="sm" ticks={31} tone="level" danger={0} label="Gain" min={-24} max={12} step={0.5} value={gain} onValueChange={setGain} defaultValue={-6} format={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)} dB`} />
       <Dial size="lg" label="Temperature" min={0} max={2} step={0.01} value={temp} onValueChange={setTemp} defaultValue={0.7} format={(v) => v.toFixed(2)} />
       <Dial size="sm" ticks={31} label="Mix" value={mix} onValueChange={setMix} defaultValue={40} format={(v) => `${Math.round(v)}%`} />
     </div>

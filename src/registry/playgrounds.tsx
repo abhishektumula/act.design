@@ -24,6 +24,7 @@ import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
 import { TextStagger, staggerPresets, type StaggerPreset } from "@/components/ui/text-stagger";
+import { Typeset } from "@/components/ui/typeset";
 import { Toaster, toast, type ToasterPosition } from "@/components/ui/toast";
 import { TrashBin } from "@/components/ui/trash-bin";
 
@@ -172,11 +173,25 @@ export const playgrounds: Record<string, Playground> = {
       { type: "number", key: "ticks", label: "Ticks", min: 11, max: 81, step: 2 },
       { type: "number", key: "defaultValue", label: "Start at", min: -100, max: 200, step: 1 },
       { type: "select", key: "size", label: "Size", options: ["sm", "md", "lg"] },
+      { type: "select", key: "tone", label: "Tone", options: ["signal", "level"] },
+      { type: "number", key: "danger", label: "Danger from", min: -100, max: 200, step: 1 },
     ],
-    defaults: { label: "Gain", min: 0, max: 100, step: 1, ticks: 41, defaultValue: 50, size: "md" },
+    defaults: { label: "Gain", min: 0, max: 100, step: 1, ticks: 41, defaultValue: 50, size: "md", tone: "level", danger: 85 },
     render: (v) => (
-      <Dial label={str(v.label)} min={n(v.min)} max={n(v.max)} step={n(v.step)} ticks={n(v.ticks)} defaultValue={n(v.defaultValue)} size={str(v.size) as "sm" | "md" | "lg"} />
+      <Dial
+        label={str(v.label)}
+        min={n(v.min)}
+        max={n(v.max)}
+        step={n(v.step)}
+        ticks={n(v.ticks)}
+        defaultValue={n(v.defaultValue)}
+        size={str(v.size) as "sm" | "md" | "lg"}
+        tone={str(v.tone) as "signal" | "level"}
+        danger={n(v.danger)}
+      />
     ),
+    code: (v) =>
+      `<Dial\n  label="${v.label}"\n  min={${v.min}}\n  max={${v.max}}\n  defaultValue={${v.defaultValue}}${v.tone === "level" ? `\n  tone="level"\n  danger={${v.danger}}` : ""}\n/>`,
   },
   fader: {
     component: "Fader",
@@ -473,6 +488,28 @@ export const playgrounds: Record<string, Playground> = {
       );
     },
     code: (v) => `<NumberTicker value={${v.value}} format={{ style: "${v.style}"${v.style === "currency" ? ', currency: "USD"' : ""}, maximumFractionDigits: ${v.decimals} }} />`,
+  },
+  typeset: {
+    component: "Typeset",
+    controls: [
+      { type: "text", key: "text", label: "Text" },
+      { type: "text", key: "highlight", label: "Highlight" },
+      { type: "number", key: "startScale", label: "Typed at", min: 0.5, max: 0.95, step: 0.01, unit: "×" },
+      { type: "number", key: "speed", label: "Per letter", min: 20, max: 120, step: 5, unit: "ms" },
+      { type: "color", key: "color", label: "Colour", options: COLORS },
+    ],
+    defaults: { text: "Interfaces that act.", highlight: "act.", startScale: 0.86, speed: 45, color: "var(--signal)" },
+    render: (v) => (
+      <Typeset
+        text={str(v.text)}
+        highlight={str(v.highlight) || undefined}
+        startScale={n(v.startScale)}
+        speed={n(v.speed)}
+        color={str(v.color)}
+        className="text-5xl leading-[1.05] font-semibold tracking-[-0.035em] text-base-50"
+      />
+    ),
+    code: (v) => `<Typeset\n  text="${v.text}"\n  highlight="${v.highlight}"\n  startScale={${v.startScale}}\n  speed={${v.speed}}\n/>`,
   },
   "text-stagger": {
     component: "TextStagger",

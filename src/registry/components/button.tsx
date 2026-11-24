@@ -6,17 +6,57 @@ import { AnimatePresence, motion } from "motion/react";
 import { Check, CornerDownLeft, LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+/*
+ * Each solid tone is built from the same five layers, outside in:
+ *   1. a 1px edge in a darker shade of the fill (drawn as a shadow, so it never shifts layout)
+ *   2. a tight contact shadow, 1px below
+ *   3. a soft, tinted lift shadow
+ *   4. an inner highlight along the top edge, where light catches the bevel
+ *   5. an inner shade along the bottom edge
+ * plus a faint top-to-bottom sheen on the fill. Pressing drops the lift, flattens the
+ * bevel into a sunken inner shadow and nudges the face down half a pixel.
+ */
 export const buttonVariants = cva(
-  "inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 font-medium whitespace-nowrap outline-none transition-[background-color,color,box-shadow] duration-150 select-none focus-visible:ring-2 focus-visible:ring-signal/50 focus-visible:ring-offset-2 focus-visible:ring-offset-base-950 disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4",
+  [
+    "relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 font-medium tracking-[-0.006em] whitespace-nowrap outline-none select-none",
+    "bg-linear-to-b transition-[background-color,box-shadow,transform,color] duration-150 ease-out",
+    "[&:is(:active,[data-pressed=true])]:translate-y-[0.5px] [&:is(:active,[data-pressed=true])]:duration-75",
+    "focus-visible:ring-2 focus-visible:ring-signal/50 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas",
+    "disabled:pointer-events-none disabled:opacity-45 disabled:saturate-50 [&_svg]:size-4 [&_svg]:shrink-0",
+  ].join(" "),
   {
     variants: {
       tone: {
-        signal:
-          "bg-signal text-white shadow-[0_1px_2px_rgb(0_0_0/0.14),inset_0_1px_0_rgb(255_255_255/0.16)] hover:bg-[color-mix(in_oklab,var(--signal)_90%,white)] data-[pressed=true]:bg-[color-mix(in_oklab,var(--signal)_90%,black)]",
-        ink: "bg-base-50 text-base-950 shadow-[0_1px_2px_rgb(0_0_0/0.14)] hover:bg-base-200 data-[pressed=true]:bg-base-300",
-        paper:
-          "bg-base-950 text-base-100 shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-base-50/10 hover:bg-base-900 data-[pressed=true]:bg-base-800 dark:bg-base-900 dark:hover:bg-base-800",
-        ghost: "text-base-300 hover:bg-base-50/[0.06] hover:text-base-50 data-[pressed=true]:bg-base-50/10",
+        signal: [
+          "bg-signal from-white/16 to-white/0 text-white [text-shadow:0_1px_0_rgb(0_0_0/0.18)]",
+          "shadow-[0_0_0_1px_color-mix(in_oklab,var(--signal)_72%,black),0_1px_1px_rgb(0_0_0/0.14),0_4px_10px_-4px_color-mix(in_oklab,var(--signal)_70%,transparent),inset_0_1px_0_rgb(255_255_255/0.28),inset_0_-1px_0_rgb(0_0_0/0.14)]",
+          "hover:bg-[color-mix(in_oklab,var(--signal)_92%,white)]",
+          "[&:is(:active,[data-pressed=true])]:bg-[color-mix(in_oklab,var(--signal)_90%,black)] [&:is(:active,[data-pressed=true])]:from-black/6 [&:is(:active,[data-pressed=true])]:to-white/0",
+          "[&:is(:active,[data-pressed=true])]:shadow-[0_0_0_1px_color-mix(in_oklab,var(--signal)_65%,black),0_0_0_0_transparent,0_0_0_0_transparent,inset_0_1px_3px_rgb(0_0_0/0.28),inset_0_-1px_0_rgb(255_255_255/0.08)]",
+        ].join(" "),
+        ink: [
+          "bg-base-50 from-white/12 to-white/0 text-base-950 dark:from-black/0 dark:to-black/8",
+          "shadow-[0_0_0_1px_var(--base-50),0_1px_1px_rgb(0_0_0/0.2),0_4px_10px_-4px_rgb(0_0_0/0.4),inset_0_1px_0_rgb(255_255_255/0.18),inset_0_-1px_0_rgb(0_0_0/0.4)]",
+          "dark:shadow-[0_0_0_1px_var(--base-300),0_1px_1px_rgb(0_0_0/0.4),0_4px_10px_-4px_rgb(0_0_0/0.6),inset_0_1px_0_rgb(255_255_255/0.9),inset_0_-1px_0_rgb(0_0_0/0.14)]",
+          "hover:bg-base-100",
+          "[&:is(:active,[data-pressed=true])]:bg-base-200",
+          "[&:is(:active,[data-pressed=true])]:shadow-[0_0_0_1px_var(--base-50),0_0_0_0_transparent,0_0_0_0_transparent,inset_0_1px_3px_rgb(0_0_0/0.45),inset_0_-1px_0_rgb(255_255_255/0.06)]",
+          "dark:[&:is(:active,[data-pressed=true])]:shadow-[0_0_0_1px_var(--base-300),0_0_0_0_transparent,0_0_0_0_transparent,inset_0_1px_3px_rgb(0_0_0/0.22),inset_0_-1px_0_rgb(255_255_255/0.4)]",
+        ].join(" "),
+        paper: [
+          "bg-canvas from-canvas to-base-950 text-base-100 dark:bg-base-900 dark:from-base-800/60 dark:to-base-900",
+          "shadow-[0_0_0_1px_color-mix(in_oklab,var(--base-50)_11%,transparent),0_1px_1px_rgb(0_0_0/0.05),0_4px_8px_-4px_rgb(0_0_0/0.1),inset_0_1px_0_rgb(255_255_255),inset_0_-1px_0_color-mix(in_oklab,var(--base-50)_5%,transparent)]",
+          "dark:shadow-[0_0_0_1px_rgb(255_255_255/0.07),0_1px_1px_rgb(0_0_0/0.5),0_4px_10px_-4px_rgb(0_0_0/0.7),inset_0_1px_0_rgb(255_255_255/0.07),inset_0_-1px_0_rgb(0_0_0/0.25)]",
+          "hover:to-base-900 hover:text-base-50 dark:hover:from-base-800 dark:hover:to-base-900",
+          "[&:is(:active,[data-pressed=true])]:from-base-950 [&:is(:active,[data-pressed=true])]:to-base-950 dark:[&:is(:active,[data-pressed=true])]:from-base-900 dark:[&:is(:active,[data-pressed=true])]:to-base-900",
+          "[&:is(:active,[data-pressed=true])]:shadow-[0_0_0_1px_color-mix(in_oklab,var(--base-50)_12%,transparent),0_0_0_0_transparent,0_0_0_0_transparent,inset_0_1px_2px_rgb(0_0_0/0.08),inset_0_-1px_0_rgb(255_255_255/0.6)]",
+          "dark:[&:is(:active,[data-pressed=true])]:shadow-[0_0_0_1px_rgb(255_255_255/0.06),0_0_0_0_transparent,0_0_0_0_transparent,inset_0_1px_3px_rgb(0_0_0/0.5),inset_0_-1px_0_rgb(255_255_255/0.04)]",
+        ].join(" "),
+        ghost: [
+          "text-base-300 from-transparent to-transparent hover:text-base-50",
+          "hover:bg-base-50/[0.045] hover:shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--base-50)_6%,transparent)]",
+          "[&:is(:active,[data-pressed=true])]:bg-base-50/[0.07] [&:is(:active,[data-pressed=true])]:shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--base-50)_8%,transparent),inset_0_1px_2px_rgb(0_0_0/0.08)]",
+        ].join(" "),
       },
       size: {
         sm: "h-8 rounded-[10px] px-3 text-[13px]",
@@ -33,7 +73,7 @@ export function Kbd({ children, className }: { children: ReactNode; className?: 
   return (
     <kbd
       className={cn(
-        "-mr-1 inline-grid h-5 min-w-5 place-items-center rounded-md bg-current/10 px-1 font-sans text-[11px] leading-none font-medium opacity-80 [&_svg]:size-3",
+        "-mr-1 inline-grid h-5 min-w-5 place-items-center rounded-[6px] bg-current/10 px-1 font-sans text-[11px] leading-none font-medium opacity-85 [text-shadow:none] shadow-[inset_0_1px_1.5px_rgb(0_0_0/0.14),0_1px_0_rgb(255_255_255/0.1)] [&_svg]:size-3",
         className,
       )}
     >

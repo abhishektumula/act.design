@@ -19,19 +19,48 @@ import "./stage/stage.css";
 import "./inspector.css";
 
 type Case = "none" | "uppercase" | "lowercase";
-const initial = { weight: 600, tracking: -3.5, serif: false, outline: false, size: 100, case: "none" as Case };
+const initial = {
+  weight: 600,
+  tracking: -3.5,
+  serif: false,
+  outline: false,
+  size: 100,
+  case: "none" as Case,
+};
 
 /** The newest piece, announced above the headline. */
 const latest = registry.filter((r) => r.isNew).at(-1);
 
+const enter = [0.22, 1, 0.36, 1] as const;
+/** The landing entrance: a soft rise out of a blur, staggered by `delay`. */
+const rise = (delay: number) => ({
+  initial: { opacity: 0, y: 18, filter: "blur(10px)" },
+  animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+  transition: { duration: 0.9, delay, ease: enter },
+});
+
 /** Design-tool selection marks around the headline: it is the layer the inspector edits. */
 function Selection() {
   return (
-    <span aria-hidden className="pointer-events-none absolute -inset-x-4 -inset-y-3 border border-signal/60">
-      {["-top-[4px] -left-[4px]", "-top-[4px] -right-[4px]", "-bottom-[4px] -left-[4px]", "-right-[4px] -bottom-[4px]"].map((p) => (
-        <span key={p} className={`absolute size-[7px] border border-signal bg-canvas ${p}`} />
+    <motion.span
+      aria-hidden
+      initial={{ opacity: 0, scale: 0.98 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: 0.55, ease: enter }}
+      className="pointer-events-none absolute -inset-x-4 -inset-y-3 border border-signal/60"
+    >
+      {[
+        "-top-[4px] -left-[4px]",
+        "-top-[4px] -right-[4px]",
+        "-bottom-[4px] -left-[4px]",
+        "-right-[4px] -bottom-[4px]",
+      ].map((p) => (
+        <span
+          key={p}
+          className={`absolute size-[7px] border border-signal bg-canvas ${p}`}
+        />
       ))}
-    </span>
+    </motion.span>
   );
 }
 
@@ -45,7 +74,10 @@ const parts = [
 
 export function Hero() {
   const [s, setS] = useState(initial);
-  const set = <K extends keyof typeof initial>(k: K) => (v: (typeof initial)[K]) => setS((p) => ({ ...p, [k]: v }));
+  const set =
+    <K extends keyof typeof initial>(k: K) =>
+    (v: (typeof initial)[K]) =>
+      setS((p) => ({ ...p, [k]: v }));
   const dark = useDark();
   const dirty = JSON.stringify(s) !== JSON.stringify(initial);
   const reset = () => setS(initial);
@@ -63,48 +95,72 @@ export function Hero() {
         {/* The headline: the selected layer */}
         <div className="pl-4 lg:col-span-6 lg:row-start-1 lg:self-end">
           {latest && (
-            <Chip
-              href={`/components/${latest.slug}`}
-              label="New"
-              count={
-                <span className="inline-flex items-center gap-1.5 text-base-200">
-                  {latest.name} <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
-                </span>
-              }
-              className="mb-9"
-            />
+            <motion.div {...rise(0)}>
+              <Chip
+                href={`/components/${latest.slug}`}
+                label="New"
+                count={
+                  <span className="inline-flex items-center gap-1.5 text-base-200">
+                    {latest.name}{" "}
+                    <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                }
+                className="mb-9"
+              />
+            </motion.div>
           )}
-          <h1 style={headline} className="relative block w-fit leading-[1.02] text-base-50">
+          <h1
+            style={headline}
+            className="relative block w-fit leading-[1.02] text-base-50"
+          >
             <Selection />
-            <span className="block">Interfaces</span>
-            <span className="block">
-              with{" "}
+            {/* Lines rise in one after the other, then the selection settles around them. */}
+            <motion.span {...rise(0.05)} className="block">
+              Interfaces
+            </motion.span>
+            <motion.span {...rise(0.15)} className="block">
+              that{" "}
               <motion.span
                 key={String(s.serif) + s.outline}
                 initial={{ opacity: 0, y: "0.15em", filter: "blur(8px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 transition={{ type: "spring", stiffness: 260, damping: 26 }}
                 className={`inline-block pr-[0.08em] ${s.serif ? "font-serif font-normal tracking-[-0.02em] italic" : ""} ${
-                  s.outline ? "text-transparent [-webkit-text-stroke:1.5px_var(--signal)]" : "text-signal"
+                  s.outline
+                    ? "text-transparent [-webkit-text-stroke:1.5px_var(--signal)]"
+                    : "text-signal"
                 }`}
               >
-                weight.
+                act.
               </motion.span>
-            </span>
+            </motion.span>
           </h1>
         </div>
 
         {/* Copy */}
-        <div className="lg:col-span-5 lg:row-start-2 lg:pb-32">
+        <motion.div
+          {...rise(0.3)}
+          className="lg:col-span-5 lg:row-start-2 lg:pb-32"
+        >
           <p className="max-w-[30rem] text-lg leading-8 text-pretty text-base-400">
-            React components that act like well-made objects. Dials with detents, faders with travel, switches you can
-            throw. <span className="text-base-100">Turn any of them and the headline answers.</span>
+            React components that act like well-made objects. Dials with
+            detents, faders with travel, switches you can throw.{" "}
+            <span className="text-base-100">
+              Turn any of them and the headline answers.
+            </span>
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-3">
-            <Link href="/components" className={`${btnPrimary} group h-11 rounded-lg px-5 text-[15px]`}>
-              Browse the components <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+            <Link
+              href="/components"
+              className={`${btnPrimary} group h-11 rounded-lg px-5 text-[15px]`}
+            >
+              Browse the components{" "}
+              <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
-            <Link href="/blocks" className={`${btnSecondary} h-11 rounded-lg px-5 text-[15px]`}>
+            <Link
+              href="/blocks"
+              className={`${btnSecondary} h-11 rounded-lg px-5 text-[15px]`}
+            >
               See them in a product
             </Link>
           </div>
@@ -112,14 +168,21 @@ export function Hero() {
             The inspector is made of the{" "}
             {parts.map(([name, slug], i) => (
               <span key={slug}>
-                <Link href={`/components/${slug}`} className="text-base-300 underline decoration-base-700 underline-offset-4 transition-colors hover:text-base-50">
+                <Link
+                  href={`/components/${slug}`}
+                  className="text-base-300 underline decoration-base-700 underline-offset-4 transition-colors hover:text-base-50"
+                >
                   {name}
                 </Link>
-                {i < parts.length - 2 ? ", " : i === parts.length - 2 ? " and " : "."}
+                {i < parts.length - 2
+                  ? ", "
+                  : i === parts.length - 2
+                    ? " and "
+                    : "."}
               </span>
             ))}
           </p>
-        </div>
+        </motion.div>
 
         {/*
           Its inspector, made of the components themselves. Framed as a corner
@@ -128,8 +191,14 @@ export function Hero() {
           crop only ever cuts filler, the panel's other properties; every live
           control stays whole.
         */}
-        <div className="@container -mb-28 sm:-mb-32 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:-mb-24 lg:self-start">
-          <div className="ss-stage insp insp--bleed" data-theme={dark ? "dark" : "light"}>
+        <motion.div
+          {...rise(0.4)}
+          className="@container -mb-28 sm:-mb-32 lg:col-span-6 lg:col-start-7 lg:row-span-2 lg:row-start-1 lg:-mb-24 lg:self-start"
+        >
+          <div
+            className="ss-stage insp insp--bleed"
+            data-theme={dark ? "dark" : "light"}
+          >
             <Window
               title="Headline"
               className="insp-window"
@@ -137,7 +206,13 @@ export function Hero() {
               // reaches. The empty toolbar left-aligns the title, as a unified toolbar does.
               toolbar={<span aria-hidden />}
               lead={
-                <Button size="sm" tone="ghost" hotkey="r" disabled={!dirty} onClick={reset}>
+                <Button
+                  size="sm"
+                  tone="ghost"
+                  hotkey="r"
+                  disabled={!dirty}
+                  onClick={reset}
+                >
                   <RotateCcw /> Reset
                 </Button>
               }
@@ -146,12 +221,27 @@ export function Hero() {
                 <div className="insp-controls min-w-0 shrink-0">
                   <div className="grid border-b border-base-50/[0.07] sm:grid-cols-[auto_1fr]">
                     <div className="flex justify-center px-8 py-7 max-sm:border-b max-sm:border-base-50/[0.07] sm:border-r sm:border-base-50/[0.07]">
-                      <Dial label="Weight" min={100} max={900} step={10} value={s.weight} onValueChange={set("weight")} defaultValue={initial.weight} />
+                      <Dial
+                        label="Weight"
+                        min={100}
+                        max={900}
+                        step={10}
+                        value={s.weight}
+                        onValueChange={set("weight")}
+                        defaultValue={initial.weight}
+                      />
                     </div>
                     <div className="flex flex-col justify-center gap-5 px-7 py-7">
                       <div className="flex items-center justify-between gap-4">
                         <span className="text-sm text-base-200">Size</span>
-                        <Stepper min={70} max={110} step={5} value={s.size} onValueChange={set("size")} format={(v) => `${v}%`} />
+                        <Stepper
+                          min={70}
+                          max={110}
+                          step={5}
+                          value={s.size}
+                          onValueChange={set("size")}
+                          format={(v) => `${v}%`}
+                        />
                       </div>
                       {(
                         [
@@ -159,9 +249,16 @@ export function Hero() {
                           ["outline", "Outline"],
                         ] as const
                       ).map(([k, l]) => (
-                        <label key={k} className="flex cursor-pointer items-center justify-between gap-4 text-sm text-base-200">
+                        <label
+                          key={k}
+                          className="flex cursor-pointer items-center justify-between gap-4 text-sm text-base-200"
+                        >
                           <span id={`hero-${k}`}>{l}</span>
-                          <Switch checked={s[k]} onCheckedChange={set(k)} aria-labelledby={`hero-${k}`} />
+                          <Switch
+                            checked={s[k]}
+                            onCheckedChange={set(k)}
+                            aria-labelledby={`hero-${k}`}
+                          />
                         </label>
                       ))}
                     </div>
@@ -194,7 +291,10 @@ export function Hero() {
                     />
                   </div>
                   {/* Filler: the panel's next section, where the hero's crop falls */}
-                  <div aria-hidden className="flex flex-col gap-4 px-7 pt-6 pb-16">
+                  <div
+                    aria-hidden
+                    className="flex flex-col gap-4 px-7 pt-6 pb-16"
+                  >
                     <Bar w={56} tone={3} />
                     <div className="flex items-center justify-between gap-6">
                       <Bar w={72} tone={2} />
@@ -208,7 +308,10 @@ export function Hero() {
                 </div>
 
                 {/* Filler: the layer's other properties, running off the page (wide desktop only) */}
-                <div aria-hidden className="insp-more hidden shrink-0 auto-rows-min grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-x-10 gap-y-7 border-l border-base-50/[0.07] px-6 py-7 xl:grid">
+                <div
+                  aria-hidden
+                  className="insp-more hidden shrink-0 auto-rows-min grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-x-10 gap-y-7 border-l border-base-50/[0.07] px-6 py-7 xl:grid"
+                >
                   {[
                     [64, [88, 72]],
                     [48, [96, 64, 80]],
@@ -233,7 +336,7 @@ export function Hero() {
               </div>
             </Window>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

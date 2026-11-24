@@ -9,6 +9,7 @@ export const metadata: Metadata = { title: "Components · act.design" };
 const blurbs: Record<(typeof categories)[number], string> = {
   Controls: "Things you turn, slide and flip.",
   Actions: "Buttons that ask for a real press.",
+  Text: "Type that gets made in front of you.",
   Motion: "Movement that carries meaning.",
   AI: "Surfaces for talking to a model.",
   Navigation: "Getting around, fast.",
