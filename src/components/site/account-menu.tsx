@@ -19,15 +19,15 @@ export function AccountMenu({ user }: { user: Account }) {
   }, [open]);
 
   const item =
-    "flex w-full items-center gap-2.5 rounded-[4px] px-2.5 py-2 text-[13px] text-base-300 transition-colors hover:bg-base-50/5 hover:text-base-50";
+    "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-[13px] text-base-300 transition-colors hover:bg-base-50/5 hover:text-base-50";
 
   return (
     <div ref={root} className="relative">
       <button
         onClick={() => setOpen((o) => !o)}
-        className="flex h-8 items-center gap-2 rounded-md bg-base-50/[0.03] pr-2.5 pl-1 ring-1 ring-base-50/[0.08] transition-colors hover:ring-base-50/15"
+        className="flex h-9 items-center gap-2 rounded-lg bg-base-900 pr-3 pl-1.5 ring-1 ring-base-50/[0.08] transition-colors hover:ring-base-50/15"
       >
-        <span className="grid size-6 place-items-center rounded-[4px] bg-signal text-[11px] font-semibold text-white">
+        <span className="grid size-6 place-items-center rounded-md bg-signal text-[11px] font-semibold text-white">
           {user.firstName[0]}
         </span>
         <span className="text-[13px] text-base-200">{user.firstName}</span>
@@ -42,7 +42,7 @@ export function AccountMenu({ user }: { user: Account }) {
             animate={{ opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }}
             exit={{ opacity: 0, scale: 0.98, y: -4, filter: "blur(2px)" }}
             transition={{ type: "spring", bounce: 0, duration: 0.25 }}
-            className="absolute top-full right-0 z-50 mt-2 w-64 origin-top-right rounded-lg bg-base-950 p-1 shadow-2xl shadow-shade/40 ring-1 ring-base-50/10"
+            className="absolute top-full right-0 z-50 mt-3 w-64 origin-top-right rounded-xl bg-base-950 p-1 shadow-2xl shadow-shade/40 ring-1 ring-base-50/10"
           >
             <div className="px-2.5 pt-2 pb-2.5">
               <p className="font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">Signed in</p>

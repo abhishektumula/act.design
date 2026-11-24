@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input, PasswordInput } from "@/components/site/kit/input";
 import { cn } from "@/lib/utils";
 import { Crosses, PanelBar } from "./frame";
+import { Highlight } from "./fx";
 
 const LIGHTS = 12;
 
@@ -44,8 +45,8 @@ export function LoginForm({ next }: { next: string }) {
     <div className="grid w-full max-w-5xl items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
       {/* Form */}
       <div>
-        <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.045em] text-base-50 sm:text-6xl">
-          Welcome <span className="font-serif font-normal tracking-[-0.02em] italic">back.</span>
+        <h1 className="text-4xl leading-tight font-semibold tracking-[-0.025em] text-base-50 sm:text-5xl">
+          Welcome <Highlight>back</Highlight>
         </h1>
         <p className="mt-5 max-w-sm text-lg leading-8 text-pretty text-base-400">Sign in to copy the source of every instrument and block.</p>
 
@@ -67,7 +68,7 @@ export function LoginForm({ next }: { next: string }) {
             }}
             error={failed ? state?.error : undefined}
           />
-          <Button type="submit" tone="signal" size="lg" disabled={pending} className="mt-2 w-full rounded-md">
+          <Button type="submit" tone="signal" size="lg" disabled={pending} className="mt-2 w-full rounded-lg">
             {pending ? (
               <>
                 <LoaderCircle className="animate-spin" /> Opening
@@ -89,7 +90,7 @@ export function LoginForm({ next }: { next: string }) {
       {/* The lock */}
       <div aria-hidden className="relative hidden sm:block">
         <Crosses />
-        <div className="overflow-hidden bg-base-950 ring-1 ring-base-50/[0.08]">
+        <div className="overflow-hidden rounded-2xl bg-base-900/60 ring-1 ring-base-50/[0.06]">
           <PanelBar label="Combination lock">
             <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-base-400 uppercase">
               <span

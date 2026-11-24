@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { motion } from "motion/react";
 import { blocks, categories, registry } from "@/registry/meta";
 
-const head = "px-3 pb-3 font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase";
+const head = "px-3 pb-2.5 text-[13px] font-medium text-base-50";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -16,18 +16,18 @@ export function Sidebar() {
   ];
 
   return (
-    <nav className="scrollbar-thin sticky top-14 hidden h-[calc(100svh-3.5rem)] w-56 shrink-0 overflow-y-auto py-10 pr-4 lg:block">
+    <nav className="scrollbar-thin sticky top-16 hidden h-[calc(100svh-4rem)] w-56 shrink-0 overflow-y-auto py-10 pr-4 lg:block">
       <ul className="mb-9">
         {top.map((l) => (
           <li key={l.href}>
             <Link
               href={l.href}
-              className={`flex items-center justify-between px-3 py-1.5 text-[13px] transition-colors ${
-                pathname === l.href ? "text-base-50" : "text-base-400 hover:text-base-100"
+              className={`flex items-center justify-between rounded-md px-3 py-1.5 text-[13px] transition-colors ${
+                pathname === l.href ? "bg-base-900 text-base-50" : "text-base-400 hover:text-base-100"
               }`}
             >
               {l.label}
-              <span className="font-mono text-[10px] text-base-600 tabular-nums">{String(l.count).padStart(2, "0")}</span>
+              <span className="text-xs text-base-500 tabular-nums">{l.count}</span>
             </Link>
           </li>
         ))}
@@ -52,11 +52,11 @@ export function Sidebar() {
                         <motion.span
                           layoutId="sidebar-active"
                           transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-                          className="absolute inset-y-0 -left-px w-px bg-signal"
+                          className="absolute inset-y-1 -left-px w-px bg-signal"
                         />
                       )}
                       <span>{r.name}</span>
-                      {r.isNew && <span className="font-mono text-[9px] tracking-wider text-signal uppercase">New</span>}
+                      {r.isNew && <span className="rounded bg-signal/10 px-1.5 text-[10px] font-medium text-signal">New</span>}
                     </Link>
                   </li>
                 );

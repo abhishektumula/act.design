@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Highlight } from "@/components/site/fx";
 import { PageHeader } from "@/components/site/frame";
 import { PreviewTile } from "@/components/site/preview-tile";
 import { categories, registry } from "@/registry/meta";
@@ -19,7 +20,7 @@ export default function ComponentsIndex() {
       <PageHeader
         title={
           <>
-            The <span className="font-serif font-normal tracking-[-0.02em] italic">instruments</span>
+            The <Highlight>instruments</Highlight>
           </>
         }
         body={`${registry.length} live components. Play with them here, open one for its code and API, then copy it into your app.`}
@@ -30,8 +31,8 @@ export default function ComponentsIndex() {
         return (
           <section key={cat} id={cat.toLowerCase().replace(/\s/g, "-")} className="mt-20 scroll-mt-24">
             <div className="mb-6 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-base-50/[0.07] pb-4">
-              <span className="font-mono text-[11px] text-signal tabular-nums">0{i + 1}</span>
-              <h2 className="text-2xl font-medium tracking-[-0.02em] text-base-50">{cat}</h2>
+              <span className="grid size-6 place-items-center self-center rounded-md bg-base-900 font-mono text-[11px] text-base-300 tabular-nums ring-1 ring-base-50/10">{i + 1}</span>
+              <h2 className="text-2xl font-semibold tracking-[-0.02em] text-base-50">{cat}</h2>
               <span className="text-sm text-base-500">{blurbs[cat]}</span>
               <span className="ml-auto font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">
                 {items.length} {items.length === 1 ? "piece" : "pieces"}
@@ -39,7 +40,7 @@ export default function ComponentsIndex() {
             </div>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {items.map((item) => (
-                <PreviewTile key={item.slug} slug={item.slug} className="h-[420px]" />
+                <PreviewTile key={item.slug} slug={item.slug} className="h-[500px]" />
               ))}
             </div>
           </section>

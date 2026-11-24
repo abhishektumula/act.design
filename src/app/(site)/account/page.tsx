@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { Highlight } from "@/components/site/fx";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowRight, LogOut } from "lucide-react";
@@ -32,17 +33,17 @@ async function AccountDetails() {
         <PageHeader
           title={
             <>
-              Hello, <span className="font-serif font-normal tracking-[-0.02em] italic">{user.firstName}.</span>
+              Hello, <Highlight>{user.firstName}</Highlight>
             </>
           }
           body={user.email}
         >
           <div className="mt-8 flex flex-wrap gap-2">
-            <Link href="/components" className={`${btnSecondary} group h-10 rounded-md px-4 text-sm`}>
+            <Link href="/components" className={`${btnSecondary} group h-10 rounded-lg px-5 text-sm`}>
               Open the instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <form action={signOut}>
-              <button className="flex h-10 items-center gap-2 rounded-md px-4 text-sm text-base-500 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400">
+              <button className="flex h-10 items-center gap-2 rounded-lg px-4 text-sm text-base-500 transition-colors hover:bg-red-500/10 hover:text-red-600 dark:hover:text-red-400">
                 <LogOut className="size-4" /> Sign out
               </button>
             </form>

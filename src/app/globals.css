@@ -83,6 +83,23 @@ body {
   background: var(--selection);
 }
 
+/* ---------- site patterns ---------- */
+
+/* Diagonal hatching, as a design tool draws a selected text layer. */
+@utility hatch {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in oklab, var(--signal) 22%, transparent) 0 1px,
+    transparent 1px 6px
+  );
+}
+
+/* A dot matrix for preview stages. */
+@utility bg-dots {
+  background-image: radial-gradient(color-mix(in oklab, var(--base-50) 14%, transparent) 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
 /* ---------- site-only utilities (registry components never depend on these) ---------- */
 
 /* Highlighted code from shiki (dual theme) */
@@ -127,4 +144,3 @@ body {
 .grain {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
 }
-

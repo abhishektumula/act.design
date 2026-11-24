@@ -13,5 +13,5 @@ export const useDark = () =>
   useSyncExternalStore(
     subscribe,
     () => document.documentElement.classList.contains("dark"),
-    () => false,
+    () => true,
   );
