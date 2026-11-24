@@ -67,7 +67,6 @@ function Field() {
   const box = useRef<HTMLDivElement>(null);
   const [focus, setFocus] = useState<Cell>({ c: 0, r: 0 });
   const [win, setWin] = useState<Window>(span({ c: 0, r: 0 }, { c: 0, r: 0 }));
-  const [sharp, setSharp] = useState(false);
   const [target, setTarget] = useState<Cell>({ c: 0, r: 0 });
 
   /* The camera: the world point at the centre of the frame, and the zoom. */
@@ -78,8 +77,11 @@ function Field() {
   const frameH = useMotionValue(0);
   const x = useTransform(() => frameW.get() / 2 - camX.get() * zoom.get());
   const y = useTransform(() => frameH.get() / 2 - camY.get() * zoom.get());
-  // Everything but the card in focus goes soft as the camera closes in
-  const blur = useTransform(zoom, [WIDE + 0.12, FOCUS], ["blur(0px) brightness(1)", "blur(6px) brightness(0.55)"]);
+  /* Both follow the zoom, so they happen together: as the camera closes in, the field goes soft
+     and dim while the card in focus comes up sharp; as it pulls back, the reverse. */
+  const blur = useTransform(zoom, [WIDE + 0.08, FOCUS], ["blur(0px) brightness(1)", "blur(7px) brightness(0.5)"]);
+  const sharpness = useTransform(zoom, [WIDE + 0.08, FOCUS], [0, 1]);
+  const clickable = useTransform(sharpness, (v) => (v > 0.7 ? "auto" : "none"));
 
   useEffect(() => {
     const el = box.current;
@@ -108,8 +110,6 @@ function Field() {
 
     (async () => {
       let at: Cell = { c: 0, r: 0 };
-      await wait(400);
-      setSharp(true);
       while (!stopped) {
         await wait(2800);
         await until();
@@ -121,15 +121,19 @@ function Field() {
         } while (next.c === at.c && next.r === at.r);
         setWin(span(at, next));
         setTarget(next);
-        setSharp(false);
         const to = centre(next.c, next.r);
-        // Out, across, in
-        await animate(zoom, WIDE, { duration: 0.9, ease: EASE });
-        await Promise.all([animate(camX, to.x, { duration: 1.3, ease: EASE }), animate(camY, to.y, { duration: 1.3, ease: EASE })]);
+        // One continuous move: the camera eases out while it starts across, and eases back in as it
+        // arrives, so the path is a single arc. The sharp card swaps at the widest point, unseen.
+        const T = 2.6;
+        const swap = window.setTimeout(() => setFocus(next), T * 500);
+        await Promise.all([
+          animate(zoom, [FOCUS, WIDE, FOCUS], { duration: T, times: [0, 0.5, 1], ease: ["easeInOut", "easeInOut"] }),
+          animate(camX, to.x, { duration: T, ease: EASE }),
+          animate(camY, to.y, { duration: T, ease: EASE }),
+        ]);
+        window.clearTimeout(swap);
         setFocus(next);
-        await animate(zoom, FOCUS, { duration: 1, ease: EASE });
         at = next;
-        setSharp(true);
       }
     })();
     return () => {
@@ -141,12 +145,16 @@ function Field() {
   const cells: Cell[] = [];
   for (let r = win.r0; r <= win.r1; r++) for (let c = win.c0; c <= win.c1; c++) cells.push({ c, r });
   const focusSlug = slugAt(focus.c, focus.r);
+  const focusAt = centre(focus.c, focus.r);
   // Live demos only where the camera can see them up close: around where it is and where it is going
   const near = (c: number, r: number) =>
     [focus, target].some((f) => Math.abs(c - f.c) <= 2 && Math.abs(r - f.r) <= 1);
 
   return (
-    <div ref={box} className="absolute inset-0 overflow-hidden">
+    <div
+      ref={box}
+      className="absolute inset-0 overflow-hidden [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,#000_10%,#000_90%,transparent),linear-gradient(to_bottom,transparent,#000_14%,#000_86%,transparent)]"
+    >
       <motion.div className="absolute top-0 left-0 origin-top-left will-change-transform" style={{ x, y, scale: zoom, filter: reduce ? undefined : blur }}>
         {cells.map(({ c, r }) => {
           const p = centre(c, r);
@@ -158,24 +166,21 @@ function Field() {
         })}
       </motion.div>
 
-      {/* The card in focus, sharp, laid exactly over its blurred self */}
+      {/* The card in focus, sharp, in a second layer that moves exactly with the field */}
       {!reduce && (
-        <motion.div
-          initial={false}
-          animate={{ opacity: sharp ? 1 : 0 }}
-          transition={{ duration: sharp ? 0.35 : 0.15 }}
-          className="absolute top-1/2 left-1/2 z-10"
-          style={{ width: CW * FOCUS, height: CH * FOCUS, x: "-50%", y: "-50%", pointerEvents: sharp ? "auto" : "none" }}
-        >
-          <Link
-            href={`/components/${focusSlug}`}
-            aria-label={`Open ${getItem(focusSlug)?.name}`}
-            className="block size-full rounded-2xl shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7)] ring-1 ring-signal/40 transition-shadow hover:ring-signal"
+        <motion.div className="pointer-events-none absolute top-0 left-0 z-10 origin-top-left will-change-transform" style={{ x, y, scale: zoom }}>
+          <motion.div
+            className="absolute"
+            style={{ left: focusAt.x - CW / 2, top: focusAt.y - CH / 2, width: CW, height: CH, opacity: sharpness, pointerEvents: clickable }}
           >
-            <div className="size-full origin-top-left" style={{ width: CW, height: CH, transform: `scale(${FOCUS})` }}>
+            <Link
+              href={`/components/${focusSlug}`}
+              aria-label={`Open ${getItem(focusSlug)?.name}`}
+              className="block size-full rounded-2xl shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7)] ring-1 ring-signal/40 transition-shadow hover:ring-signal"
+            >
               <Card key={`${focus.c}:${focus.r}`} slug={focusSlug} />
-            </div>
-          </Link>
+            </Link>
+          </motion.div>
         </motion.div>
       )}
     </div>
