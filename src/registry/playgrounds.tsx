@@ -402,9 +402,10 @@ export const playgrounds: Record<string, Playground> = {
       { type: "number", key: "itemHeight", label: "Card height", min: 100, max: 420, step: 10, unit: "px" },
       { type: "number", key: "gap", label: "Gap", min: 0, max: 48, step: 2, unit: "px" },
       { type: "boolean", key: "stagger", label: "Brick rows" },
+      { type: "boolean", key: "draggable", label: "Draggable" },
       { type: "boolean", key: "pauseOnHover", label: "Pause on hover" },
     ],
-    defaults: { angle: 215, speed: 28, itemWidth: 180, itemHeight: 220, gap: 20, stagger: true, pauseOnHover: true },
+    defaults: { angle: 215, speed: 28, itemWidth: 180, itemHeight: 220, gap: 20, stagger: true, draggable: true, pauseOnHover: false },
     render: (v) => (
       <DriftCanvas
         items={IMAGES}
@@ -414,13 +415,14 @@ export const playgrounds: Record<string, Playground> = {
         itemHeight={n(v.itemHeight)}
         gap={n(v.gap)}
         stagger={!!v.stagger}
+        draggable={!!v.draggable}
         pauseOnHover={!!v.pauseOnHover}
         className="h-[26rem] rounded-xl bg-base-950"
         renderItem={(p) => <Photo {...p} />}
       />
     ),
     code: (v) =>
-      `<DriftCanvas\n  items={photos}\n  renderItem={(p) => <img src={p.src} alt={p.alt} />}\n  angle={${v.angle}}\n  speed={${v.speed}}\n  itemWidth={${v.itemWidth}}\n  itemHeight={${v.itemHeight}}\n  gap={${v.gap}}\n  stagger={${v.stagger}}\n  pauseOnHover={${v.pauseOnHover}}\n/>`,
+      `<DriftCanvas\n  items={photos}\n  renderItem={(p) => <img src={p.src} alt={p.alt} />}\n  angle={${v.angle}}\n  speed={${v.speed}}\n  itemWidth={${v.itemWidth}}\n  itemHeight={${v.itemHeight}}\n  gap={${v.gap}}\n  stagger={${v.stagger}}\n  draggable={${v.draggable}}\n  pauseOnHover={${v.pauseOnHover}}\n/>`,
   },
   "focus-canvas": {
     component: "FocusCanvas",

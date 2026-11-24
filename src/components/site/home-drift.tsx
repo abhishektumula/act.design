@@ -32,7 +32,7 @@ export function HomeDrift() {
               <Link
                 href={`/components/${slug}`}
                 draggable={false}
-                className="group flex size-full flex-col rounded-2xl bg-base-900/70 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/20"
+                className="group flex size-full cursor-[inherit] flex-col rounded-2xl bg-base-900/70 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/20"
               >
                 <div inert className="pointer-events-none relative min-h-0 flex-1 overflow-hidden rounded-xl bg-canvas p-4 ring-1 ring-base-50/[0.06]">
                   <Fit>

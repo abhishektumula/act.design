@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type MouseEvent, type PointerEvent, type ReactNode } from "react";
 import { motion, useMotionValue, useMotionValueEvent, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -15,6 +15,8 @@ export type DriftCanvasProps<T> = {
   angle?: number;
   /** Drift speed, in px per second. */
   speed?: number;
+  /** Grab and move the canvas in any direction; it carries on with momentum, then drifts again. */
+  draggable?: boolean;
   /** Hold everything still while the pointer is over it. */
   pauseOnHover?: boolean;
   /** Offset every other row by half a card, like bricks. */
@@ -26,7 +28,8 @@ const mod = (n: number, m: number) => ((n % m) + m) % m;
 
 /**
  * An endless canvas that drifts one way, like a marquee in two dimensions: sideways, up, down or on
- * a diagonal. Only the cards on screen are rendered, so it costs the same however long it runs.
+ * a diagonal. Grab it and move it anywhere; let go and it carries on with momentum before easing back
+ * into its drift. Only the cards on screen are rendered, so it costs the same however long it runs.
  */
 export function DriftCanvas<T>({
   items,
@@ -36,7 +39,8 @@ export function DriftCanvas<T>({
   gap = 20,
   angle = 200,
   speed = 28,
-  pauseOnHover = true,
+  draggable = true,
+  pauseOnHover = false,
   stagger = true,
   className,
 }: DriftCanvasProps<T>) {
@@ -47,6 +51,10 @@ export function DriftCanvas<T>({
   const ox = useMotionValue(0);
   const oy = useMotionValue(0);
   const held = useRef(false);
+  /* Drag state, and the momentum a throw leaves behind, in px per second. */
+  const drag = useRef({ pressed: false, active: false, id: 0, x: 0, y: 0, t: 0, moved: 0 });
+  const fling = useRef({ x: 0, y: 0 });
+  const [grabbing, setGrabbing] = useState(false);
   const [view, setView] = useState({ w: 0, h: 0 });
   const [origin, setOrigin] = useState({ c: 0, r: 0 });
 
@@ -83,9 +91,15 @@ export function DriftCanvas<T>({
     const frame = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      if (visible && !held.current) {
-        ox.set(ox.get() + vx * dt);
-        oy.set(oy.get() + vy * dt);
+      if (visible && !drag.current.active) {
+        // The drift, unless held by hover, plus whatever a throw left, fading away
+        const k = Math.exp(-dt / 0.45);
+        const f = fling.current;
+        const d = held.current ? 0 : 1;
+        ox.set(ox.get() + (vx * d + f.x) * dt);
+        oy.set(oy.get() + (vy * d + f.y) * dt);
+        f.x *= k;
+        f.y *= k;
       }
       raf = requestAnimationFrame(frame);
     };
@@ -95,6 +109,52 @@ export function DriftCanvas<T>({
       io.disconnect();
     };
   }, [angle, speed, reduce, ox, oy]);
+
+  const down = (e: PointerEvent<HTMLDivElement>) => {
+    if (!draggable || e.button !== 0) return;
+    // Not a drag yet: a press that never moves stays a click on whatever is under it.
+    drag.current = { pressed: true, active: false, id: e.pointerId, x: e.clientX, y: e.clientY, t: performance.now(), moved: 0 };
+  };
+  const move = (e: PointerEvent<HTMLDivElement>) => {
+    const d = drag.current;
+    if (!d.pressed) return;
+    if (!d.active) {
+      if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 5) return;
+      // It moved: from here on it is a drag, and the canvas takes the pointer.
+      d.active = true;
+      e.currentTarget.setPointerCapture(d.id);
+      fling.current = { x: 0, y: 0 };
+      setGrabbing(true);
+    }
+    const now = performance.now();
+    const dx = e.clientX - d.x;
+    const dy = e.clientY - d.y;
+    const dt = Math.max(1, now - d.t) / 1000;
+    // Smoothed throw velocity
+    fling.current = { x: fling.current.x * 0.6 + (dx / dt) * 0.4, y: fling.current.y * 0.6 + (dy / dt) * 0.4 };
+    d.moved += Math.abs(dx) + Math.abs(dy);
+    d.x = e.clientX;
+    d.y = e.clientY;
+    d.t = now;
+    ox.set(ox.get() + dx);
+    oy.set(oy.get() + dy);
+  };
+  const up = () => {
+    const d = drag.current;
+    d.pressed = false;
+    if (!d.active) return;
+    d.active = false;
+    setGrabbing(false);
+    // A pause before letting go means no throw
+    if (reduce || performance.now() - d.t > 90) fling.current = { x: 0, y: 0 };
+  };
+  /* A drag that travelled is not a click on whatever it started over. */
+  const swallow = (e: MouseEvent) => {
+    if (drag.current.moved > 6) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  };
 
   const n = items.length;
   const skip = Math.max(1, Math.floor(n / 2) + 1);
@@ -120,8 +180,16 @@ export function DriftCanvas<T>({
       ref={box}
       onPointerEnter={() => pauseOnHover && (held.current = true)}
       onPointerLeave={() => (held.current = false)}
+      onPointerDown={down}
+      onPointerMove={move}
+      onPointerUp={up}
+      onPointerCancel={up}
+      onClickCapture={swallow}
+      onDragStart={(e) => e.preventDefault()}
       className={cn(
-        "relative isolate h-[32rem] w-full overflow-hidden [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent),linear-gradient(to_bottom,transparent,#000_12%,#000_88%,transparent)]",
+        "relative isolate h-[32rem] w-full overflow-hidden select-none",
+        draggable && (grabbing ? "cursor-grabbing touch-none" : "cursor-grab touch-none"),
+        " [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent,#000_8%,#000_92%,transparent),linear-gradient(to_bottom,transparent,#000_12%,#000_88%,transparent)]",
         className,
       )}
     >
