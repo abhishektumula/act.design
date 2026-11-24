@@ -28,6 +28,7 @@ export const registry: RegistryItem[] = [
   { slug: "button", name: "Button", category: "Actions", description: "A quiet button with four tones and a minimal shadow. Bind a hotkey and the key is printed inside it, and pressing it on the keyboard clicks the button.", deps: [M, L, V] },
   { slug: "hold-to-confirm", name: "Hold to Confirm", category: "Actions", description: "For actions that deserve intent. A fill sweeps across and inverts the label; let go early and it springs back with a shake.", deps: [M, L, V] },
   { slug: "toast", name: "Toast", category: "Actions", description: "Notifications typed like a sheet in a typewriter. Each one rolls out of a slot at the screen's edge while its words type in behind a caret that returns to the start of each line, and pushes the older ones into a pile; hover and it fans out and every timer stops. Tear one off sideways to dismiss it. Promise tickets retype themselves from loading to done.", deps: [M, L], isNew: true },
+  { slug: "trash-bin", name: "Trash Bin", category: "Actions", description: "Delete by hand. Hold a file and the sheet crumples into a ball under your finger; drag it over the bin and the rim lifts to meet it, let go and it drops in with a wobble. Miss and it rolls home and smooths back out. Delete on the keyboard throws it in an arc.", deps: [M], isNew: true },
 
   // Motion
   { slug: "card-stack", name: "Card Stack", category: "Motion", description: "A deck you deal by hand. Fling the top card and it tucks itself under the pile while the rest rise to meet you.", deps: [M, L], isNew: true },

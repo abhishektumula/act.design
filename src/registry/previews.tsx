@@ -17,6 +17,7 @@ import Stepper from "@/components/ui/stepper";
 import Switch from "@/components/ui/switch";
 import TextStagger from "@/components/ui/text-stagger";
 import Toast from "@/components/ui/toast";
+import TrashBin from "@/components/ui/trash-bin";
 
 export const previews: Record<string, ComponentType> = {
   orb: Orb,
@@ -35,6 +36,7 @@ export const previews: Record<string, ComponentType> = {
   "switch": Switch,
   "text-stagger": TextStagger,
   toast: Toast,
+  "trash-bin": TrashBin,
 };
 
 export function Preview({ slug }: { slug: string }) {
