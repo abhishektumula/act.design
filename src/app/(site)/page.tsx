@@ -2,14 +2,16 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
-import { BlockCard } from "@/components/site/block-card";
+import { BlockThumb } from "@/components/site/block-frame";
+import { Playground } from "@/components/site/playground";
 import { Features } from "@/components/site/features";
 import { PreviewTile } from "@/components/site/preview-tile";
 import { CopyButton } from "@/components/site/kit/copy-button";
 import { InstallTerminal, INSTALL } from "@/components/site/install-terminal";
 import { Chip, Highlight, SectionTitle } from "@/components/site/fx";
-import { btnPrimary, btnSecondary } from "@/components/site/styles";
-import { blocks, getBlock, registry } from "@/registry/meta";
+import { btnInk, btnPrimary, btnSecondary } from "@/components/site/styles";
+import { blocks, getItem, registry } from "@/registry/meta";
+import { ExternalLink } from "lucide-react";
 
 const linkArrow = `${btnSecondary} group h-10 rounded-lg px-4 text-sm`;
 
@@ -25,6 +27,8 @@ const layout: [string, string][] = [
   ["stepper", "h-[500px]"],
   ["hold-to-confirm", "h-[500px]"],
   ["orb", "h-[500px]"],
+  ["compare-slider", "lg:col-span-2 h-[560px]"],
+  ["trash-bin", "h-[560px]"],
   ["prompt-input", "lg:col-span-2 h-[500px]"],
   ["number-ticker", "h-[500px]"],
 ];
@@ -60,6 +64,27 @@ export default function Home() {
           </div>
         </section>
 
+        {/* The library on one endless canvas: a band across the page, not a tile */}
+        <section aria-labelledby="canvas-title" className="relative h-[42rem] overflow-hidden border-y border-base-50/[0.06] bg-base-950/40">
+          <div className="absolute inset-0 [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_88%,transparent),linear-gradient(to_bottom,transparent,#000_14%,#000_86%,transparent)] [mask-composite:intersect]">
+            <Playground />
+          </div>
+          <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto max-w-[1400px] px-6 pt-14">
+            <div className="pointer-events-auto w-fit max-w-md rounded-2xl bg-canvas/85 p-6 shadow-[0_20px_50px_-20px_rgb(0_0_0/0.5)] ring-1 ring-base-50/[0.08] backdrop-blur-xl">
+              <Chip label="Canvas" count="drag anywhere" />
+              <h2 id="canvas-title" className="mt-4 text-3xl leading-tight font-semibold tracking-[-0.025em] text-base-50">
+                Every instrument, <Highlight>at once</Highlight>
+              </h2>
+              <p className="mt-3 text-base leading-7 text-base-400">
+                The whole library on one canvas that never ends. Drag in any direction, throw it, or step with the arrow keys. It is the Infinite Grid, and it is yours to copy too.
+              </p>
+              <Link href="/components/infinite-grid" className={`${btnSecondary} group mt-5 h-10 rounded-lg px-4 text-sm`}>
+                Infinite Grid <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
         {/* Principles */}
         <section className="relative overflow-hidden">
           <div className="relative mx-auto max-w-[1400px] px-6 py-20 sm:py-28">
@@ -76,7 +101,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Blocks */}
+        {/* Blocks, each shown whole: what it is, what it is made of, and the way in */}
         <section className="mx-auto max-w-[1400px] px-6 py-20 sm:py-28">
           <SectionTitle
             chip={<Chip label="Blocks" count={`${blocks.length} sections`} />}
@@ -92,9 +117,42 @@ export default function Home() {
               </Link>
             }
           />
-          <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-            {["hero-monitor", "pricing-meter", "feature-rack", "gauges", "testimonials-deck", "cta-check"].map((slug) => (
-              <BlockCard key={slug} block={getBlock(slug)!} />
+          <div className="mt-16 space-y-24 sm:space-y-32">
+            {blocks.map((b, i) => (
+              <article key={b.slug} className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] lg:gap-16">
+                <div className={i % 2 ? "lg:order-2" : ""}>
+                  <p className="text-sm text-base-500">{b.category}</p>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-[-0.02em] text-base-50 sm:text-3xl">{b.name}</h3>
+                  <p className="mt-4 text-base leading-7 text-pretty text-base-400">{b.description}</p>
+                  <ul className="mt-5 flex flex-wrap gap-1.5">
+                    {b.uses.map((slug) => (
+                      <li key={slug}>
+                        <Link
+                          href={`/components/${slug}`}
+                          className="inline-flex rounded-md bg-base-900 px-2 py-1 text-[13px] text-base-300 ring-1 ring-base-50/[0.06] transition-colors hover:text-base-50"
+                        >
+                          {getItem(slug)?.name ?? slug}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    <a href={`/view/blocks/${b.slug}`} target="_blank" className={`${btnSecondary} h-10 rounded-lg px-4 text-sm`}>
+                      <ExternalLink className="size-4" /> Live preview
+                    </a>
+                    <Link href={`/blocks/${b.slug}`} className={`${btnInk} h-10 rounded-lg px-4 text-sm`}>
+                      Get the code
+                    </Link>
+                  </div>
+                </div>
+                <Link
+                  href={`/blocks/${b.slug}`}
+                  aria-label={`Open ${b.name}`}
+                  className="group block rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/15"
+                >
+                  <BlockThumb slug={b.slug} className="aspect-[16/10] rounded-xl ring-1 ring-base-50/[0.06]" />
+                </Link>
+              </article>
             ))}
           </div>
         </section>

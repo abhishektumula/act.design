@@ -23,6 +23,7 @@ export const registry: RegistryItem[] = [
   { slug: "segmented-control", name: "Segmented Control", category: "Controls", description: "A raised cap that glides between options and sinks a touch under your finger. Full arrow-key support.", deps: [M, L, V] },
   { slug: "stepper", name: "Stepper", category: "Controls", description: "A number field whose digits roll in the direction you count. Hold to repeat with acceleration; hit a limit and it shakes its head.", deps: [M, L] },
   { slug: "code-input", name: "Code Input", category: "Controls", description: "A one-time-code field. Digits rise into their slots behind a blinking caret, paste and SMS autofill fill it in one go, and on the last digit it checks: a ripple while it waits, a pop when it passes, a shake and clear when it doesn't.", deps: [M, L] },
+  { slug: "compare-slider", name: "Compare Slider", category: "Controls", description: "Two views of one thing split by a divider you drag: before and after, light and dark, old and new. It takes anything, an image or a live component. The divider bends with the speed you move it and springs straight when you stop; click anywhere to glide it there, or use the arrow keys.", deps: [M, L], isNew: true },
 
   // Actions
   { slug: "button", name: "Button", category: "Actions", description: "A quiet button with four tones and a minimal shadow. Bind a hotkey and the key is printed inside it, and pressing it on the keyboard clicks the button.", deps: [M, L, V] },
@@ -42,6 +43,7 @@ export const registry: RegistryItem[] = [
 
   // Navigation
   { slug: "command-palette", name: "Command Palette", category: "Navigation", description: "A keyboard-first command menu with fuzzy filtering, groups and shortcuts.", deps: [M, L] },
+  { slug: "infinite-grid", name: "Infinite Grid", category: "Navigation", description: "A canvas that goes on forever in every direction. Drag it and it carries on with momentum, scroll it with a trackpad or step it with the arrow keys. Only the cells on screen are rendered, staggered like bricks so the same item rarely sits beside itself.", deps: [M], isNew: true },
 ];
 
 export function getItem(slug: string) {

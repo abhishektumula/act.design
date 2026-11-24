@@ -53,3 +53,15 @@ export function SectionTitle({ chip, title, body, action }: { chip: ReactNode; t
     </div>
   );
 }
+
+/** "new", drawn as a selected layer: a hairline box with a handle on each corner. */
+export function NewMark({ className }: { className?: string }) {
+  return (
+    <span className={cn("relative inline-flex h-[18px] items-center border border-signal/70 px-1 text-[11px] leading-none font-medium text-signal", className)}>
+      {["-top-[2.5px] -left-[2.5px]", "-top-[2.5px] -right-[2.5px]", "-bottom-[2.5px] -left-[2.5px]", "-right-[2.5px] -bottom-[2.5px]"].map((at) => (
+        <span key={at} aria-hidden className={`absolute size-[4px] border border-signal bg-canvas ${at}`} />
+      ))}
+      new
+    </span>
+  );
+}

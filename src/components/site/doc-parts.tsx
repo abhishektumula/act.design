@@ -15,7 +15,7 @@ export function Breadcrumb({ items }: { items: { href: string; label: string }[]
       {items.map((item, i) => (
         <span key={item.label} className="flex items-center gap-2">
           {i > 0 && <span className="text-base-700">/</span>}
-          <Link href={item.href} className="transition-colors hover:text-base-200">
+          <Link href={item.href} aria-current={i === items.length - 1 ? "page" : undefined} className={`transition-colors hover:text-base-200 ${i === items.length - 1 ? "text-base-100" : ""}`}>
             {item.label}
           </Link>
         </span>

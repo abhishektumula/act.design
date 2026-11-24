@@ -4,6 +4,8 @@ import type { ComponentType } from "react";
 import Orb from "@/components/ui/orb";
 import CardStack from "@/components/ui/card-stack";
 import CodeInput from "@/components/ui/code-input";
+import CompareSlider from "@/components/ui/compare-slider";
+import InfiniteGrid from "@/components/ui/infinite-grid";
 import CommandPalette from "@/components/ui/command-palette";
 import Dial from "@/components/ui/dial";
 import Fader from "@/components/ui/fader";
@@ -23,6 +25,8 @@ export const previews: Record<string, ComponentType> = {
   orb: Orb,
   "card-stack": CardStack,
   "code-input": CodeInput,
+  "compare-slider": CompareSlider,
+  "infinite-grid": InfiniteGrid,
   "command-palette": CommandPalette,
   "dial": Dial,
   "fader": Fader,
