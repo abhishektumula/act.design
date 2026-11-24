@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
-import { accents, setAccent, useAccent, type Accent } from "./accent";
 import { Chip } from "./fx";
 import { btnPrimary, btnSecondary } from "./styles";
 import { registry } from "@/registry/meta";
@@ -19,7 +18,8 @@ import { useDark } from "./use-dark";
 import "./stage/stage.css";
 import "./inspector.css";
 
-const initial = { weight: 600, tracking: -3.5, serif: false, outline: false, size: 100 };
+type Case = "none" | "uppercase" | "lowercase";
+const initial = { weight: 600, tracking: -3.5, serif: false, outline: false, size: 100, case: "none" as Case };
 
 /** The newest piece, announced above the headline. */
 const latest = registry.filter((r) => r.isNew).at(-1);
@@ -46,16 +46,13 @@ const parts = [
 export function Hero() {
   const [s, setS] = useState(initial);
   const set = <K extends keyof typeof initial>(k: K) => (v: (typeof initial)[K]) => setS((p) => ({ ...p, [k]: v }));
-  const accent = useAccent();
   const dark = useDark();
-  const dirty = JSON.stringify(s) !== JSON.stringify(initial) || accent !== "signal";
-  const reset = () => {
-    setS(initial);
-    setAccent("signal");
-  };
+  const dirty = JSON.stringify(s) !== JSON.stringify(initial);
+  const reset = () => setS(initial);
 
   const headline: CSSProperties = {
     fontWeight: s.weight,
+    textTransform: s.case,
     letterSpacing: `${s.tracking / 100}em`,
     fontSize: `calc(clamp(3rem, 5.4vw, 5rem) * ${s.size / 100})`,
   };
@@ -183,17 +180,17 @@ export function Hero() {
                     />
                   </div>
                   <div className="flex flex-wrap items-center justify-between gap-4 border-b border-base-50/[0.07] px-7 py-4">
-                    <span className="text-sm text-base-200">Accent</span>
-                    <SegmentedControl<Accent>
-                      aria-label="Accent"
+                    <span className="text-sm text-base-200">Case</span>
+                    <SegmentedControl<Case>
+                      aria-label="Case"
                       size="sm"
-                      value={accent}
-                      onValueChange={setAccent}
-                      options={(Object.keys(accents) as Accent[]).map((a) => ({
-                        value: a,
-                        label: <span className="capitalize max-sm:sr-only">{a}</span>,
-                        icon: <span className="block size-2 rounded-full" style={{ background: accents[a] }} />,
-                      }))}
+                      value={s.case}
+                      onValueChange={set("case")}
+                      options={[
+                        { value: "none", label: "Aa" },
+                        { value: "uppercase", label: "AA" },
+                        { value: "lowercase", label: "aa" },
+                      ]}
                     />
                   </div>
                   {/* Filler: the panel's next section, where the hero's crop falls */}

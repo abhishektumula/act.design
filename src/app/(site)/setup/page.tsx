@@ -71,7 +71,7 @@ export function cn(...inputs: ClassValue[]) {
   --base-950: var(--color-neutral-50);
   --canvas: var(--color-white);
   --shade: var(--color-neutral-600);
-  --signal: var(--color-orange-600);
+  --signal: var(--color-blue-600);
 }
 
 .dark {
@@ -89,7 +89,7 @@ export function cn(...inputs: ClassValue[]) {
   --base-950: var(--color-neutral-950);
   --canvas: var(--color-black);
   --shade: var(--color-black);
-  --signal: var(--color-orange-500);
+  --signal: var(--color-blue-500);
 }`,
   },
   {

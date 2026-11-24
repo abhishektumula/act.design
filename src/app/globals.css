@@ -46,8 +46,8 @@
   --base-950: var(--color-neutral-50);
   --canvas: var(--color-white);
   --shade: var(--color-neutral-600);
-  --signal: var(--color-orange-600);
-  --selection: var(--color-orange-200);
+  --signal: var(--color-blue-600);
+  --selection: var(--color-blue-200);
 }
 
 .dark {
@@ -65,8 +65,8 @@
   --base-950: var(--color-neutral-950);
   --canvas: var(--color-black);
   --shade: var(--color-black);
-  --signal: var(--color-orange-500);
-  --selection: var(--color-orange-900);
+  --signal: var(--color-blue-500);
+  --selection: var(--color-blue-900);
 }
 
 html {

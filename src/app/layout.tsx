@@ -24,9 +24,9 @@ export const metadata: Metadata = {
   description: "A small set of tactile React components with weight, travel and detents. Built with Tailwind CSS and Motion.",
 };
 
-// Runs before paint so there is no flash of the wrong theme or accent. Also keeps
-// block iframes in sync: they hear the `storage` event when the parent changes either.
-const themeScript = `(function(){var d=document.documentElement,A={cobalt:'var(--color-blue-600)',moss:'var(--color-emerald-600)',violet:'var(--color-violet-500)'};function a(){var t=null,c=null;try{t=localStorage.getItem('theme');c=localStorage.getItem('accent')}catch(e){}d.classList.toggle('dark',t!=='light');if(A[c])d.style.setProperty('--signal',A[c]);else d.style.removeProperty('--signal')}a();addEventListener('storage',function(e){if(e.key==='theme'||e.key==='accent')a()})})()`;
+// Runs before paint so there is no flash of the wrong theme. Also keeps block
+// iframes in sync: they hear the `storage` event when the parent changes it.
+const themeScript = `(function(){var d=document.documentElement;function a(){var t=null;try{t=localStorage.getItem('theme')}catch(e){}d.classList.toggle('dark',t!=='light')}a();addEventListener('storage',function(e){if(e.key==='theme')a()})})()`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
