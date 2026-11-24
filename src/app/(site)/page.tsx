@@ -4,7 +4,7 @@ import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { LayerText } from "@/components/ui/layer-text";
 import { BlockThumb } from "@/components/site/block-frame";
-import { Burst } from "@/components/site/burst";
+import { Tour } from "@/components/site/tour";
 import { PruneShowcase } from "@/components/site/prune-showcase";
 // Parked with the Principles section below:
 // import { Features } from "@/components/site/features";
@@ -109,22 +109,18 @@ export default function Home() {
           </div>
         </section>
 
-        {/* The library spreading out of one point: rings of live instruments born at the centre */}
-        <section aria-labelledby="spread-title" className="relative isolate h-[46rem] overflow-hidden border-y border-base-50/[0.06] bg-base-950/40">
-          <Burst />
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-[2000] mx-auto max-w-[1400px] px-6 pt-14">
-            <div className="pointer-events-auto w-fit max-w-md rounded-2xl bg-canvas/85 p-6 shadow-[0_20px_50px_-20px_rgb(0_0_0/0.5)] ring-1 ring-base-50/[0.08] backdrop-blur-xl">
-              <Chip label="Canvas" count="point to pause" />
-              <h2 id="spread-title" className="mt-4 text-3xl leading-tight font-semibold tracking-[-0.025em] text-base-50">
-                Every instrument, <Highlight>from one point</Highlight>
-              </h2>
-              <p className="mt-3 text-base leading-7 text-base-400">
-                The whole library streaming out of a single origin, in every direction. Point at it to hold it still, and open any card.
-              </p>
-              <Link href="/components" className={`${btnSecondary} group mt-5 h-10 rounded-lg px-4 text-sm`}>
-                All {registry.length} instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-            </div>
+        {/* A camera touring the library: it settles on one instrument, pulls back, travels and closes in on the next */}
+        <section aria-labelledby="tour-title" className="py-20 sm:py-28">
+          <div className="mx-auto max-w-[1400px] px-6">
+            <h2 id="tour-title" className="text-3xl leading-tight font-semibold tracking-[-0.025em] text-balance text-base-50 sm:text-4xl">
+              Every instrument, <Highlight>one at a time</Highlight>
+            </h2>
+            <p className="mt-4 max-w-2xl text-lg leading-8 text-pretty text-base-400">
+              A tour of the whole library. It settles on one piece, steps back, crosses the field and closes in on the next. Click the one in focus to open it.
+            </p>
+          </div>
+          <div className="relative isolate mt-12 h-[42rem] overflow-hidden border-y border-base-50/[0.06] bg-base-950/40">
+            <Tour />
           </div>
         </section>
 
