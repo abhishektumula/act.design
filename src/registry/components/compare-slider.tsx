@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
+import { useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from "react";
 import { animate, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useSpring, useTransform } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -22,6 +22,7 @@ export type CompareSliderProps = {
 /**
  * Two views of one thing, split by a divider you drag. The divider bends with the speed
  * you move it and springs straight when you stop, and the edge of the top view bends with it.
+ * The views smear sideways while they move and glitch for a moment when you let go.
  */
 export function CompareSlider({
   before,
@@ -51,6 +52,7 @@ export function CompareSlider({
   const last = useRef({ p: defaultValue / 100, t: 0 });
   const settle = useRef(0);
   useMotionValueEvent(pos, "change", (p) => {
+    travelled.current += Math.abs(p - last.current.p);
     const now = performance.now();
     const dt = Math.max(8, now - last.current.t);
     const v = ((p - last.current.p) * width.get() * 1000) / dt;
@@ -60,6 +62,62 @@ export function CompareSlider({
     window.clearTimeout(settle.current);
     settle.current = window.setTimeout(() => kick.set(0), 60);
   });
+
+  /* ---- Motion blur while it moves, a glitch when you let go ----
+     One SVG filter does both: horizontal bands torn sideways, a sideways-only blur, and the red
+     channel pulled apart from the rest. It is only switched on while one of them is visible. */
+  const fid = useId().replace(/[^a-zA-Z0-9]/g, "");
+  const content = useRef<HTMLDivElement>(null);
+  const fe = useRef<{ blur?: SVGFEGaussianBlurElement | null; tear?: SVGFEDisplacementMapElement | null; noise?: SVGFETurbulenceElement | null; red?: SVGFEOffsetElement | null; rest?: SVGFEOffsetElement | null }>({});
+  const fx = useRef({ blur: 0, split: 0, tear: 0 });
+  const travelled = useRef(0);
+  /* The odometer reading when the current press began. */
+  const pressedAt = useRef(0);
+  const glitch = useRef<{ stop: () => void } | null>(null);
+
+  const paint = (seed?: number) => {
+    const { blur, split, tear } = fx.current;
+    const f = fe.current;
+    f.blur?.setAttribute("stdDeviation", `${blur.toFixed(2)} 0`);
+    f.red?.setAttribute("dx", split.toFixed(2));
+    f.rest?.setAttribute("dx", (-split / 2).toFixed(2));
+    f.tear?.setAttribute("scale", tear.toFixed(2));
+    if (seed !== undefined) f.noise?.setAttribute("seed", String(seed));
+    const on = blur > 0.05 || Math.abs(split) > 0.05 || tear > 0.05;
+    if (content.current) content.current.style.filter = on ? `url(#${fid})` : "none";
+  };
+
+  useMotionValueEvent(bend, "change", (b) => {
+    if (reduce || glitch.current) return;
+    const k = Math.min(1, Math.abs(b) / 70);
+    fx.current = { blur: k * 9, split: Math.sign(b) * k * 2.5, tear: 0 };
+    paint();
+  });
+
+  const release = () => {
+    if (reduce || travelled.current - pressedAt.current < 0.04) return;
+    glitch.current?.stop();
+    glitch.current = animate(0, 1, {
+      duration: 0.38,
+      ease: "linear",
+      onUpdate: (t) => {
+        const fade = 1 - t;
+        // Flicker: some frames tear hard, some barely
+        const hard = Math.random() > 0.35;
+        fx.current = {
+          blur: fx.current.blur * 0.7,
+          split: (Math.random() > 0.5 ? 1 : -1) * 7 * fade * (hard ? 1 : 0.3),
+          tear: 34 * fade * (hard ? 1 : 0.15),
+        };
+        paint(Math.floor(Math.random() * 1000));
+      },
+      onComplete: () => {
+        glitch.current = null;
+        fx.current = { blur: 0, split: 0, tear: 0 };
+        paint();
+      },
+    });
+  };
 
   useLayoutEffect(() => {
     const el = ref.current;
@@ -101,6 +159,7 @@ export function CompareSlider({
     if (e.button !== 0) return;
     e.currentTarget.setPointerCapture(e.pointerId);
     setDragging(true);
+    pressedAt.current = travelled.current;
     const p = Math.min(1, Math.max(0, fromPointer(e)));
     // A click away from the divider glides there; then it follows the pointer exactly.
     animate(pos, p, reduce ? { duration: 0 } : { type: "spring", stiffness: 500, damping: 40 });
@@ -112,7 +171,11 @@ export function CompareSlider({
     pos.set(p);
     commit(p);
   };
-  const up = () => setDragging(false);
+  const up = () => {
+    if (!dragging) return;
+    setDragging(false);
+    release();
+  };
 
   const key = (e: KeyboardEvent) => {
     const step = e.shiftKey ? 0.1 : 0.02;
@@ -137,10 +200,30 @@ export function CompareSlider({
         className,
       )}
     >
-      <div className="absolute inset-0">{after}</div>
-      <motion.div className="absolute inset-0" style={{ clipPath: size.w ? clip : `inset(0 ${100 - defaultValue}% 0 0)` }}>
-        {before}
-      </motion.div>
+      <svg aria-hidden className="absolute size-0">
+        <filter id={fid} x="-4%" y="0" width="108%" height="100%" colorInterpolationFilters="sRGB">
+          <feTurbulence ref={(n) => void (fe.current.noise = n)} type="fractalNoise" baseFrequency="0.0001 0.05" numOctaves={1} seed={1} result="noise" />
+          {/* Hard-edged bands; blue held at the middle so nothing moves vertically */}
+          <feComponentTransfer in="noise" result="bands">
+            <feFuncR type="discrete" tableValues="0 0.5 1 0.5 0.2 0.8 0.5" />
+            <feFuncB type="discrete" tableValues="0.5" />
+          </feComponentTransfer>
+          <feDisplacementMap ref={(n) => void (fe.current.tear = n)} in="SourceGraphic" in2="bands" scale={0} xChannelSelector="R" yChannelSelector="B" result="torn" />
+          <feGaussianBlur ref={(n) => void (fe.current.blur = n)} in="torn" stdDeviation="0 0" result="smear" />
+          <feColorMatrix in="smear" type="matrix" values="1 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1 0" result="r" />
+          <feOffset ref={(n) => void (fe.current.red = n)} in="r" dx={0} result="rShift" />
+          <feColorMatrix in="smear" type="matrix" values="0 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 1 0" result="gb" />
+          <feOffset ref={(n) => void (fe.current.rest = n)} in="gb" dx={0} result="gbShift" />
+          <feBlend in="rShift" in2="gbShift" mode="screen" />
+        </filter>
+      </svg>
+
+      <div ref={content} className="absolute inset-0">
+        <div className="absolute inset-0">{after}</div>
+        <motion.div className="absolute inset-0" style={{ clipPath: size.w ? clip : `inset(0 ${100 - defaultValue}% 0 0)` }}>
+          {before}
+        </motion.div>
+      </div>
 
       <Label side="left" text={beforeLabel} hidden={value < 14} />
       <Label side="right" text={afterLabel} hidden={value > 86} />
