@@ -4,9 +4,10 @@ import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { LayerText } from "@/components/ui/layer-text";
 import { BlockThumb } from "@/components/site/block-frame";
-import { Playground } from "@/components/site/playground";
+import { Burst } from "@/components/site/burst";
 import { PruneShowcase } from "@/components/site/prune-showcase";
-import { Features } from "@/components/site/features";
+// Parked with the Principles section below:
+// import { Features } from "@/components/site/features";
 import { PreviewTile } from "@/components/site/preview-tile";
 import { CopyButton } from "@/components/site/kit/copy-button";
 import { InstallTerminal, INSTALL } from "@/components/site/install-terminal";
@@ -75,39 +76,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* The library on one endless canvas: a band across the page, not a tile */}
-        <section
-          aria-labelledby="canvas-title"
-          className="relative h-[42rem] overflow-hidden border-y border-base-50/[0.06] bg-base-950/40"
-        >
-          <div className="absolute inset-0 [mask-image:linear-gradient(to_right,transparent,#000_12%,#000_88%,transparent),linear-gradient(to_bottom,transparent,#000_14%,#000_86%,transparent)] [mask-composite:intersect]">
-            <Playground />
-          </div>
-          <div className="pointer-events-none absolute inset-x-0 top-0 mx-auto max-w-[1400px] px-6 pt-14">
-            <div className="pointer-events-auto w-fit max-w-md rounded-2xl bg-canvas/85 p-6 shadow-[0_20px_50px_-20px_rgb(0_0_0/0.5)] ring-1 ring-base-50/[0.08] backdrop-blur-xl">
-              <Chip label="Canvas" count="drag anywhere" />
-              <h2
-                id="canvas-title"
-                className="mt-4 text-3xl leading-tight font-semibold tracking-[-0.025em] text-base-50"
-              >
-                Every instrument, <Highlight>at once</Highlight>
-              </h2>
-              <p className="mt-3 text-base leading-7 text-base-400">
-                The whole library on one canvas that never ends. Drag in any
-                direction, throw it, or step with the arrow keys. It is the
-                Infinite Grid, and it is yours to copy too.
-              </p>
-              <Link
-                href="/components/infinite-grid"
-                className={`${btnSecondary} group mt-5 h-10 rounded-lg px-4 text-sm`}
-              >
-                Infinite Grid{" "}
-                <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-            </div>
-          </div>
-        </section>
-
         {/* AI: an image that arrives by being pruned into view */}
         <section className="mx-auto max-w-[1400px] px-6 py-20 sm:py-28">
           <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-20">
@@ -141,7 +109,29 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Principles */}
+        {/* The library spreading out of one point: rings of live instruments born at the centre */}
+        <section aria-labelledby="spread-title" className="relative isolate h-[46rem] overflow-hidden border-y border-base-50/[0.06] bg-base-950/40">
+          <Burst />
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-[2000] mx-auto max-w-[1400px] px-6 pt-14">
+            <div className="pointer-events-auto w-fit max-w-md rounded-2xl bg-canvas/85 p-6 shadow-[0_20px_50px_-20px_rgb(0_0_0/0.5)] ring-1 ring-base-50/[0.08] backdrop-blur-xl">
+              <Chip label="Canvas" count="point to pause" />
+              <h2 id="spread-title" className="mt-4 text-3xl leading-tight font-semibold tracking-[-0.025em] text-base-50">
+                Every instrument, <Highlight>from one point</Highlight>
+              </h2>
+              <p className="mt-3 text-base leading-7 text-base-400">
+                The whole library streaming out of a single origin, in every direction. Point at it to hold it still, and open any card.
+              </p>
+              <Link href="/components" className={`${btnSecondary} group mt-5 h-10 rounded-lg px-4 text-sm`}>
+                All {registry.length} instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/*
+          Principles ("Five rules"): parked for now. The component (features.tsx, principles.css)
+          stays in the project; uncomment this section and the Features import to bring it back.
+
         <section className="relative overflow-hidden">
           <div className="relative mx-auto max-w-[1400px] px-6 py-20 sm:py-28">
             <SectionTitle
@@ -156,6 +146,8 @@ export default function Home() {
             <Features />
           </div>
         </section>
+
+        */}
 
         {/* Blocks, each shown whole: what it is, what it is made of, and the way in */}
         <section className="mx-auto max-w-[1400px] px-6 py-20 sm:py-28">
