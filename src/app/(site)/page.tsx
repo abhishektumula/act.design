@@ -132,10 +132,10 @@ export default function Home() {
               </Link>
             }
           />
-          {/* Four of them, image always on the right; the list fades out under a way to the rest */}
+          {/* Two of them, image always on the right; the list fades out under a way to the rest */}
           <div className="relative mt-16">
             <div className="space-y-20 [mask-image:linear-gradient(to_bottom,#000_calc(100%-26rem),transparent_calc(100%-4rem))] sm:space-y-24">
-              {blocks.slice(0, 4).map((b) => (
+              {blocks.slice(0, 2).map((b) => (
                 <article
                   key={b.slug}
                   className="grid items-center gap-10 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] lg:gap-16"
