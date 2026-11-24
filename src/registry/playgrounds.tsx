@@ -62,6 +62,13 @@ const COLORS = [
   { name: "Neutral", value: "var(--color-neutral-500)" },
 ];
 
+const STREAKS = [
+  { name: "Amber", value: "var(--color-amber-400)" },
+  { name: "Red", value: "var(--color-red-500)" },
+  { name: "Sky", value: "var(--color-sky-400)" },
+  { name: "Ink", value: "currentColor" },
+];
+
 const n = (v: Value) => Number(v);
 const str = (v: Value) => String(v);
 const list = (v: Value) =>
@@ -475,19 +482,25 @@ export const playgrounds: Record<string, Playground> = {
       { type: "number", key: "value", label: "Value", min: 0, max: 100000, step: 137 },
       { type: "select", key: "style", label: "Format", options: ["decimal", "currency", "percent"] },
       { type: "number", key: "decimals", label: "Decimals", min: 0, max: 2, step: 1 },
+      { type: "number", key: "duration", label: "Run", min: 200, max: 1200, step: 20, unit: "ms" },
+      { type: "number", key: "stagger", label: "Per digit", min: 0, max: 250, step: 10, unit: "ms" },
+      { type: "color", key: "streak", label: "Streak", options: STREAKS },
     ],
-    defaults: { value: 48336, style: "currency", decimals: 0 },
+    defaults: { value: 48336, style: "currency", decimals: 0, duration: 420, stagger: 90, streak: "var(--color-amber-400)" },
     render: (v) => {
       const percent = v.style === "percent";
       return (
         <NumberTicker
           value={percent ? n(v.value) / 100000 : n(v.value)}
           format={{ style: str(v.style) as "decimal" | "currency" | "percent", currency: "USD", minimumFractionDigits: n(v.decimals), maximumFractionDigits: n(v.decimals) }}
-          className="text-6xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50 tabular-nums"
+          duration={n(v.duration)}
+          stagger={n(v.stagger)}
+          streak={str(v.streak)}
+          className="text-6xl font-semibold tracking-tight text-neutral-950 [text-shadow:0_1px_0_rgb(255_255_255/0.6),0_0.04em_0.08em_rgb(0_0_0/0.12),0_0.12em_0.3em_rgb(0_0_0/0.1)] dark:text-neutral-50 dark:[text-shadow:0_0.04em_0.1em_rgb(0_0_0/0.6),0_0.12em_0.35em_rgb(0_0_0/0.5)] tabular-nums"
         />
       );
     },
-    code: (v) => `<NumberTicker value={${v.value}} format={{ style: "${v.style}"${v.style === "currency" ? ', currency: "USD"' : ""}, maximumFractionDigits: ${v.decimals} }} />`,
+    code: (v) => `<NumberTicker value={${v.value}} format={{ style: "${v.style}"${v.style === "currency" ? ', currency: "USD"' : ""}, maximumFractionDigits: ${v.decimals} }} duration={${v.duration}} stagger={${v.stagger}} streak="${v.streak}" />`,
   },
   typeset: {
     component: "Typeset",

@@ -143,7 +143,6 @@ export function Values({ slug }: { slug: string }) {
 
       <div className="mt-5 grid overflow-hidden rounded-2xl ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] lg:grid-cols-[minmax(0,1fr)_17rem]">
         <div className="relative flex min-h-[26rem] items-center justify-center overflow-hidden bg-white dark:bg-black p-6 sm:p-10">
-          <div aria-hidden className="pointer-events-none absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,#000_10%,transparent_70%)]" />
           <div key={pg.remount === false ? "live" : JSON.stringify(values)} className="@container relative flex w-full justify-center">
             {pg.render(values)}
           </div>

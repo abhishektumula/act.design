@@ -46,12 +46,6 @@ body {
   );
 }
 
-/* A dot matrix for preview stages. */
-@utility bg-dots {
-  background-image: radial-gradient(color-mix(in oklab, light-dark(var(--color-neutral-950), var(--color-neutral-50)) 14%, transparent) 1px, transparent 1px);
-  background-size: 18px 18px;
-}
-
 /* ---------- site-only utilities (registry components never depend on these) ---------- */
 
 /* Highlighted code from shiki (dual theme) */
@@ -98,7 +92,7 @@ body {
 }
 
 /*
- * Proximity border glow (see GlowGrid). A spectrum spins around the cursor,
+ * Proximity border glow (see GlowField). A spectrum spins around the cursor,
  * is faded out with distance, then cut down to the card's 1px border ring,
  * so neighbouring cards light up on the edges that face the pointer.
  */
@@ -134,25 +128,8 @@ body {
   transition: opacity 0.4s ease;
 }
 
-/* A faint wash of light on the face of the card under the cursor. */
-[data-glow]::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: radial-gradient(420px circle at var(--gx, -9999px) var(--gy, -9999px), color-mix(in oklab, light-dark(var(--color-neutral-950), var(--color-neutral-50)) 4%, transparent), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-[data-glow]:hover::after {
-  opacity: 1;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  [data-glow]::before,
-  [data-glow]::after {
+  [data-glow]::before {
     transition: none;
   }
 }

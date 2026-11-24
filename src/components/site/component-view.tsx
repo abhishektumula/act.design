@@ -156,7 +156,6 @@ export function ComponentView({ slug, code, prompt, install }: { slug: string; c
               ref={stage}
               className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-2xl bg-white dark:bg-black p-4 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] sm:p-10"
             >
-              <div className="pointer-events-none absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,#000_10%,transparent_70%)]" />
               <div key={run} className="@container relative flex w-full justify-center">
                 <Preview slug={slug} />
               </div>
