@@ -11,6 +11,7 @@ import Dial from "@/components/ui/dial";
 import Fader from "@/components/ui/fader";
 import HoldToConfirm from "@/components/ui/hold-to-confirm";
 import Button from "@/components/ui/button";
+import LayerText from "@/components/ui/layer-text";
 import NumberTicker from "@/components/ui/number-ticker";
 import PromptInput from "@/components/ui/prompt-input";
 import PruneRevealAnimation from "@/components/ui/prune-reveal-animation";
@@ -33,6 +34,7 @@ export const previews: Record<string, ComponentType> = {
   "fader": Fader,
   "hold-to-confirm": HoldToConfirm,
   button: Button,
+  "layer-text": LayerText,
   "number-ticker": NumberTicker,
   "prompt-input": PromptInput,
   "prune-reveal-animation": PruneRevealAnimation,

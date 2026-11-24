@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
+import { LayerText } from "@/components/ui/layer-text";
 import { BlockThumb } from "@/components/site/block-frame";
 import { Playground } from "@/components/site/playground";
 import { PruneShowcase } from "@/components/site/prune-showcase";
@@ -38,6 +39,16 @@ export default function Home() {
     <>
       <main>
         <Hero />
+
+        {/* The name, set in Layer Text: every letter is a layer you can select */}
+        <section aria-label="act.design" className="relative overflow-hidden border-y border-base-50/[0.06] py-16 sm:py-24">
+          <div className="mx-auto flex max-w-[1400px] flex-col items-center px-6">
+            <LayerText text="act.design" size="clamp(4rem, 16vw, 15rem)" weight={800} tracking={-0.05} handle={10} className="text-base-50" />
+            <p className="mt-12 text-sm text-base-500">
+              Point at a letter. This is <Link href="/components/layer-text" className="text-base-200 underline decoration-base-700 underline-offset-4 hover:text-base-50">Layer Text</Link>, one of the instruments.
+            </p>
+          </div>
+        </section>
 
         {/* Instruments */}
         <section className="relative">
