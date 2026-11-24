@@ -17,6 +17,8 @@ import NumberTicker from "@/components/ui/number-ticker";
 import PromptInput from "@/components/ui/prompt-input";
 import PruneRevealAnimation from "@/components/ui/prune-reveal-animation";
 import SegmentedControl from "@/components/ui/segmented-control";
+import DriftCanvas from "@/components/ui/drift-canvas";
+import FocusCanvas from "@/components/ui/focus-canvas";
 import FolderCard from "@/components/ui/folder-card";
 import Stepper from "@/components/ui/stepper";
 import Switch from "@/components/ui/switch";
@@ -41,6 +43,8 @@ export const previews: Record<string, ComponentType> = {
   "prompt-input": PromptInput,
   "prune-reveal-animation": PruneRevealAnimation,
   "segmented-control": SegmentedControl,
+  "drift-canvas": DriftCanvas,
+  "focus-canvas": FocusCanvas,
   "folder-card": FolderCard,
   "stepper": Stepper,
   "switch": Switch,

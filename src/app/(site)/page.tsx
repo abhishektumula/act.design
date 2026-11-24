@@ -4,7 +4,7 @@ import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { LayerText } from "@/components/ui/layer-text";
 import { BlockThumb } from "@/components/site/block-frame";
-import { Tour } from "@/components/site/tour";
+import { HomeDrift } from "@/components/site/home-drift";
 import { PruneShowcase } from "@/components/site/prune-showcase";
 // Parked with the Principles section below:
 // import { Features } from "@/components/site/features";
@@ -109,19 +109,21 @@ export default function Home() {
           </div>
         </section>
 
-        {/* A camera touring the library: it settles on one component, pulls back, travels and closes in on the next */}
-        <section aria-labelledby="tour-title" className="py-20 sm:py-28">
+        {/* An endless canvas of images drifting one way: Drift Canvas */}
+        <section aria-labelledby="drift-title" className="py-20 sm:py-28">
           <div className="mx-auto max-w-[1400px] px-6">
-            <h2 id="tour-title" className="text-3xl leading-tight font-semibold tracking-[-0.025em] text-balance text-base-50 sm:text-4xl">
-              Every component, <Highlight>one at a time</Highlight>
+            <h2 id="drift-title" className="text-3xl leading-tight font-semibold tracking-[-0.025em] text-balance text-base-50 sm:text-4xl">
+              A canvas that <Highlight>never ends</Highlight>
             </h2>
             <p className="mt-4 max-w-2xl text-lg leading-8 text-pretty text-base-400">
-              A tour of the whole library. It settles on one piece, steps back, crosses the field and closes in on the next. Click the one in focus to open it.
+              Everything drifts one way, forever, like a marquee in two directions at once. Point at it to hold it still. This is{" "}
+              <Link href="/components/drift-canvas" className="text-base-200 underline decoration-base-700 underline-offset-4 hover:text-base-50">
+                Drift Canvas
+              </Link>
+              .
             </p>
           </div>
-          <div className="relative isolate mt-12 h-[42rem] overflow-hidden border-y border-base-50/[0.06] bg-base-950/40">
-            <Tour />
-          </div>
+          <HomeDrift />
         </section>
 
         {/*

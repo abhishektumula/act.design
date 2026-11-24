@@ -10,6 +10,8 @@ import { CommandPalette, type Command } from "@/components/ui/command-palette";
 import { CompareSlider } from "@/components/ui/compare-slider";
 import { Dial } from "@/components/ui/dial";
 import { Fader } from "@/components/ui/fader";
+import { DriftCanvas } from "@/components/ui/drift-canvas";
+import { FocusCanvas } from "@/components/ui/focus-canvas";
 import { FolderCard } from "@/components/ui/folder-card";
 import { HoldToConfirm } from "@/components/ui/hold-to-confirm";
 import { InfiniteGrid } from "@/components/ui/infinite-grid";
@@ -143,6 +145,11 @@ function PruneDemo({ photo, duration, wait }: { photo: string; duration: number;
 }
 
 const PHOTO = PHOTOS.Skyline.src;
+const IMAGES = Object.entries(PHOTOS).map(([name, p]) => ({ src: p.src, alt: name }));
+function Photo({ src, alt }: { src: string; alt: string }) {
+  // eslint-disable-next-line @next/next/no-img-element
+  return <img src={src} alt={alt} draggable={false} className="size-full rounded-2xl object-cover shadow-[0_20px_40px_-20px_rgb(0_0_0/0.6)] ring-1 ring-white/10" />;
+}
 const STACK = ["bg-blue-600 text-white", "bg-neutral-800 text-white", "bg-sky-400 text-sky-950", "bg-neutral-200 text-neutral-900", "bg-blue-950 text-blue-100", "bg-neutral-500 text-white", "bg-sky-700 text-white", "bg-neutral-950 text-white"];
 const SEGMENTS = [
   { label: "List", icon: List, iconName: "List" },
@@ -362,14 +369,14 @@ export const playgrounds: Record<string, Playground> = {
       { type: "number", key: "perRing", label: "Cards per ring", min: 3, max: 10, step: 1 },
       { type: "number", key: "speed", label: "Speed", min: 10, max: 160, step: 2, unit: "px/s" },
       { type: "number", key: "itemWidth", label: "Card width", min: 100, max: 320, step: 10, unit: "px" },
-      { type: "number", key: "itemHeight", label: "Card height", min: 80, max: 280, step: 10, unit: "px" },
+      { type: "number", key: "itemHeight", label: "Card height", min: 80, max: 320, step: 10, unit: "px" },
       { type: "boolean", key: "pauseOnHover", label: "Pause on hover" },
       { type: "boolean", key: "showOrigin", label: "Show origin" },
     ],
-    defaults: { rings: 4, perRing: 6, speed: 46, itemWidth: 150, itemHeight: 115, pauseOnHover: true, showOrigin: true },
+    defaults: { rings: 4, perRing: 6, speed: 46, itemWidth: 120, itemHeight: 150, pauseOnHover: true, showOrigin: true },
     render: (v) => (
       <Burst
-        items={Array.from({ length: 8 }, (_, i) => i)}
+        items={IMAGES}
         rings={n(v.rings)}
         perRing={n(v.perRing)}
         speed={n(v.speed)}
@@ -378,16 +385,71 @@ export const playgrounds: Record<string, Playground> = {
         pauseOnHover={!!v.pauseOnHover}
         showOrigin={!!v.showOrigin}
         className="h-[26rem] rounded-xl bg-base-950"
-        renderItem={(i) => (
-          <div className={`flex size-full items-end rounded-xl p-4 text-2xl font-semibold shadow-lg ring-1 ring-black/5 ${i % 3 === 0 ? "bg-blue-500 text-white" : "bg-base-900 text-base-300"}`}>
-            {String(i + 1).padStart(2, "0")}
-          </div>
-        )}
+        renderItem={(p) => <Photo {...p} />}
       />
     ),
     remount: false,
     code: (v) =>
       `<Burst\n  items={items}\n  renderItem={(item) => <Card {...item} />}\n  rings={${v.rings}}\n  perRing={${v.perRing}}\n  speed={${v.speed}}\n  itemWidth={${v.itemWidth}}\n  itemHeight={${v.itemHeight}}\n  pauseOnHover={${v.pauseOnHover}}\n  showOrigin={${v.showOrigin}}\n/>`,
+  },
+  "drift-canvas": {
+    component: "DriftCanvas",
+    remount: false,
+    controls: [
+      { type: "number", key: "angle", label: "Direction", min: 0, max: 359, step: 1, unit: "°" },
+      { type: "number", key: "speed", label: "Speed", min: 0, max: 160, step: 2, unit: "px/s" },
+      { type: "number", key: "itemWidth", label: "Card width", min: 100, max: 360, step: 10, unit: "px" },
+      { type: "number", key: "itemHeight", label: "Card height", min: 100, max: 420, step: 10, unit: "px" },
+      { type: "number", key: "gap", label: "Gap", min: 0, max: 48, step: 2, unit: "px" },
+      { type: "boolean", key: "stagger", label: "Brick rows" },
+      { type: "boolean", key: "pauseOnHover", label: "Pause on hover" },
+    ],
+    defaults: { angle: 215, speed: 28, itemWidth: 180, itemHeight: 220, gap: 20, stagger: true, pauseOnHover: true },
+    render: (v) => (
+      <DriftCanvas
+        items={IMAGES}
+        angle={n(v.angle)}
+        speed={n(v.speed)}
+        itemWidth={n(v.itemWidth)}
+        itemHeight={n(v.itemHeight)}
+        gap={n(v.gap)}
+        stagger={!!v.stagger}
+        pauseOnHover={!!v.pauseOnHover}
+        className="h-[26rem] rounded-xl bg-base-950"
+        renderItem={(p) => <Photo {...p} />}
+      />
+    ),
+    code: (v) =>
+      `<DriftCanvas\n  items={photos}\n  renderItem={(p) => <img src={p.src} alt={p.alt} />}\n  angle={${v.angle}}\n  speed={${v.speed}}\n  itemWidth={${v.itemWidth}}\n  itemHeight={${v.itemHeight}}\n  gap={${v.gap}}\n  stagger={${v.stagger}}\n  pauseOnHover={${v.pauseOnHover}}\n/>`,
+  },
+  "focus-canvas": {
+    component: "FocusCanvas",
+    controls: [
+      { type: "number", key: "hold", label: "Rest on each", min: 800, max: 6000, step: 100, unit: "ms" },
+      { type: "number", key: "travel", label: "Move takes", min: 1000, max: 5000, step: 100, unit: "ms" },
+      { type: "number", key: "focusScale", label: "Focus zoom", min: 0.8, max: 1.6, step: 0.05 },
+      { type: "number", key: "overviewScale", label: "Overview zoom", min: 0.35, max: 0.9, step: 0.05 },
+      { type: "number", key: "blur", label: "Blur around", min: 0, max: 16, step: 1, unit: "px" },
+      { type: "number", key: "itemWidth", label: "Card width", min: 140, max: 360, step: 10, unit: "px" },
+      { type: "number", key: "itemHeight", label: "Card height", min: 140, max: 420, step: 10, unit: "px" },
+    ],
+    defaults: { hold: 2400, travel: 2600, focusScale: 1.1, overviewScale: 0.6, blur: 7, itemWidth: 200, itemHeight: 250 },
+    render: (v) => (
+      <FocusCanvas
+        items={IMAGES}
+        hold={n(v.hold)}
+        travel={n(v.travel)}
+        focusScale={n(v.focusScale)}
+        overviewScale={n(v.overviewScale)}
+        blur={n(v.blur)}
+        itemWidth={n(v.itemWidth)}
+        itemHeight={n(v.itemHeight)}
+        className="h-[26rem] rounded-xl bg-base-950"
+        renderItem={(p) => <Photo {...p} />}
+      />
+    ),
+    code: (v) =>
+      `<FocusCanvas\n  items={photos}\n  renderItem={(p) => <img src={p.src} alt={p.alt} />}\n  hold={${v.hold}}\n  travel={${v.travel}}\n  focusScale={${v.focusScale}}\n  overviewScale={${v.overviewScale}}\n  blur={${v.blur}}\n  itemWidth={${v.itemWidth}}\n  itemHeight={${v.itemHeight}}\n/>`,
   },
   "number-ticker": {
     component: "NumberTicker",
@@ -450,20 +512,16 @@ export const playgrounds: Record<string, Playground> = {
       { type: "number", key: "gap", label: "Gap", min: 0, max: 48, step: 2, unit: "px" },
       { type: "boolean", key: "wheel", label: "Scroll with the wheel" },
     ],
-    defaults: { cellWidth: 200, cellHeight: 150, gap: 16, wheel: true },
+    defaults: { cellWidth: 180, cellHeight: 220, gap: 16, wheel: true },
     render: (v) => (
       <InfiniteGrid
-        items={Array.from({ length: 9 }, (_, i) => i)}
+        items={IMAGES}
         cellWidth={n(v.cellWidth)}
         cellHeight={n(v.cellHeight)}
         gap={n(v.gap)}
         wheel={!!v.wheel}
         className="h-[24rem] rounded-xl bg-base-950"
-        renderItem={(i) => (
-          <div className={`flex size-full items-end rounded-xl p-4 text-2xl font-semibold ring-1 ring-black/5 ${i % 3 === 0 ? "bg-blue-500 text-white" : "bg-base-900 text-base-300"}`}>
-            {String(i + 1).padStart(2, "0")}
-          </div>
-        )}
+        renderItem={(p) => <Photo {...p} />}
       />
     ),
     code: (v) => `<InfiniteGrid\n  items={items}\n  renderItem={(item) => <Tile {...item} />}\n  cellWidth={${v.cellWidth}}\n  cellHeight={${v.cellHeight}}\n  gap={${v.gap}}\n  wheel={${v.wheel}}\n/>`,
