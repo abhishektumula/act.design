@@ -4,6 +4,7 @@ import { Footer } from "@/components/site/footer";
 import { Hero } from "@/components/site/hero";
 import { BlockThumb } from "@/components/site/block-frame";
 import { Playground } from "@/components/site/playground";
+import { PruneShowcase } from "@/components/site/prune-showcase";
 import { Features } from "@/components/site/features";
 import { PreviewTile } from "@/components/site/preview-tile";
 import { CopyButton } from "@/components/site/kit/copy-button";
@@ -96,6 +97,39 @@ export default function Home() {
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </div>
+          </div>
+        </section>
+
+        {/* AI: an image that arrives by being pruned into view */}
+        <section className="mx-auto max-w-[1400px] px-6 py-20 sm:py-28">
+          <div className="grid items-center gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-20">
+            <div>
+              <Chip label="AI" count="Prune Reveal Animation" />
+              <h2 className="mt-4 text-3xl leading-tight font-semibold tracking-[-0.025em] text-balance text-base-50 sm:text-4xl">
+                Images that arrive <Highlight>by fire</Highlight>
+              </h2>
+              <p className="mt-4 max-w-xl text-lg leading-8 text-pretty text-base-400">
+                While the model works, the frame pulses with your prompt. When the image is ready the surface is touched at one spot and burns away from
+                there, along a path that is never the same twice, embers and ash rising off its glowing edge.
+              </p>
+              <ul className="mt-8 grid max-w-lg gap-3 text-[15px] text-base-300 sm:grid-cols-2">
+                {["A pulse while it generates", "A burn that finds its own path", "Embers, ash and heat at the edge", "Regenerate over the old image"].map((f) => (
+                  <li key={f} className="flex items-center gap-2.5">
+                    <span className="size-1.5 shrink-0 rounded-full bg-signal" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-9 flex flex-wrap gap-3">
+                <Link href="/components/prune-reveal-animation" className={`${btnPrimary} group h-11 rounded-lg px-5 text-[15px]`}>
+                  Open Prune Reveal <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </Link>
+                <Link href="/components#ai" className={`${btnSecondary} h-11 rounded-lg px-5 text-[15px]`}>
+                  More AI instruments
+                </Link>
+              </div>
+            </div>
+            <PruneShowcase />
           </div>
         </section>
 
