@@ -17,21 +17,18 @@ import { ExternalLink } from "lucide-react";
 
 const linkArrow = `${btnSecondary} group h-10 rounded-lg px-4 text-sm`;
 
-/** Bento placement for the instrument index. */
+/** Bento placement for the instrument index: the most hands-on pieces first. Three columns, no holes. */
 const layout: [string, string][] = [
-  ["dial", "lg:col-span-2 h-[540px]"],
-  ["card-stack", "lg:row-span-2 h-[540px] lg:h-auto"],
-  ["fader", "h-[540px]"],
-  ["button", "h-[540px]"],
-  ["switch", "h-[500px]"],
-  ["segmented-control", "lg:col-span-2 h-[500px]"],
-  ["stepper", "h-[500px]"],
-  ["hold-to-confirm", "h-[500px]"],
-  ["orb", "h-[500px]"],
+  ["layer-text", "lg:col-span-2 h-[460px]"],
+  ["prune-reveal-animation", "lg:row-span-2 h-[660px] lg:h-auto"],
   ["compare-slider", "lg:col-span-2 h-[560px]"],
-  ["trash-bin", "h-[560px]"],
-  ["prompt-input", "lg:col-span-2 h-[500px]"],
-  ["number-ticker", "h-[500px]"],
+  ["dial", "lg:col-span-2 h-[540px]"],
+  ["fader", "h-[540px]"],
+  ["trash-bin", "lg:col-span-2 h-[500px]"],
+  ["card-stack", "h-[500px]"],
+  ["segmented-control", "h-[460px]"],
+  ["hold-to-confirm", "h-[460px]"],
+  ["orb", "h-[460px]"],
 ];
 
 export default function Home() {

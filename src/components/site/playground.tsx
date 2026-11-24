@@ -8,19 +8,17 @@ import { Fit } from "./fit";
 
 /* Light, self-contained demos only: nothing fixed to the viewport, no shaders, no global shortcuts. */
 const SHOWN = [
+  "layer-text",
   "dial",
-  "switch",
+  "compare-slider",
   "card-stack",
   "fader",
   "trash-bin",
   "segmented-control",
-  "compare-slider",
   "stepper",
   "folder-card",
   "hold-to-confirm",
-  "number-ticker",
   "code-input",
-  "button",
 ];
 
 /** The whole library laid out on one endless canvas, every tile a live instrument. */
