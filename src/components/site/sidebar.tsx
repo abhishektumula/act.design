@@ -25,7 +25,7 @@ const groups: Group[] = [
     icon: Download,
     items: [
       { href: "/setup", name: "Setup guide" },
-      { href: "/components", name: `All instruments · ${registry.length}` },
+      { href: "/components", name: `All components · ${registry.length}` },
       { href: "/blocks", name: `All blocks · ${blocks.length}` },
     ],
   },

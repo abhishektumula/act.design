@@ -187,81 +187,23 @@ export function InfiniteGrid<T>({
 
 /* ----------------------------------- demo ---------------------------------- */
 
-type Tile = { kind: "stat" | "bars" | "toggle" | "people" | "progress" | "note"; title: string };
-
-const TILES: Tile[] = [
-  { kind: "stat", title: "Revenue" },
-  { kind: "bars", title: "Traffic" },
-  { kind: "toggle", title: "Alerts" },
-  { kind: "people", title: "Team" },
-  { kind: "progress", title: "Storage" },
-  { kind: "note", title: "Notes" },
-  { kind: "stat", title: "Signups" },
-  { kind: "bars", title: "Latency" },
+const PHOTOS = [
+  { src: "https://images.unsplash.com/photo-1795307026712-1116f5902e4f?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D", alt: "A city skyline at dusk" },
+  { src: "https://images.unsplash.com/photo-1500485035595-cbe6f645feb1?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D", alt: "Palms around a lagoon at sunset" },
+  { src: "https://images.unsplash.com/photo-1793740687112-e7545e5d5568?q=80&w=1065&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D", alt: "A breakwater in a stormy sea" },
 ];
-
-function MiniCard({ tile, index }: { tile: Tile; index: number }) {
-  const seed = (index * 37) % 100;
-  return (
-    <div className="flex size-full flex-col rounded-2xl bg-white p-4 shadow-sm ring-1 ring-black/5 dark:bg-neutral-900 dark:ring-white/10">
-      <p className="text-xs font-medium text-neutral-500">{tile.title}</p>
-      <div className="mt-auto">
-        {tile.kind === "stat" && (
-          <p className="text-3xl font-semibold tracking-tight text-neutral-900 tabular-nums dark:text-white">
-            {tile.title === "Revenue" ? `$${(24 + seed / 4).toFixed(1)}k` : (1200 + seed * 13).toLocaleString("en-US")}
-          </p>
-        )}
-        {tile.kind === "bars" && (
-          <div className="flex h-20 items-end gap-1">
-            {Array.from({ length: 12 }, (_, i) => (
-              <span key={i} className={cn("flex-1 rounded-sm", i === 9 ? "bg-blue-500" : "bg-neutral-200 dark:bg-neutral-700")} style={{ height: `${25 + ((i * 29 + seed) % 70)}%` }} />
-            ))}
-          </div>
-        )}
-        {tile.kind === "toggle" &&
-          ["Email", "Slack", "Phone"].map((t, i) => (
-            <div key={t} className="flex items-center justify-between py-1 text-sm text-neutral-700 dark:text-neutral-300">
-              {t}
-              <span className={cn("flex h-5 w-8 items-center rounded-full p-0.5", i !== 1 ? "justify-end bg-blue-500" : "bg-neutral-300 dark:bg-neutral-700")}>
-                <span className="size-4 rounded-full bg-white" />
-              </span>
-            </div>
-          ))}
-        {tile.kind === "people" && (
-          <div className="flex -space-x-2">
-            {["bg-neutral-300", "bg-neutral-400", "bg-neutral-500", "bg-blue-500"].map((c, i) => (
-              <span key={i} className={cn("size-9 rounded-full ring-2 ring-white dark:ring-neutral-900", c)} />
-            ))}
-          </div>
-        )}
-        {tile.kind === "progress" && (
-          <>
-            <p className="text-sm text-neutral-700 dark:text-neutral-300">{40 + (seed % 50)}% used</p>
-            <div className="mt-2 h-2 rounded-full bg-neutral-200 dark:bg-neutral-700">
-              <div className="h-full rounded-full bg-blue-500" style={{ width: `${40 + (seed % 50)}%` }} />
-            </div>
-          </>
-        )}
-        {tile.kind === "note" && (
-          <div className="space-y-2">
-            {[90, 70, 80, 40].map((w, i) => (
-              <div key={i} className="h-2 rounded-full bg-neutral-200 dark:bg-neutral-700" style={{ width: `${w}%` }} />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 export default function Demo() {
   return (
     <InfiniteGrid
-      items={TILES}
-      renderItem={(tile, i) => <MiniCard tile={tile} index={i} />}
-      cellWidth={220}
-      cellHeight={170}
-      className="h-[26rem] rounded-2xl bg-neutral-100 ring-1 ring-black/5 dark:bg-neutral-950 dark:ring-white/10"
+      items={PHOTOS}
+      cellWidth={200}
+      cellHeight={250}
+      className="h-[26rem] rounded-2xl bg-neutral-950 ring-1 ring-black/5 dark:ring-white/10"
+      renderItem={(p) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={p.src} alt={p.alt} draggable={false} className="size-full rounded-2xl object-cover shadow-[0_20px_40px_-20px_rgb(0_0_0/0.6)] ring-1 ring-white/10" />
+      )}
     />
   );
 }

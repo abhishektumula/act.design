@@ -13,6 +13,7 @@ import {
 } from "@/components/site/doc-parts";
 import { NewMark } from "@/components/site/fx";
 import { ProCard } from "@/components/site/pro-card";
+import { Values } from "@/components/site/values";
 import sources from "@/registry/sources.json";
 import {
   getItem,
@@ -66,7 +67,7 @@ async function ComponentPageContent({
         <div className="flex items-center justify-between gap-4">
           <Breadcrumb
             items={[
-              { href: "/components", label: "Instruments" },
+              { href: "/components", label: "Components" },
               {
                 href: `/components#${item.category.toLowerCase().replace(/\s/g, "-")}`,
                 label: item.category,
@@ -130,7 +131,9 @@ async function ComponentPageContent({
           />
         </div>
 
-        <Steps
+        <Values slug={slug} />
+
+      <Steps
           steps={[
             <>
               One-time setup: add the <code className={code}>cn</code> helper

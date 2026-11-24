@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Preview } from "@/registry/previews";
-import { Fit } from "./fit";
+import { LivePreview } from "./live-preview";
 import { getItem } from "@/registry/meta";
 import { cn } from "@/lib/utils";
 
@@ -12,9 +11,7 @@ export function PreviewTile({ slug, className = "h-[420px]" }: { slug: string; c
   return (
     <article className={cn("group flex flex-col rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/[0.12]", className)}>
       <div className="relative flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-canvas px-6 py-6 ring-1 ring-base-50/[0.06]">
-        <Fit>
-          <Preview slug={slug} />
-        </Fit>
+        <LivePreview slug={slug} />
       </div>
       <Link href={`/components/${slug}`} className="block px-3 pt-4 pb-2">
         <span className="flex items-center gap-2.5">

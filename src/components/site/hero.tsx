@@ -102,7 +102,7 @@ export function Hero() {
           </p>
           <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link href="/components" className={`${btnPrimary} group h-11 rounded-lg px-5 text-[15px]`}>
-              Browse the instruments <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+              Browse the components <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link href="/blocks" className={`${btnSecondary} h-11 rounded-lg px-5 text-[15px]`}>
               See them in a product

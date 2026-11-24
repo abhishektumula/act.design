@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/site/frame";
 import { PreviewTile } from "@/components/site/preview-tile";
 import { categories, registry } from "@/registry/meta";
 
-export const metadata: Metadata = { title: "Instruments · act.design" };
+export const metadata: Metadata = { title: "Components · act.design" };
 
 const blurbs: Record<(typeof categories)[number], string> = {
   Controls: "Things you turn, slide and flip.",
@@ -20,7 +20,7 @@ export default function ComponentsIndex() {
       <PageHeader
         title={
           <>
-            The <Highlight>instruments</Highlight>
+            The <Highlight>components</Highlight>
           </>
         }
         body={`${registry.length} live components. Play with them here, open one for its code and API, then copy it into your app.`}

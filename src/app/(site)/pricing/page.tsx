@@ -26,16 +26,16 @@ const plans: {
     id: "free",
     name: "Free",
     price: "$0",
-    body: "Play with every instrument and block, live.",
+    body: "Play with every component and block, live.",
     features: ["Live previews of everything", "Install instructions", "Command search"],
-    cta: "Browse instruments",
+    cta: "Browse components",
     href: "/components",
   },
   {
     id: "pro",
     name: "Pro",
     price: "$99",
-    body: "Source for the everyday instruments.",
+    body: "Source for the everyday components.",
     features: ["Controls, actions, motion, navigation", "Free updates for a year", "Use in client work"],
     cta: "Sign in",
     href: "/login",
@@ -45,7 +45,7 @@ const plans: {
     name: "Max",
     price: "$199",
     body: "Everything, including AI and every block.",
-    features: [`All ${registry.length} instruments`, `All ${blocks.length} blocks`, "Lifetime updates", "Unlimited projects"],
+    features: [`All ${registry.length} components`, `All ${blocks.length} blocks`, "Lifetime updates", "Unlimited projects"],
     cta: "Go to account",
     href: "/account",
     featured: true,
@@ -186,7 +186,7 @@ export default function PricingPage() {
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-base-50/[0.07]">
-                  <th className="px-6 py-4 font-mono text-[10px] font-normal tracking-[0.14em] text-base-500 uppercase sm:px-8">Instrument</th>
+                  <th className="px-6 py-4 font-mono text-[10px] font-normal tracking-[0.14em] text-base-500 uppercase sm:px-8">Component</th>
                   {plans.map((p) => (
                     <th
                       key={p.id}

@@ -8,22 +8,20 @@ import { Fit } from "./fit";
 
 /* Light, self-contained demos only: nothing fixed to the viewport, no shaders, no global shortcuts. */
 const SHOWN = [
+  "layer-text",
   "dial",
-  "switch",
+  "compare-slider",
   "card-stack",
   "fader",
   "trash-bin",
   "segmented-control",
-  "compare-slider",
   "stepper",
   "folder-card",
   "hold-to-confirm",
-  "number-ticker",
   "code-input",
-  "button",
 ];
 
-/** The whole library laid out on one endless canvas, every tile a live instrument. */
+/** The whole library laid out on one endless canvas, every tile a live component. */
 export function Playground() {
   return (
     <InfiniteGrid
@@ -32,7 +30,7 @@ export function Playground() {
       cellWidth={340}
       cellHeight={300}
       gap={20}
-      aria-label="Every instrument on one canvas. Drag to move around, or use the arrow keys."
+      aria-label="Every component on one canvas. Drag to move around, or use the arrow keys."
       className="h-full"
       renderItem={(slug) => {
         const item = getItem(slug)!;
