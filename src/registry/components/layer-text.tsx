@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type CSSProperties } from "react";
+import { useId, useRef, useState, type CSSProperties } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +41,7 @@ export function LayerText({
   className,
 }: LayerTextProps) {
   const reduce = useReducedMotion();
+  const id = useId().replace(/[^a-zA-Z0-9]/g, "");
   const [active, setActive] = useState<number | null>(null);
   const [box, setBox] = useState<{ w: number; h: number } | null>(null);
   const letters = useRef<(HTMLSpanElement | null)[]>([]);
@@ -66,6 +67,17 @@ export function LayerText({
       style={style}
       className={cn("inline-flex flex-wrap justify-center leading-none select-none", className)}
     >
+      {/* The outline: the letter's silhouette grown and shrunk by half the width, keeping only the ring
+          between. Overlapping strokes inside a glyph merge first, so there are no inner lines. */}
+      <svg aria-hidden className="absolute size-0">
+        <filter id={id} x="-20%" y="-20%" width="140%" height="140%">
+          <feMorphology in="SourceAlpha" operator="dilate" radius={outline / 2} result="out" />
+          <feMorphology in="SourceAlpha" operator="erode" radius={outline / 2} result="in" />
+          <feComposite in="out" in2="in" operator="out" result="ring" />
+          <feFlood style={{ floodColor: color }} />
+          <feComposite in2="ring" operator="in" />
+        </filter>
+      </svg>
       {chars.map((ch, i) => {
         if (ch === " ") return <span key={i} aria-hidden className="w-[0.28em]" />;
         const on = active === i;
@@ -76,13 +88,16 @@ export function LayerText({
             aria-hidden
             onPointerEnter={() => select(i)}
             onPointerDown={() => select(i)}
-            className="relative inline-block px-[0.02em] py-[0.06em] transition-[color,-webkit-text-stroke-color] duration-150"
-            style={{
-              color: on ? "transparent" : undefined,
-              WebkitTextStroke: on ? `${outline}px ${color}` : `${outline}px transparent`,
-            }}
+            className="relative inline-block px-[0.02em] py-[0.06em]"
           >
-            {ch}
+            <span className={cn("transition-opacity duration-150", on && "opacity-0")}>{ch}</span>
+            <span
+              aria-hidden
+              className={cn("absolute inset-0 px-[0.02em] py-[0.06em] transition-opacity duration-150", on ? "opacity-100" : "opacity-0")}
+              style={{ filter: `url(#${id})` }}
+            >
+              {ch}
+            </span>
             <AnimatePresence>
               {on && (
                 <motion.span
@@ -110,8 +125,7 @@ export function LayerText({
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: reduce ? 0 : 0.08, duration: 0.18 }}
                       className="absolute top-full left-1/2 mt-[calc(0.5rem+4px)] -translate-x-1/2 rounded-[3px] px-1 py-px font-mono text-[11px] leading-4 font-normal tracking-normal whitespace-nowrap text-white tabular-nums"
-                      // The letter's outline is inherited; the label must not wear it.
-                      style={{ background: color, WebkitTextStroke: "0" }}
+                      style={{ background: color }}
                     >
                       {box.w} × {box.h}
                     </motion.span>
