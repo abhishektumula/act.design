@@ -10,6 +10,7 @@ import { blocks, categories, registry } from "@/registry/meta";
 import { BlockThumb } from "./block-frame";
 import { Fit } from "./fit";
 import { NewMark } from "./fx";
+import { btnPrimary } from "./styles";
 
 /* Live demos load only once a menu opens, so the bar stays light on every page. */
 const Preview = dynamic(() => import("@/registry/previews").then((m) => m.Preview), { ssr: false });
@@ -51,12 +52,23 @@ export function NavLinks() {
   const pathname = usePathname();
   const [open, setOpen] = useState<MenuId | null>(null);
   const [hover, setHover] = useState<Entry | null>(null);
+  // The preview opens on the newest entry, but no row looks hovered until the pointer or focus picks one.
+  const [picked, setPicked] = useState(false);
+  const pick = (e: Entry) => {
+    setHover(e);
+    setPicked(true);
+  };
   const timer = useRef<number>(0);
   const root = useRef<HTMLDivElement>(null);
+  const openRef = useRef<MenuId | null>(null);
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
 
   const show = (id: MenuId, delay = 90) => {
     window.clearTimeout(timer.current);
     timer.current = window.setTimeout(() => {
+      if (openRef.current !== id) setPicked(false);
       setOpen(id);
       setHover((h) => (h && menus[id].entries.includes(h) ? h : newest(menus[id].entries)));
     }, delay);
@@ -129,10 +141,10 @@ export function NavLinks() {
                   <li key={e.slug}>
                     <Link
                       href={e.href}
-                      onPointerEnter={() => setHover(e)}
-                      onFocus={() => setHover(e)}
+                      onPointerEnter={() => pick(e)}
+                      onFocus={() => pick(e)}
                       className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-[14px] transition-colors ${
-                        hover?.slug === e.slug ? "bg-base-800/80 text-base-50" : "text-base-300 hover:text-base-50"
+                        picked && hover?.slug === e.slug ? "bg-base-800/80 text-base-50" : "text-base-300 hover:text-base-50"
                       }`}
                     >
                       <span className="truncate">{e.name}</span>
@@ -141,7 +153,7 @@ export function NavLinks() {
                   </li>
                 ))}
               </ul>
-              <Link href={menu.href} className="group mt-4 inline-flex items-center gap-1.5 px-3 text-[15px] font-medium text-base-50">
+              <Link href={menu.href} className={`${btnPrimary} group mt-4 h-10 rounded-lg px-4 text-[14px]`}>
                 {menu.all} <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </div>

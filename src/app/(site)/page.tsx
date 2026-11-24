@@ -116,7 +116,7 @@ export default function Home() {
               A canvas that <Highlight>never ends</Highlight>
             </h2>
             <p className="mt-4 max-w-2xl text-lg leading-8 text-pretty text-base-400">
-              Everything drifts one way, forever, like a marquee in two directions at once. Point at it to hold it still. This is{" "}
+              Every component on one canvas, drifting one way forever like a marquee in two directions. Point at it to hold it still, and open any card. It is{" "}
               <Link href="/components/drift-canvas" className="text-base-200 underline decoration-base-700 underline-offset-4 hover:text-base-50">
                 Drift Canvas
               </Link>
