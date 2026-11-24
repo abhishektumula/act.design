@@ -135,7 +135,7 @@ export function CardStack<T extends { id: string }>({
       tabIndex={0}
       onKeyDown={onKeyDown}
       aria-roledescription="carousel"
-      className={cn("flex w-full max-w-[18rem] flex-col items-center rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-signal/50 focus-visible:ring-offset-8 focus-visible:ring-offset-base-950", className)}
+      className={cn("flex w-full max-w-[18rem] flex-col items-center rounded-3xl outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 dark:focus-visible:ring-blue-500/50 focus-visible:ring-offset-8 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950", className)}
     >
       <div className="relative mt-12 w-full" style={{ aspectRatio }}>
         {order
@@ -158,18 +158,18 @@ export function CardStack<T extends { id: string }>({
           type="button"
           onClick={prev}
           aria-label="Previous card"
-          className="grid size-9 place-items-center rounded-full text-base-400 ring-1 ring-base-50/10 transition-colors hover:bg-base-50/5 hover:text-base-50 [&_svg]:size-4"
+          className="grid size-9 place-items-center rounded-full text-neutral-600 dark:text-neutral-400 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 transition-colors hover:bg-neutral-950/5 dark:hover:bg-neutral-50/5 hover:text-neutral-950 dark:hover:text-neutral-50 [&_svg]:size-4"
         >
           <ArrowLeft />
         </button>
-        <span className="font-mono text-xs text-base-500 tabular-nums" aria-live="polite">
-          <span className="text-base-100">{String(position).padStart(2, "0")}</span> / {String(items.length).padStart(2, "0")}
+        <span className="font-mono text-xs text-neutral-500 tabular-nums" aria-live="polite">
+          <span className="text-neutral-900 dark:text-neutral-100">{String(position).padStart(2, "0")}</span> / {String(items.length).padStart(2, "0")}
         </span>
         <button
           type="button"
           onClick={next}
           aria-label="Next card"
-          className="grid size-9 place-items-center rounded-full text-base-400 ring-1 ring-base-50/10 transition-colors hover:bg-base-50/5 hover:text-base-50 [&_svg]:size-4"
+          className="grid size-9 place-items-center rounded-full text-neutral-600 dark:text-neutral-400 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 transition-colors hover:bg-neutral-950/5 dark:hover:bg-neutral-50/5 hover:text-neutral-950 dark:hover:text-neutral-50 [&_svg]:size-4"
         >
           <ArrowRight />
         </button>
@@ -179,7 +179,7 @@ export function CardStack<T extends { id: string }>({
 }
 
 const swatches = [
-  { id: "signal", name: "Signal", code: "OK 65 / 205 / 38", note: "For the one thing that matters on screen.", from: "color-mix(in oklab, var(--signal) 78%, white)", to: "color-mix(in oklab, var(--signal) 88%, black)", ink: "white" },
+  { id: "signal", name: "Signal", code: "OK 65 / 205 / 38", note: "For the one thing that matters on screen.", from: "color-mix(in oklab, var(--color-blue-500) 78%, white)", to: "color-mix(in oklab, var(--color-blue-500) 88%, black)", ink: "white" },
   { id: "cobalt", name: "Cobalt", code: "OK 52 / 190 / 264", note: "Deep enough to hold white type at any size.", from: "var(--color-indigo-500)", to: "var(--color-blue-800)", ink: "white" },
   { id: "moss", name: "Moss", code: "OK 58 / 110 / 135", note: "A green that reads as calm, never as success.", from: "var(--color-lime-600)", to: "var(--color-lime-800)", ink: "white" },
   { id: "bone", name: "Bone", code: "OK 94 / 015 / 85", note: "The paper everything else is printed on.", from: "var(--color-neutral-100)", to: "var(--color-neutral-300)", ink: "var(--color-neutral-800)" },

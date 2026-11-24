@@ -56,11 +56,11 @@ export function Sidebar() {
               type="button"
               aria-expanded={open}
               onClick={() => setClosed((c) => ({ ...c, [g.id]: open }))}
-              className="flex w-full items-center gap-2.5 rounded-md px-2 py-2 text-[15px] font-medium text-base-100 transition-colors hover:text-base-50"
+              className="flex w-full items-center gap-2.5 rounded-md px-2 py-2 text-[15px] font-medium text-neutral-900 dark:text-neutral-100 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
             >
-              <Icon className="size-4 text-base-400" />
+              <Icon className="size-4 text-neutral-600 dark:text-neutral-400" />
               <span className="flex-1 text-left">{g.label}</span>
-              <ChevronDown className={`size-4 text-base-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
+              <ChevronDown className={`size-4 text-neutral-500 transition-transform duration-200 ${open ? "rotate-180" : ""}`} />
             </button>
             <AnimatePresence initial={false}>
               {open && (
@@ -69,7 +69,7 @@ export function Sidebar() {
                   animate={{ height: "auto", opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-                  className="ml-4 overflow-hidden border-l border-base-50/[0.08]"
+                  className="ml-4 overflow-hidden border-l border-neutral-950/[0.08] dark:border-neutral-50/[0.08]"
                 >
                   {g.items.map((item) => {
                     const active = pathname === item.href;
@@ -79,7 +79,7 @@ export function Sidebar() {
                           href={item.href}
                           aria-current={active ? "page" : undefined}
                           className={`relative -ml-px flex items-center justify-between gap-2 border-l py-1.5 pr-2 pl-4 text-sm transition-colors ${
-                            active ? "border-signal text-base-50" : "border-transparent text-base-400 hover:border-base-50/30 hover:text-base-100"
+                            active ? "border-blue-600 dark:border-blue-500 text-neutral-950 dark:text-neutral-50" : "border-transparent text-neutral-600 dark:text-neutral-400 hover:border-neutral-950/30 dark:hover:border-neutral-50/30 hover:text-neutral-900 dark:hover:text-neutral-100"
                           }`}
                         >
                           <span className="truncate">{item.name}</span>

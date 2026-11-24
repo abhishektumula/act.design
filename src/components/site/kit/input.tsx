@@ -13,13 +13,13 @@ export const inputVariants = cva(
       variant: {
         // recessed field with an inner shadow
         inset:
-          "rounded-md bg-base-50/[0.03] ring-1 ring-base-50/[0.1] focus-within:ring-signal/60 focus-within:outline-4 focus-within:outline-offset-1 focus-within:outline-signal/15",
+          "rounded-md bg-neutral-950/[0.03] dark:bg-neutral-50/[0.03] ring-1 ring-neutral-950/[0.1] dark:ring-neutral-50/[0.1] focus-within:ring-blue-600/60 dark:focus-within:ring-blue-500/60 focus-within:outline-4 focus-within:outline-offset-1 focus-within:outline-blue-600/15 dark:focus-within:outline-blue-500/15",
         // raised surface, like a secondary button
         raised:
-          "rounded-md bg-base-900 ring-1 ring-base-50/10 focus-within:ring-signal/60",
+          "rounded-md bg-neutral-100 dark:bg-neutral-900 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 focus-within:ring-blue-600/60 dark:focus-within:ring-blue-500/60",
         // just a bottom border — for minimal forms
         underline:
-          "rounded-none border-b border-base-50/15 px-0! focus-within:border-base-200 data-[error=true]:border-red-500/60",
+          "rounded-none border-b border-neutral-950/15 dark:border-neutral-50/15 px-0! focus-within:border-neutral-800 dark:focus-within:border-neutral-200 data-[error=true]:border-red-500/60",
       },
       size: {
         sm: "h-8 px-2.5 text-xs",
@@ -49,16 +49,16 @@ export function Input({ label, icon, error, trailing, variant, size, className, 
   return (
     <div data-slot="input" className={cn("flex flex-col gap-1.5", className, classNames?.root)}>
       {label && (
-        <label htmlFor={inputId} className={cn("text-[13px] font-medium text-base-300", classNames?.label)}>
+        <label htmlFor={inputId} className={cn("text-[13px] font-medium text-neutral-700 dark:text-neutral-300", classNames?.label)}>
           {label}
         </label>
       )}
       <div data-error={!!error} className={cn(inputVariants({ variant, size }), classNames?.field)}>
-        {icon && <span className="text-base-500 transition-colors group-focus-within:text-base-200">{icon}</span>}
+        {icon && <span className="text-neutral-500 transition-colors group-focus-within:text-neutral-800 dark:group-focus-within:text-neutral-200">{icon}</span>}
         <input
           id={inputId}
           aria-invalid={!!error}
-          className={cn("h-full min-w-0 flex-1 bg-transparent text-base-100 outline-none placeholder:text-base-600", classNames?.input)}
+          className={cn("h-full min-w-0 flex-1 bg-transparent text-neutral-900 dark:text-neutral-100 outline-none placeholder:text-neutral-400 dark:placeholder:text-neutral-600", classNames?.input)}
           {...props}
         />
         {trailing}
@@ -90,7 +90,7 @@ export function PasswordInput(props: Omit<InputProps, "type" | "trailing">) {
           type="button"
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? "Hide password" : "Show password"}
-          className="-mr-1 grid size-7 place-items-center rounded-[4px] text-base-500 transition-colors hover:bg-base-50/5 hover:text-base-200"
+          className="-mr-1 grid size-7 place-items-center rounded-[4px] text-neutral-500 transition-colors hover:bg-neutral-950/5 dark:hover:bg-neutral-50/5 hover:text-neutral-800 dark:hover:text-neutral-200"
         >
           <AnimatePresence mode="popLayout" initial={false}>
             <motion.span
@@ -141,7 +141,7 @@ export default function Demo() {
         }}
         error={error}
       />
-      <button className="mt-1 h-10 rounded-md bg-base-50 text-sm font-medium text-base-950 transition-colors hover:bg-base-200">
+      <button className="mt-1 h-10 rounded-md bg-neutral-950 dark:bg-neutral-50 text-sm font-medium text-neutral-50 dark:text-neutral-950 transition-colors hover:bg-neutral-800 dark:hover:bg-neutral-200">
         Create account
       </button>
     </form>

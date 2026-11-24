@@ -49,8 +49,8 @@ function useTheme() {
 function Tile({ area, lead, children, picture }: { area: string; lead: string; children: ReactNode; picture?: ReactNode }) {
   return (
     <article className={`pr-cell pr-cell--${area}`}>
-      <p className="relative z-10 max-w-[28rem] shrink-0 px-(--pad) pt-7 text-[17px] leading-6 tracking-[-0.012em] text-pretty text-base-500">
-        <b className="font-semibold text-base-50">{lead}</b> {children}
+      <p className="relative z-10 max-w-[28rem] shrink-0 px-(--pad) pt-7 text-[17px] leading-6 tracking-[-0.012em] text-pretty text-neutral-500">
+        <b className="font-semibold text-neutral-950 dark:text-neutral-50">{lead}</b> {children}
       </p>
       {picture}
     </article>
@@ -174,12 +174,12 @@ function File() {
   return (
     <article className="pr-cell pr-cell--stat">
       <div className="flex h-full flex-col justify-center px-(--pad) py-8">
-        <span className="text-[17px] leading-6 font-semibold tracking-[-0.012em] text-base-50">Every instrument is</span>
+        <span className="text-[17px] leading-6 font-semibold tracking-[-0.012em] text-neutral-950 dark:text-neutral-50">Every instrument is</span>
         <span className="mt-3 flex items-baseline gap-3 whitespace-nowrap">
-          <span className="text-[144px] leading-[0.82] font-semibold tracking-[-0.06em] text-base-50 tabular-nums">1</span>
-          <span className="text-[56px] leading-none font-medium tracking-[-0.03em] text-base-400">file</span>
+          <span className="text-[144px] leading-[0.82] font-semibold tracking-[-0.06em] text-neutral-950 dark:text-neutral-50 tabular-nums">1</span>
+          <span className="text-[56px] leading-none font-medium tracking-[-0.03em] text-neutral-600 dark:text-neutral-400">file</span>
         </span>
-        <span className="mt-5 max-w-[17rem] text-[15px] leading-[21px] text-pretty text-base-500">
+        <span className="mt-5 max-w-[17rem] text-[15px] leading-[21px] text-pretty text-neutral-500">
           Paste it in and it’s yours. No package to pin, nothing to fight.
         </span>
       </div>
@@ -404,7 +404,7 @@ function Palette() {
               <div className="pr-chips" data-on={s.on || undefined} style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}>
                 {SCALE.map((step, i) => (
                   <span key={step} className="pr-chip" data-signal={step === "signal" || undefined} style={{ ["--i" as string]: i }}>
-                    <span className="pr-chip__swatch" style={{ background: step === "signal" ? "var(--signal)" : `var(--color-neutral-${step})` }} />
+                    <span className="pr-chip__swatch" style={{ background: step === "signal" ? "var(--color-blue-500)" : `var(--color-neutral-${step})` }} />
                     <span className="pr-chip__name">{step}</span>
                   </span>
                 ))}

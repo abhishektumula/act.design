@@ -98,7 +98,7 @@ export function NavLinks() {
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
   const active = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
-  const link = (on: boolean) => `flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${on ? "text-base-50" : "text-base-400 hover:text-base-50"}`;
+  const link = (on: boolean) => `flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${on ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-950 dark:hover:text-neutral-50"}`;
   const menu = open ? menus[open] : null;
 
   return (
@@ -132,10 +132,10 @@ export function NavLinks() {
             exit={{ opacity: 0, y: -4, scale: 0.98, transition: { duration: 0.12 } }}
             transition={{ type: "spring", stiffness: 420, damping: 34 }}
             onPointerEnter={() => window.clearTimeout(timer.current)}
-            className="absolute top-full left-0 z-50 mt-3 grid w-[min(60rem,calc(100vw-10rem))] origin-top-left grid-cols-[1fr_18rem] gap-2 rounded-2xl bg-base-950 p-2 shadow-[0_24px_60px_-20px_rgb(0_0_0/0.6)] ring-1 ring-base-50/10"
+            className="absolute top-full left-0 z-50 mt-3 grid w-[min(60rem,calc(100vw-10rem))] origin-top-left grid-cols-[1fr_18rem] gap-2 rounded-2xl bg-neutral-50 dark:bg-neutral-950 p-2 shadow-[0_24px_60px_-20px_rgb(0_0_0/0.6)] ring-1 ring-neutral-950/10 dark:ring-neutral-50/10"
           >
-            <div className="rounded-xl bg-base-900/70 p-5 ring-1 ring-base-50/[0.05]">
-              <p className="px-3 text-sm text-base-500">{menu.heading}</p>
+            <div className="rounded-xl bg-neutral-100/70 dark:bg-neutral-900/70 p-5 ring-1 ring-neutral-950/[0.05] dark:ring-neutral-50/[0.05]">
+              <p className="px-3 text-sm text-neutral-500">{menu.heading}</p>
               <ul className="mt-3 grid grid-cols-3 gap-1">
                 {menu.entries.map((e) => (
                   <li key={e.slug}>
@@ -144,7 +144,7 @@ export function NavLinks() {
                       onPointerEnter={() => pick(e)}
                       onFocus={() => pick(e)}
                       className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-[14px] transition-colors ${
-                        picked && hover?.slug === e.slug ? "bg-base-800/80 text-base-50" : "text-base-300 hover:text-base-50"
+                        picked && hover?.slug === e.slug ? "bg-neutral-200/80 dark:bg-neutral-800/80 text-neutral-950 dark:text-neutral-50" : "text-neutral-700 dark:text-neutral-300 hover:text-neutral-950 dark:hover:text-neutral-50"
                       }`}
                     >
                       <span className="truncate">{e.name}</span>
@@ -161,7 +161,7 @@ export function NavLinks() {
             {/* What you are pointing at */}
             {hover && (
               <Link href={hover.href} className="group flex flex-col rounded-xl p-1">
-                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-canvas ring-1 ring-base-50/[0.08]">
+                <div className="relative aspect-[4/3] overflow-hidden rounded-lg bg-white dark:bg-black ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08]">
                   {open === "blocks" ? (
                     <BlockThumb key={hover.slug} slug={hover.slug} className="size-full" />
                   ) : (
@@ -172,8 +172,8 @@ export function NavLinks() {
                     </div>
                   )}
                 </div>
-                <p className="mt-3 px-1 text-base font-semibold text-base-50">{hover.name}</p>
-                <p className="px-1 text-sm text-base-500">{hover.isNew ? `Newest in ${hover.group}` : hover.group}</p>
+                <p className="mt-3 px-1 text-base font-semibold text-neutral-950 dark:text-neutral-50">{hover.name}</p>
+                <p className="px-1 text-sm text-neutral-500">{hover.isNew ? `Newest in ${hover.group}` : hover.group}</p>
               </Link>
             )}
           </motion.div>

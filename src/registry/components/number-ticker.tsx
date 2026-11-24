@@ -79,9 +79,9 @@ export default function Demo() {
   return (
     <div className="grid w-full max-w-md gap-3 @md:grid-cols-2">
       {stats.map((s) => (
-        <div key={s.label} className="min-w-0 rounded-2xl bg-base-950 p-5 shadow-[0_1px_2px_rgb(0_0_0/0.05)] ring-1 ring-base-50/10 dark:bg-base-900">
-          <p className="text-[13px] text-base-500">{s.label}</p>
-          <p className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-base-50">
+        <div key={s.label} className="min-w-0 rounded-2xl bg-neutral-50 p-5 shadow-[0_1px_2px_rgb(0_0_0/0.05)] ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 dark:bg-neutral-900">
+          <p className="text-[13px] text-neutral-500">{s.label}</p>
+          <p className="mt-3 text-3xl font-semibold tracking-[-0.03em] text-neutral-950 dark:text-neutral-50">
             <NumberTicker value={s.value} format={s.format} />
           </p>
           <p className="mt-3 flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">

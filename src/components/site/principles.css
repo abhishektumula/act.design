@@ -6,7 +6,7 @@
  */
 .principles {
   --pad: 28px;
-  --rule: color-mix(in oklab, var(--base-50) 8%, transparent);
+  --rule: color-mix(in oklab, light-dark(var(--color-neutral-950), var(--color-neutral-50)) 8%, transparent);
   display: grid;
   gap: 1px;
   background: var(--rule);
@@ -42,7 +42,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background: var(--base-950);
+    background: light-dark(var(--color-neutral-50), var(--color-neutral-950));
   }
 
   & .pr-cell--hero { grid-area: hero; }

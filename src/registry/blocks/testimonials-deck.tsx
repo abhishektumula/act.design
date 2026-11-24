@@ -45,7 +45,7 @@ const quotes = [
 
 const tones = {
   paper: "bg-linear-to-b from-orange-50 to-neutral-200 text-neutral-800",
-  signal: "bg-linear-to-b from-[color-mix(in_oklab,var(--signal)_78%,white)] to-[color-mix(in_oklab,var(--signal)_88%,black)] text-white",
+  signal: "bg-linear-to-b from-[color-mix(in_oklab,var(--color-blue-600)_78%,white)] dark:from-[color-mix(in_oklab,var(--color-blue-500)_78%,white)] to-[color-mix(in_oklab,var(--color-blue-600)_88%,black)] dark:to-[color-mix(in_oklab,var(--color-blue-500)_88%,black)] text-white",
   ink: "bg-linear-to-b from-neutral-800 to-neutral-900 text-neutral-100",
 } as const;
 
@@ -55,26 +55,26 @@ const tones = {
  */
 export function TestimonialsDeck({ className }: { className?: string }) {
   return (
-    <section data-slot="testimonials-deck" className={cn("overflow-hidden bg-canvas px-6 py-24 sm:py-32", className)}>
+    <section data-slot="testimonials-deck" className={cn("overflow-hidden bg-white dark:bg-black px-6 py-24 sm:py-32", className)}>
       <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1fr_24rem]">
         <div>
-          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
+          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-neutral-950 dark:text-neutral-50 sm:text-6xl">
             Fewer pages. <span className="font-serif font-normal tracking-[-0.01em] italic">Better sleep.</span>
           </h2>
           <div className="mt-10 flex items-center gap-5">
             <div className="flex gap-1">
               {Array.from({ length: 5 }, (_, i) => (
-                <Star key={i} className="size-5 fill-signal text-signal" />
+                <Star key={i} className="size-5 fill-blue-600 dark:fill-blue-500 text-blue-600 dark:text-blue-500" />
               ))}
             </div>
-            <p className="text-sm text-base-400">
-              <span className="font-semibold text-base-50">4.8</span> on G2 from 640 reviews
+            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+              <span className="font-semibold text-neutral-950 dark:text-neutral-50">4.8</span> on G2 from 640 reviews
             </p>
           </div>
-          <p className="mt-12 text-sm text-base-500">Watching production for</p>
+          <p className="mt-12 text-sm text-neutral-500">Watching production for</p>
           <ul className="mt-3 flex max-w-md flex-wrap gap-x-7 gap-y-2">
             {["Ledgerly", "Parcelbay", "Fieldkit", "Tandem", "Northwind", "Kiln"].map((l) => (
-              <li key={l} className="text-lg font-semibold tracking-[-0.02em] text-base-400">
+              <li key={l} className="text-lg font-semibold tracking-[-0.02em] text-neutral-600 dark:text-neutral-400">
                 {l}
               </li>
             ))}

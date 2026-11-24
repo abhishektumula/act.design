@@ -51,7 +51,7 @@ function EffortBars({ level }: { level: number }) {
       {[0, 1, 2, 3].map((i) => (
         <span
           key={i}
-          className={`w-[3px] rounded-full transition-colors ${i <= level ? "bg-base-200" : "bg-base-700"}`}
+          className={`w-[3px] rounded-full transition-colors ${i <= level ? "bg-neutral-800 dark:bg-neutral-200" : "bg-neutral-300 dark:bg-neutral-700"}`}
           style={{ height: `${40 + i * 20}%` }}
         />
       ))}
@@ -94,7 +94,7 @@ function Picker({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="flex h-8 shrink-0 items-center gap-1.5 rounded-lg px-2 text-xs font-medium whitespace-nowrap text-base-400 transition-colors hover:bg-base-50/5 hover:text-base-100 data-[open=true]:bg-base-50/5 data-[open=true]:text-base-100"
+        className="flex h-8 shrink-0 items-center gap-1.5 rounded-lg px-2 text-xs font-medium whitespace-nowrap text-neutral-600 dark:text-neutral-400 transition-colors hover:bg-neutral-950/5 dark:hover:bg-neutral-50/5 hover:text-neutral-900 dark:hover:text-neutral-100 data-[open=true]:bg-neutral-950/5 dark:data-[open=true]:bg-neutral-50/5 data-[open=true]:text-neutral-900 dark:data-[open=true]:text-neutral-100"
         data-open={open}
       >
         {icon?.(value)}
@@ -108,7 +108,7 @@ function Picker({
             animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
             exit={{ opacity: 0, y: 4, scale: 0.98, filter: "blur(2px)" }}
             transition={{ duration: 0.16, ease: "easeOut" }}
-            className={`absolute bottom-full z-20 mb-2 w-56 origin-bottom rounded-xl bg-base-900 p-1 shadow-2xl shadow-shade/60 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5 ${
+            className={`absolute bottom-full z-20 mb-2 w-56 origin-bottom rounded-xl bg-neutral-100 dark:bg-neutral-900 p-1 shadow-2xl shadow-neutral-600/60 dark:shadow-black/60 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 inset-shadow-2xs inset-shadow-white/5 ${
               align === "right" ? "right-0" : "left-0"
             }`}
           >
@@ -120,14 +120,14 @@ function Picker({
                   onChange(o);
                   setOpen(false);
                 }}
-                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors hover:bg-base-50/5"
+                className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors hover:bg-neutral-950/5 dark:hover:bg-neutral-50/5"
               >
-                {icon && <span className="text-base-400">{icon(o)}</span>}
+                {icon && <span className="text-neutral-600 dark:text-neutral-400">{icon(o)}</span>}
                 <span className="flex-1">
-                  <span className="block text-[13px] text-base-100">{o.name}</span>
-                  {o.hint && <span className="block text-xs text-base-500">{o.hint}</span>}
+                  <span className="block text-[13px] text-neutral-900 dark:text-neutral-100">{o.name}</span>
+                  {o.hint && <span className="block text-xs text-neutral-500">{o.hint}</span>}
                 </span>
-                {o.id === value.id && <Check className="size-3.5 text-base-200" />}
+                {o.id === value.id && <Check className="size-3.5 text-neutral-800 dark:text-neutral-200" />}
               </button>
             ))}
           </motion.div>
@@ -187,7 +187,7 @@ export function PromptInput({
 
   return (
     <div data-slot="prompt-input" className={cn("@container w-full", className)}>
-      <div className={cn("rounded-2xl bg-base-900 shadow-xl shadow-shade/50 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5 transition-shadow focus-within:ring-base-50/20", classNames?.box)}>
+      <div className={cn("rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-xl shadow-neutral-600/50 dark:shadow-black/50 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 inset-shadow-2xs inset-shadow-white/5 transition-shadow focus-within:ring-neutral-950/20 dark:focus-within:ring-neutral-50/20", classNames?.box)}>
         <AnimatePresence initial={false}>
           {files.length > 0 && (
             <motion.div
@@ -205,14 +205,14 @@ export function PromptInput({
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9 }}
-                      className="flex items-center gap-2 rounded-lg bg-base-800 py-1.5 pr-1.5 pl-2 text-xs text-base-300 ring-1 ring-base-50/5"
+                      className="flex items-center gap-2 rounded-lg bg-neutral-200 dark:bg-neutral-800 py-1.5 pr-1.5 pl-2 text-xs text-neutral-700 dark:text-neutral-300 ring-1 ring-neutral-950/5 dark:ring-neutral-50/5"
                     >
-                      <FileText className="size-3.5 text-base-500" />
+                      <FileText className="size-3.5 text-neutral-500" />
                       <span className="max-w-32 truncate">{f}</span>
                       <button
                         type="button"
                         onClick={() => setFiles((fs) => fs.filter((x) => x !== f))}
-                        className="rounded p-0.5 text-base-500 hover:bg-base-50/10 hover:text-base-200"
+                        className="rounded p-0.5 text-neutral-500 hover:bg-neutral-950/10 dark:hover:bg-neutral-50/10 hover:text-neutral-800 dark:hover:text-neutral-200"
                         aria-label={`Remove ${f}`}
                       >
                         <X className="size-3" />
@@ -237,7 +237,7 @@ export function PromptInput({
             }
           }}
           placeholder={placeholder}
-          className={cn("block min-h-14 w-full resize-none bg-transparent px-4 pt-4 pb-2 text-[15px] leading-6 text-base-100 outline-none placeholder:text-base-500", classNames?.textarea)}
+          className={cn("block min-h-14 w-full resize-none bg-transparent px-4 pt-4 pb-2 text-[15px] leading-6 text-neutral-900 dark:text-neutral-100 outline-none placeholder:text-neutral-500", classNames?.textarea)}
         />
 
         <div className="flex min-w-0 items-center gap-0.5 px-2 pb-2 @sm:gap-1">
@@ -256,7 +256,7 @@ export function PromptInput({
             type="button"
             onClick={() => fileInput.current?.click()}
             aria-label="Attach files"
-            className="grid size-8 place-items-center rounded-lg text-base-400 transition-colors hover:bg-base-50/5 hover:text-base-100"
+            className="grid size-8 place-items-center rounded-lg text-neutral-600 dark:text-neutral-400 transition-colors hover:bg-neutral-950/5 dark:hover:bg-neutral-50/5 hover:text-neutral-900 dark:hover:text-neutral-100"
           >
             <Plus className="size-4" />
           </button>
@@ -286,7 +286,7 @@ export function PromptInput({
             <button
               type="button"
               aria-label="Dictate"
-              className="hidden size-8 @xs:grid place-items-center rounded-lg text-base-400 transition-colors hover:bg-base-50/5 hover:text-base-100"
+              className="hidden size-8 @xs:grid place-items-center rounded-lg text-neutral-600 dark:text-neutral-400 transition-colors hover:bg-neutral-950/5 dark:hover:bg-neutral-50/5 hover:text-neutral-900 dark:hover:text-neutral-100"
             >
               <Mic className="size-4" />
             </button>
@@ -295,7 +295,7 @@ export function PromptInput({
               onClick={submit}
               disabled={!busy && !canSend}
               aria-label={busy ? "Stop" : "Send"}
-              className={cn("relative grid size-8 shrink-0 place-items-center overflow-hidden rounded-full bg-base-50 text-base-950 shadow-[0_1px_2px_rgb(0_0_0/0.14)] transition-colors disabled:bg-base-800 disabled:text-base-500 disabled:shadow-none", classNames?.send)}
+              className={cn("relative grid size-8 shrink-0 place-items-center overflow-hidden rounded-full bg-neutral-950 dark:bg-neutral-50 text-neutral-50 dark:text-neutral-950 shadow-[0_1px_2px_rgb(0_0_0/0.14)] transition-colors disabled:bg-neutral-200 dark:disabled:bg-neutral-800 disabled:text-neutral-500 disabled:shadow-none", classNames?.send)}
             >
               <AnimatePresence mode="popLayout" initial={false}>
                 <motion.span
@@ -335,7 +335,7 @@ export default function Demo() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="self-end rounded-2xl rounded-br-md bg-base-800 px-3.5 py-2 text-sm text-base-100"
+            className="self-end rounded-2xl rounded-br-md bg-neutral-200 dark:bg-neutral-800 px-3.5 py-2 text-sm text-neutral-900 dark:text-neutral-100"
           >
             {last}
           </motion.p>

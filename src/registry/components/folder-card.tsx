@@ -37,7 +37,7 @@ export function FolderCard({
   title,
   meta,
   sheets = [],
-  color = "var(--signal)",
+  color = "var(--color-blue-500)",
   href,
   className,
 }: {
@@ -45,7 +45,7 @@ export function FolderCard({
   meta?: ReactNode;
   /** Up to three sheets. Leave empty for blank pages with ruled lines. */
   sheets?: ReactNode[];
-  /** Any CSS colour for the folder. Defaults to the --signal accent. */
+  /** Any CSS colour for the folder. Defaults to Tailwind blue-500. */
   color?: string;
   href?: string;
   className?: string;
@@ -68,7 +68,7 @@ export function FolderCard({
       animate={open ? "open" : "closed"}
       style={{ "--folder": color } as React.CSSProperties}
       className={cn(
-        "relative block aspect-[5/4] w-full max-w-72 cursor-pointer rounded-[18px] outline-none [perspective:900px] focus-visible:ring-2 focus-visible:ring-signal/50 focus-visible:ring-offset-4 focus-visible:ring-offset-base-950",
+        "relative block aspect-[5/4] w-full max-w-72 cursor-pointer rounded-[18px] outline-none [perspective:900px] focus-visible:ring-2 focus-visible:ring-blue-600/50 dark:focus-visible:ring-blue-500/50 focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950",
         className,
       )}
     >

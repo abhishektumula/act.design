@@ -52,13 +52,13 @@ export function HeroMonitor({ className }: { className?: string }) {
   };
 
   return (
-    <section data-slot="hero-monitor" className={cn("relative overflow-hidden bg-canvas px-6 py-24 sm:py-32", className)}>
+    <section data-slot="hero-monitor" className={cn("relative overflow-hidden bg-white dark:bg-black px-6 py-24 sm:py-32", className)}>
       <div className="mx-auto grid max-w-6xl items-center gap-16 lg:grid-cols-[1fr_1.25fr]">
         <div>
-          <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
+          <h1 className="text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-neutral-950 dark:text-neutral-50 sm:text-6xl">
             Know it&apos;s down <span className="font-serif font-normal tracking-[-0.01em] italic">before your customers do.</span>
           </h1>
-          <p className="mt-6 max-w-md text-lg leading-8 text-pretty text-base-400">
+          <p className="mt-6 max-w-md text-lg leading-8 text-pretty text-neutral-600 dark:text-neutral-400">
             Beacon checks your site and APIs from 12 regions every 30 seconds, and calls the right person the moment something breaks.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-3">
@@ -69,18 +69,18 @@ export function HeroMonitor({ className }: { className?: string }) {
               See a live status page <ArrowRight />
             </Button>
           </div>
-          <p className="mt-6 text-sm text-base-500">Free for 10 monitors. No card needed.</p>
+          <p className="mt-6 text-sm text-neutral-500">Free for 10 monitors. No card needed.</p>
         </div>
 
         {/* The product: a window that runs off the right edge on wide screens */}
         <div className="relative pb-8">
-          <div className="overflow-hidden rounded-[14px] bg-base-950 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_8%,transparent),0_30px_60px_-30px_color-mix(in_oklab,var(--color-shade)_55%,transparent)] lg:w-[calc(100%+18rem)] dark:bg-base-900">
+          <div className="overflow-hidden rounded-[14px] bg-neutral-50 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-950)_8%,transparent),0_30px_60px_-30px_color-mix(in_oklab,var(--color-neutral-600)_55%,transparent)] dark:shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-50)_8%,transparent),0_30px_60px_-30px_color-mix(in_oklab,var(--color-black)_55%,transparent)] lg:w-[calc(100%+18rem)] dark:bg-neutral-900">
             {/* Chrome */}
-            <div className="flex h-[38px] items-center gap-[6px] border-b border-base-50/[0.07] px-[14px]">
+            <div className="flex h-[38px] items-center gap-[6px] border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] px-[14px]">
               {["var(--color-red-400)", "var(--color-amber-400)", "var(--color-green-500)"].map((c) => (
                 <span key={c} className="size-[9px] rounded-full" style={{ background: c }} />
               ))}
-              <span className="ml-3 text-[13px] font-medium text-base-100">Monitors</span>
+              <span className="ml-3 text-[13px] font-medium text-neutral-900 dark:text-neutral-100">Monitors</span>
             </div>
 
             <div className="max-w-[40rem] px-5 pt-5 pb-6 sm:px-6">
@@ -88,14 +88,14 @@ export function HeroMonitor({ className }: { className?: string }) {
               <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
                 <span className="flex items-center gap-2.5">
                   <span className="size-2 rounded-full bg-emerald-500" />
-                  <span className="font-mono text-[13px] text-base-50">api.northwind.app/health</span>
+                  <span className="font-mono text-[13px] text-neutral-950 dark:text-neutral-50">api.northwind.app/health</span>
                 </span>
-                <span className="flex items-center gap-4 text-xs text-base-500">
+                <span className="flex items-center gap-4 text-xs text-neutral-500">
                   <span>
-                    <span className="font-medium text-base-200 tabular-nums">99.94%</span> 30 days
+                    <span className="font-medium text-neutral-800 dark:text-neutral-200 tabular-nums">99.94%</span> 30 days
                   </span>
                   <span>
-                    <span className="font-medium text-base-200 tabular-nums">{p50} ms</span> median
+                    <span className="font-medium text-neutral-800 dark:text-neutral-200 tabular-nums">{p50} ms</span> median
                   </span>
                 </span>
               </div>
@@ -111,7 +111,7 @@ export function HeroMonitor({ className }: { className?: string }) {
                         style={{ height: `${Math.min(100, (ms / CHART_MAX) * 100)}%` }}
                         className={cn(
                           "flex-1 rounded-t-[2px] transition-colors duration-200",
-                          paged ? "bg-signal" : ms > threshold ? "bg-signal/40" : "bg-base-50/15",
+                          paged ? "bg-blue-600 dark:bg-blue-500" : ms > threshold ? "bg-blue-600/40 dark:bg-blue-500/40" : "bg-neutral-950/15 dark:bg-neutral-50/15",
                         )}
                       />
                     );
@@ -121,17 +121,17 @@ export function HeroMonitor({ className }: { className?: string }) {
                   initial={false}
                   animate={{ top: `${thresholdY}%` }}
                   transition={{ type: "spring", stiffness: 500, damping: 40 }}
-                  className="absolute inset-x-0 border-t border-dashed border-signal"
+                  className="absolute inset-x-0 border-t border-dashed border-blue-600 dark:border-blue-500"
                 />
               </div>
-              <div className="mt-2 flex justify-between text-[11px] text-base-500 tabular-nums">
+              <div className="mt-2 flex justify-between text-[11px] text-neutral-500 tabular-nums">
                 <span>14:00</span>
                 <span>14:30</span>
                 <span>15:00</span>
               </div>
 
               {/* Alert rule */}
-              <div className="mt-7 grid gap-6 border-t border-base-50/[0.07] pt-6 sm:grid-cols-[1fr_auto] sm:items-end">
+              <div className="mt-7 grid gap-6 border-t border-neutral-950/[0.07] dark:border-neutral-50/[0.07] pt-6 sm:grid-cols-[1fr_auto] sm:items-end">
                 <Fader
                   label="Alert when response time is over"
                   min={200}
@@ -145,20 +145,20 @@ export function HeroMonitor({ className }: { className?: string }) {
                   className="max-w-none"
                 />
                 <div>
-                  <p className="mb-2 text-sm font-medium text-base-100">for</p>
+                  <p className="mb-2 text-sm font-medium text-neutral-900 dark:text-neutral-100">for</p>
                   <Stepper label="Consecutive failed checks" min={1} max={5} value={confirm} onValueChange={setConfirm} format={(v) => `${v} ${v === 1 ? "check" : "checks"}`} />
                 </div>
               </div>
 
               <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-                <p className="text-sm text-base-400">
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">
                   You&apos;d have been paged{" "}
-                  <motion.span key={pages.length} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="inline-block font-semibold text-base-50 tabular-nums">
+                  <motion.span key={pages.length} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="inline-block font-semibold text-neutral-950 dark:text-neutral-50 tabular-nums">
                     {pages.length === 0 ? "0 times" : pages.length === 1 ? "once" : `${pages.length} times`}
                   </motion.span>{" "}
                   in the last hour.
                 </p>
-                <label className="flex cursor-pointer items-center gap-2.5 text-sm text-base-300">
+                <label className="flex cursor-pointer items-center gap-2.5 text-sm text-neutral-700 dark:text-neutral-300">
                   <span id="hero-monitor-call">Phone the on-call</span>
                   <Switch size="sm" checked={call} onCheckedChange={setCall} aria-labelledby="hero-monitor-call" />
                 </label>
@@ -177,24 +177,24 @@ export function HeroMonitor({ className }: { className?: string }) {
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -6, scale: 0.98 }}
                 transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                className="flex items-center gap-3 rounded-[14px] bg-base-950 p-3 pr-4 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_10%,transparent),0_14px_32px_-10px_color-mix(in_oklab,var(--color-shade)_55%,transparent)] dark:bg-base-800"
+                className="flex items-center gap-3 rounded-[14px] bg-neutral-50 p-3 pr-4 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-950)_10%,transparent),0_14px_32px_-10px_color-mix(in_oklab,var(--color-neutral-600)_55%,transparent)] dark:shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-50)_10%,transparent),0_14px_32px_-10px_color-mix(in_oklab,var(--color-black)_55%,transparent)] dark:bg-neutral-800"
               >
                 <span
                   className={cn(
                     "grid size-9 shrink-0 place-items-center rounded-full [&_svg]:size-4",
-                    !last ? "bg-base-50/[0.06] text-base-400" : call ? "bg-signal text-white" : "bg-base-50/[0.08] text-base-200",
+                    !last ? "bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06] text-neutral-600 dark:text-neutral-400" : call ? "bg-blue-600 dark:bg-blue-500 text-white" : "bg-neutral-950/[0.08] dark:bg-neutral-50/[0.08] text-neutral-800 dark:text-neutral-200",
                   )}
                 >
                   {!last ? <Moon /> : call ? <PhoneCall /> : <Hash />}
                 </span>
                 <span className="min-w-0">
                   <span className="flex items-baseline justify-between gap-3">
-                    <span className="truncate text-sm font-medium text-base-50">
+                    <span className="truncate text-sm font-medium text-neutral-950 dark:text-neutral-50">
                       {!last ? "A quiet hour" : call ? "Calling Maria Chen" : "Posted to #incidents"}
                     </span>
-                    {last && <span className="shrink-0 text-xs text-base-500 tabular-nums">{at(last.start + confirm - 1)}</span>}
+                    {last && <span className="shrink-0 text-xs text-neutral-500 tabular-nums">{at(last.start + confirm - 1)}</span>}
                   </span>
-                  <span className="block truncate text-xs text-base-500">
+                  <span className="block truncate text-xs text-neutral-500">
                     {!last ? `Nothing stayed over ${threshold} ms for ${confirm} ${confirm === 1 ? "check" : "checks"}` : call ? "On-call, by phone" : "Nobody was woken up"}
                   </span>
                 </span>

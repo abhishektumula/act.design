@@ -2,8 +2,8 @@ import Link from "next/link";
 import { blocks, categories, registry } from "@/registry/meta";
 import { Logo } from "./logo";
 
-const head = "text-[13px] font-medium text-base-100";
-const link = "text-[13px] text-base-400 transition-colors hover:text-base-50";
+const head = "text-[13px] font-medium text-neutral-900 dark:text-neutral-100";
+const link = "text-[13px] text-neutral-600 dark:text-neutral-400 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50";
 
 export function Footer() {
   const columns = [
@@ -24,15 +24,15 @@ export function Footer() {
 
   return (
     <footer className="relative mt-auto overflow-hidden">
-      <div aria-hidden className="h-px bg-base-50/[0.08]" />
+      <div aria-hidden className="h-px bg-neutral-950/[0.08] dark:bg-neutral-50/[0.08]" />
       <div className="mx-auto grid max-w-[1400px] gap-12 px-6 pt-16 pb-10 lg:grid-cols-[1.2fr_3fr]">
         <div>
           <Logo />
-          <p className="mt-5 max-w-xs text-sm leading-relaxed text-base-500">
+          <p className="mt-5 max-w-xs text-sm leading-relaxed text-neutral-500">
             A small library of tactile React components. Copy, paste, keep the feel.
           </p>
-          <p className="mt-6 inline-flex items-center gap-2 rounded-md bg-base-900 px-2.5 py-1 text-xs text-base-400 ring-1 ring-base-50/[0.06]">
-            <span className="size-1.5 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" />
+          <p className="mt-6 inline-flex items-center gap-2 rounded-md bg-neutral-100 dark:bg-neutral-900 px-2.5 py-1 text-xs text-neutral-600 dark:text-neutral-400 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06]">
+            <span className="size-1.5 rounded-full bg-blue-600 dark:bg-blue-500 shadow-[0_0_8px_var(--color-blue-600)] dark:shadow-[0_0_8px_var(--color-blue-500)]" />
             {registry.length} components · {blocks.length} blocks
           </p>
         </div>
@@ -53,14 +53,14 @@ export function Footer() {
           ))}
         </div>
       </div>
-      <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-6 pb-6 text-[12px] text-base-500">
+      <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-3 px-6 pb-6 text-[12px] text-neutral-500">
         <span>Built with React, Tailwind CSS and Motion</span>
         <span>© act.design · copy, paste, keep the feel</span>
       </div>
       {/* Oversized wordmark, fading into the page and cropped by its bottom edge */}
       <div
         aria-hidden
-        className="pointer-events-none mx-auto -mb-[0.2em] max-w-[1400px] px-4 text-center text-[21vw] leading-[0.9] font-semibold tracking-[-0.06em] text-base-50/[0.05] select-none xl:text-[19rem]"
+        className="pointer-events-none mx-auto -mb-[0.2em] max-w-[1400px] px-4 text-center text-[21vw] leading-[0.9] font-semibold tracking-[-0.06em] text-neutral-950/[0.05] dark:text-neutral-50/[0.05] select-none xl:text-[19rem]"
       >
         act.design
       </div>

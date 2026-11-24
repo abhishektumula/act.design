@@ -7,7 +7,7 @@ import { CalendarDays, Columns3, GanttChart, List } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const segmentedVariants = cva(
-  "relative inline-flex items-center rounded-2xl bg-base-50/[0.06] p-1 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-base-50/5",
+  "relative inline-flex items-center rounded-2xl bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06] p-1 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-neutral-950/5 dark:ring-neutral-50/5",
   {
     variants: {
       size: {
@@ -77,15 +77,15 @@ export function SegmentedControl<T extends string>({
             onClick={() => select(o.value)}
             onKeyDown={(e) => onKeyDown(e, i)}
             className={cn(
-              "relative flex items-center gap-2 rounded-xl font-medium whitespace-nowrap outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-signal/60",
-              active ? "text-base-50" : "text-base-500 hover:text-base-300",
+              "relative flex items-center gap-2 rounded-xl font-medium whitespace-nowrap outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60",
+              active ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300",
             )}
           >
             {active && (
               <motion.span
                 layoutId={`${id}-cap`}
                                 transition={{ type: "spring", stiffness: 520, damping: 34, mass: 0.9 }}
-                className="absolute inset-0 rounded-xl bg-linear-to-b from-white to-base-950 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.12),0_4px_12px_-4px_rgb(0_0_0/0.2)] ring-1 ring-black/5 dark:from-base-700 dark:to-base-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)_inset,0_2px_8px_rgb(0_0_0/0.4)] dark:ring-white/5"
+                className="absolute inset-0 rounded-xl bg-linear-to-b from-white to-neutral-50 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.12),0_4px_12px_-4px_rgb(0_0_0/0.2)] ring-1 ring-black/5 dark:from-neutral-700 dark:to-neutral-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)_inset,0_2px_8px_rgb(0_0_0/0.4)] dark:ring-white/5"
               />
             )}
             {o.icon && <span className="relative [&_svg]:size-4">{o.icon}</span>}
@@ -94,7 +94,7 @@ export function SegmentedControl<T extends string>({
               <span
                 className={cn(
                   "relative rounded-full px-1.5 py-px font-mono text-[10px] transition-colors",
-                  active ? "bg-signal text-white" : "bg-base-50/10 text-base-500",
+                  active ? "bg-blue-600 dark:bg-blue-500 text-white" : "bg-neutral-950/10 dark:bg-neutral-50/10 text-neutral-500",
                 )}
               >
                 {o.badge}

@@ -20,13 +20,13 @@
   --ss-icon: var(--color-neutral-500);
   --ss-icon-faint: var(--color-neutral-300);
 
-  --ss-accent: var(--signal);
-  --ss-accent-2: var(--signal);
-  --ss-accent-soft: color-mix(in oklab, var(--signal) 14%, transparent);
-  --ss-accent-text: var(--signal);
+  --ss-accent: light-dark(var(--color-blue-600), var(--color-blue-500));
+  --ss-accent-2: light-dark(var(--color-blue-600), var(--color-blue-500));
+  --ss-accent-soft: color-mix(in oklab, light-dark(var(--color-blue-600), var(--color-blue-500)) 14%, transparent);
+  --ss-accent-text: light-dark(var(--color-blue-600), var(--color-blue-500));
 
   --ss-term-bg: var(--color-neutral-900);
-  --ss-term-sigil: var(--signal);
+  --ss-term-sigil: light-dark(var(--color-blue-600), var(--color-blue-500));
   --ss-term-path: var(--color-neutral-500);
   --ss-term-dim: var(--color-neutral-500);
   --ss-term-ok: var(--color-emerald-400);

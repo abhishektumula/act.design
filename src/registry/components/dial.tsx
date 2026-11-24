@@ -100,7 +100,7 @@ export function Dial({
   const d = Math.min(1, Math.max(0, ((danger ?? min + (max - min) * 0.85) - min) / (max - min)));
   const stops = levelStops(d);
   const hot = level && pct > d + 1e-6;
-  const tint = useTransform(spring, (p) => (level ? colorAt(stops, p) : "var(--signal)"));
+  const tint = useTransform(spring, (p) => (level ? colorAt(stops, p) : "var(--color-blue-500)"));
   const pointerGlow = useTransform(tint, (c) => `0 0 10px ${c}`);
 
   const C = 2 * Math.PI * 92;
@@ -193,7 +193,7 @@ export function Dial({
         onKeyDown={onKeyDown}
         className={cn(
           dialVariants({ size }),
-          "cursor-grab rounded-full outline-none active:cursor-grabbing focus-visible:ring-2 focus-visible:ring-signal/60 focus-visible:ring-offset-4 focus-visible:ring-offset-base-950",
+          "cursor-grab rounded-full outline-none active:cursor-grabbing focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60 focus-visible:ring-offset-4 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950",
         )}
       >
         {/* Scale */}
@@ -232,7 +232,7 @@ export function Dial({
                 style={zone ? { stroke: zone, opacity: lit ? 1 : 0.22 } : undefined}
                 className={cn(
                   "transition-[stroke,opacity] duration-150",
-                  !zone && (lit ? "stroke-signal" : "stroke-base-50 opacity-20"),
+                  !zone && (lit ? "stroke-blue-600 dark:stroke-blue-500" : "stroke-neutral-950 dark:stroke-neutral-50 opacity-20"),
                 )}
               />
             );
@@ -243,7 +243,7 @@ export function Dial({
         <motion.div
           animate={{ scale: active ? 0.97 : 1 }}
           transition={{ type: "spring", stiffness: 500, damping: 30 }}
-          className="absolute inset-[16%] rounded-full bg-linear-to-b from-white to-base-800 shadow-[0_1px_0_white_inset,0_-1px_0_rgb(0_0_0/0.08)_inset,0_2px_3px_rgb(0_0_0/0.12),0_12px_24px_-6px_color-mix(in_oklab,var(--color-shade)_55%,transparent)] ring-1 ring-black/10 dark:from-base-700 dark:to-base-900 dark:shadow-[0_1px_0_rgb(255_255_255/0.12)_inset,0_2px_3px_rgb(0_0_0/0.4),0_14px_28px_-6px_rgb(0_0_0/0.7)] dark:ring-white/5"
+          className="absolute inset-[16%] rounded-full bg-linear-to-b from-white to-neutral-200 shadow-[0_1px_0_white_inset,0_-1px_0_rgb(0_0_0/0.08)_inset,0_2px_3px_rgb(0_0_0/0.12),0_12px_24px_-6px_color-mix(in_oklab,var(--color-neutral-600)_55%,transparent)] ring-1 ring-black/10 dark:from-neutral-700 dark:to-neutral-900 dark:shadow-[0_1px_0_rgb(255_255_255/0.12)_inset,0_2px_3px_rgb(0_0_0/0.4),0_14px_28px_-6px_rgb(0_0_0/0.7)] dark:ring-white/5"
         >
           <motion.div style={{ rotate: angle }} className="absolute inset-0 rounded-full">
             {/* Knurled rim */}
@@ -255,17 +255,17 @@ export function Dial({
             />
           </motion.div>
           {/* Machined face */}
-          <div className="absolute inset-[24%] rounded-full bg-linear-to-b from-base-900 to-white shadow-[0_1px_1px_rgb(0_0_0/0.08)_inset] ring-1 ring-black/5 dark:from-base-900 dark:to-base-700 dark:ring-white/5" />
+          <div className="absolute inset-[24%] rounded-full bg-linear-to-b from-neutral-100 to-white shadow-[0_1px_1px_rgb(0_0_0/0.08)_inset] ring-1 ring-black/5 dark:from-neutral-900 dark:to-neutral-700 dark:ring-white/5" />
         </motion.div>
       </div>
 
       <div className="flex flex-col items-center gap-0.5">
         {label && (
-          <span id={`${id}-label`} className="font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">
+          <span id={`${id}-label`} className="font-mono text-[10px] tracking-[0.14em] text-neutral-500 uppercase">
             {label}
           </span>
         )}
-        <span className={cn("font-mono text-sm font-medium tabular-nums transition-colors duration-200", hot ? "text-red-500" : "text-base-100")}>{format(value)}</span>
+        <span className={cn("font-mono text-sm font-medium tabular-nums transition-colors duration-200", hot ? "text-red-500" : "text-neutral-900 dark:text-neutral-100")}>{format(value)}</span>
       </div>
     </div>
   );
@@ -277,14 +277,14 @@ export default function Demo() {
   const [mix, setMix] = useState(40);
 
   return (
-    <div className="relative flex items-end gap-6 rounded-[28px] bg-base-950 px-8 pt-8 pb-6 shadow-[0_1px_0_white_inset,0_20px_40px_-20px_color-mix(in_oklab,var(--color-shade)_60%,transparent)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset,0_20px_40px_-20px_black] @sm:gap-8">
+    <div className="relative flex items-end gap-6 rounded-[28px] bg-neutral-50 dark:bg-neutral-950 px-8 pt-8 pb-6 shadow-[0_1px_0_white_inset,0_20px_40px_-20px_color-mix(in_oklab,var(--color-neutral-600)_60%,transparent)] ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset,0_20px_40px_-20px_black] @sm:gap-8">
       {[
         "top-3 left-3",
         "top-3 right-3",
         "bottom-3 left-3",
         "bottom-3 right-3",
       ].map((p) => (
-        <span key={p} className={cn("absolute size-1.5 rounded-full bg-base-800 ring-1 ring-black/5 dark:bg-base-800", p)} />
+        <span key={p} className={cn("absolute size-1.5 rounded-full bg-neutral-200 ring-1 ring-black/5 dark:bg-neutral-800", p)} />
       ))}
       <Dial size="sm" ticks={31} tone="level" danger={0} label="Gain" min={-24} max={12} step={0.5} value={gain} onValueChange={setGain} defaultValue={-6} format={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)} dB`} />
       <Dial size="lg" label="Temperature" min={0} max={2} step={0.01} value={temp} onValueChange={setTemp} defaultValue={0.7} format={(v) => v.toFixed(2)} />

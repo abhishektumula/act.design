@@ -431,7 +431,7 @@ export function TrashBin({ files = ["notes.txt", "draft-v2.md", "invoice.pdf", "
 
   return (
     <div className={cn("relative flex w-full max-w-md items-end justify-between gap-6 px-4 select-none sm:px-8", className)}>
-      <p aria-live="polite" className="absolute inset-x-0 -top-12 text-center font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase">
+      <p aria-live="polite" className="absolute inset-x-0 -top-12 text-center font-mono text-[10px] tracking-[0.16em] text-neutral-500 uppercase">
         {hint}
       </p>
 
@@ -452,7 +452,7 @@ export function TrashBin({ files = ["notes.txt", "draft-v2.md", "invoice.pdf", "
           style={{ x, y, rotate, scale: lift, touchAction: "none" }}
           className={cn(
             "relative w-28 rounded-md outline-none",
-            phase === "paper" && "focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-4 focus-visible:ring-offset-canvas",
+            phase === "paper" && "focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-4 focus-visible:ring-offset-white dark:focus-visible:ring-offset-black",
             phase === "paper" && "cursor-grab",
             (phase === "ball" || phase === "crumpling") && "cursor-grabbing",
             phase === "gone" && "invisible",
@@ -488,7 +488,7 @@ export function TrashBin({ files = ["notes.txt", "draft-v2.md", "invoice.pdf", "
           </motion.div>
         </motion.div>
 
-        <motion.span style={{ opacity: label }} className={cn("mt-3 max-w-full truncate text-xs text-base-400", phase === "gone" && "invisible")}>
+        <motion.span style={{ opacity: label }} className={cn("mt-3 max-w-full truncate text-xs text-neutral-600 dark:text-neutral-400", phase === "gone" && "invisible")}>
           {name}
         </motion.span>
       </div>
@@ -500,7 +500,7 @@ export function TrashBin({ files = ["notes.txt", "draft-v2.md", "invoice.pdf", "
             <Bin items={items} over={over} id={id} />
           </motion.div>
         </motion.div>
-        <div className="mt-3 flex h-4 items-center gap-2 text-xs text-base-400">
+        <div className="mt-3 flex h-4 items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400">
           <span className="tabular-nums">{total ? `${total} item${total > 1 ? "s" : ""}` : "Trash"}</span>
           <AnimatePresence>
             {total > 0 && (
@@ -510,7 +510,7 @@ export function TrashBin({ files = ["notes.txt", "draft-v2.md", "invoice.pdf", "
                 initial={{ opacity: 0, x: -4 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -4 }}
-                className="rounded px-1 text-base-500 underline-offset-2 hover:text-base-50 hover:underline focus-visible:outline-2 focus-visible:outline-sky-500"
+                className="rounded px-1 text-neutral-500 underline-offset-2 hover:text-neutral-950 dark:hover:text-neutral-50 hover:underline focus-visible:outline-2 focus-visible:outline-sky-500"
               >
                 Empty
               </motion.button>

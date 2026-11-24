@@ -104,10 +104,10 @@ export function Fader({
     <div data-slot="fader" className={cn("w-full max-w-sm select-none", className)}>
       {label && (
         <div className="mb-3 flex items-baseline justify-between">
-          <span id={`${id}-label`} className="text-sm font-medium text-base-100">
+          <span id={`${id}-label`} className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
             {label}
           </span>
-          <span className="font-mono text-sm text-base-400 tabular-nums">{format(value)}</span>
+          <span className="font-mono text-sm text-neutral-600 dark:text-neutral-400 tabular-nums">{format(value)}</span>
         </div>
       )}
 
@@ -129,7 +129,7 @@ export function Fader({
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         onKeyDown={onKeyDown}
-        className="group relative h-14 cursor-pointer touch-none rounded-md outline-none focus-visible:ring-2 focus-visible:ring-signal/50 focus-visible:ring-offset-8 focus-visible:ring-offset-base-950"
+        className="group relative h-14 cursor-pointer touch-none rounded-md outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 dark:focus-visible:ring-blue-500/50 focus-visible:ring-offset-8 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950"
       >
         {/* Ruler */}
         <div className="absolute inset-x-0 bottom-3 flex h-10 items-end justify-between">
@@ -145,7 +145,7 @@ export function Fader({
                 style={{ height: h }}
                 className={cn(
                   "w-px rounded-full transition-[height,background-color,opacity] duration-200 ease-out",
-                  p <= pct ? "bg-base-50" : "bg-base-50 opacity-25",
+                  p <= pct ? "bg-neutral-950 dark:bg-neutral-50" : "bg-neutral-950 dark:bg-neutral-50 opacity-25",
                   major && "w-[1.5px]",
                 )}
               />
@@ -153,16 +153,16 @@ export function Fader({
           })}
         </div>
         {/* Baseline */}
-        <div className="absolute inset-x-0 bottom-3 h-px bg-base-50/15" />
+        <div className="absolute inset-x-0 bottom-3 h-px bg-neutral-950/15 dark:bg-neutral-50/15" />
 
         {/* Thumb */}
         <motion.div style={{ left }} className="absolute bottom-0 h-full">
           <motion.div
             style={{ scaleX }}
             animate={{ scaleY: dragging ? 1.04 : 1 }}
-            className="absolute bottom-0 left-0 h-full w-[3px] -translate-x-1/2 rounded-full bg-signal shadow-[0_0_12px_color-mix(in_oklab,var(--signal)_70%,transparent)]"
+            className="absolute bottom-0 left-0 h-full w-[3px] -translate-x-1/2 rounded-full bg-blue-600 dark:bg-blue-500 shadow-[0_0_12px_color-mix(in_oklab,var(--color-blue-600)_70%,transparent)] dark:shadow-[0_0_12px_color-mix(in_oklab,var(--color-blue-500)_70%,transparent)]"
           />
-          <span className="absolute bottom-0 left-0 size-2.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-signal ring-4 ring-base-950" />
+          <span className="absolute bottom-0 left-0 size-2.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-blue-600 dark:bg-blue-500 ring-4 ring-neutral-50 dark:ring-neutral-950" />
           <AnimatePresence>
             {show && (
               <motion.span
@@ -170,7 +170,7 @@ export function Fader({
                 animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, y: 4, scale: 0.9, filter: "blur(4px)" }}
                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                className="absolute bottom-full left-0 mb-2 -translate-x-1/2 rounded-md bg-base-50 px-2 py-1 font-mono text-[11px] font-medium whitespace-nowrap text-base-950 tabular-nums shadow-lg shadow-shade/30"
+                className="absolute bottom-full left-0 mb-2 -translate-x-1/2 rounded-md bg-neutral-950 dark:bg-neutral-50 px-2 py-1 font-mono text-[11px] font-medium whitespace-nowrap text-neutral-50 dark:text-neutral-950 tabular-nums shadow-lg shadow-neutral-600/30 dark:shadow-black/30"
               >
                 {format(value)}
               </motion.span>
@@ -179,7 +179,7 @@ export function Fader({
         </motion.div>
       </div>
 
-      <div className="mt-2 flex justify-between font-mono text-[10px] tracking-[0.12em] text-base-500 uppercase">
+      <div className="mt-2 flex justify-between font-mono text-[10px] tracking-[0.12em] text-neutral-500 uppercase">
         {labels.map((m) => (
           <span key={m}>{m}</span>
         ))}

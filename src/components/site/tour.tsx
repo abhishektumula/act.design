@@ -32,23 +32,23 @@ type Window = { c0: number; c1: number; r0: number; r1: number };
 function Card({ slug, live = true }: { slug: string; live?: boolean }) {
   const item = getItem(slug)!;
   return (
-    <div data-glow className="flex size-full flex-col rounded-2xl bg-base-900 p-2 ring-1 ring-base-50/[0.08]">
-      <div inert className="pointer-events-none relative min-h-0 flex-1 overflow-hidden rounded-xl bg-canvas p-4 ring-1 ring-base-50/[0.06]">
+    <div data-glow className="flex size-full flex-col rounded-2xl bg-neutral-100 dark:bg-neutral-900 p-2 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08]">
+      <div inert className="pointer-events-none relative min-h-0 flex-1 overflow-hidden rounded-xl bg-white dark:bg-black p-4 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06]">
         {live ? (
           <Fit>
             <Preview slug={slug} />
           </Fit>
         ) : (
           <div className="flex size-full flex-col items-center justify-center gap-3">
-            <span className="h-3 w-1/3 rounded-full bg-base-50/10" />
-            <span className="h-2 w-1/2 rounded-full bg-base-50/[0.06]" />
-            <span className="h-2 w-2/5 rounded-full bg-base-50/[0.06]" />
+            <span className="h-3 w-1/3 rounded-full bg-neutral-950/10 dark:bg-neutral-50/10" />
+            <span className="h-2 w-1/2 rounded-full bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06]" />
+            <span className="h-2 w-2/5 rounded-full bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06]" />
           </div>
         )}
       </div>
       <span className="flex items-center justify-between px-2 pt-2.5 pb-1 text-sm">
-        <span className="font-medium text-base-100">{item.name}</span>
-        <span className="text-base-500">{item.category}</span>
+        <span className="font-medium text-neutral-900 dark:text-neutral-100">{item.name}</span>
+        <span className="text-neutral-500">{item.category}</span>
       </span>
     </div>
   );
@@ -176,7 +176,7 @@ function Field() {
             <Link
               href={`/components/${focusSlug}`}
               aria-label={`Open ${getItem(focusSlug)?.name}`}
-              className="block size-full rounded-2xl shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7)] ring-1 ring-signal/40 transition-shadow hover:ring-signal"
+              className="block size-full rounded-2xl shadow-[0_30px_60px_-20px_rgb(0_0_0/0.7)] ring-1 ring-blue-600/40 dark:ring-blue-500/40 transition-shadow hover:ring-blue-600 dark:hover:ring-blue-500"
             >
               <Card key={`${focus.c}:${focus.r}`} slug={focusSlug} />
             </Link>

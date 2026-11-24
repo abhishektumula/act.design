@@ -106,10 +106,10 @@ export function CommandPalette({
             transition={{ type: "spring", bounce: 0.15, duration: 0.35 }}
             onAnimationComplete={() => input.current?.focus()}
             data-slot="command-palette"
-            className={cn("relative w-full max-w-lg overflow-hidden rounded-2xl bg-base-900 shadow-2xl shadow-shade ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/10", className)}
+            className={cn("relative w-full max-w-lg overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900 shadow-2xl shadow-neutral-600 dark:shadow-black ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 inset-shadow-2xs inset-shadow-white/10", className)}
           >
-            <div className="flex items-center gap-3 border-b border-base-50/5 px-4">
-              <Search className="size-4 text-base-500" />
+            <div className="flex items-center gap-3 border-b border-neutral-950/5 dark:border-neutral-50/5 px-4">
+              <Search className="size-4 text-neutral-500" />
               <input
                 ref={input}
                 autoFocus
@@ -127,16 +127,16 @@ export function CommandPalette({
                   e.preventDefault();
                 }}
                 placeholder={placeholder}
-                className="h-13 flex-1 bg-transparent text-[15px] text-base-100 outline-none placeholder:text-base-500"
+                className="h-13 flex-1 bg-transparent text-[15px] text-neutral-900 dark:text-neutral-100 outline-none placeholder:text-neutral-500"
               />
-              <kbd className="rounded-md bg-base-800 px-1.5 py-0.5 font-mono text-[10px] text-base-400 ring-1 ring-base-50/10">ESC</kbd>
+              <kbd className="rounded-md bg-neutral-200 dark:bg-neutral-800 px-1.5 py-0.5 font-mono text-[10px] text-neutral-600 dark:text-neutral-400 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10">ESC</kbd>
             </div>
 
             <div className="max-h-80 overflow-y-auto p-2">
-              {results.length === 0 && <p className="py-10 text-center text-sm text-base-500">No results for “{query}”</p>}
+              {results.length === 0 && <p className="py-10 text-center text-sm text-neutral-500">No results for “{query}”</p>}
               {groups.map((group) => (
                 <div key={group} className="mb-1">
-                  <p className="px-2.5 pt-2 pb-1.5 text-[11px] font-medium tracking-wide text-base-500 uppercase">{group}</p>
+                  <p className="px-2.5 pt-2 pb-1.5 text-[11px] font-medium tracking-wide text-neutral-500 uppercase">{group}</p>
                   {results
                     .filter((c) => c.group === group)
                     .map((c) => {
@@ -148,14 +148,14 @@ export function CommandPalette({
                           onPointerMove={() => setActive(i)}
                           onClick={() => select(c)}
                           className={`relative flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-sm transition-colors ${
-                            active === i ? "text-base-50" : "text-base-400"
+                            active === i ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-600 dark:text-neutral-400"
                           }`}
                         >
                           {active === i && (
                             <motion.span
                               layoutId={`${id}-hl`}
                               transition={{ type: "spring", bounce: 0, duration: 0.2 }}
-                              className="absolute inset-0 rounded-lg bg-base-50/[0.06] ring-1 ring-base-50/5"
+                              className="absolute inset-0 rounded-lg bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06] ring-1 ring-neutral-950/5 dark:ring-neutral-50/5"
                             />
                           )}
                           <Icon className="relative size-4" />
@@ -163,7 +163,7 @@ export function CommandPalette({
                           {c.shortcut && (
                             <span className="relative flex gap-1">
                               {c.shortcut.map((k) => (
-                                <kbd key={k} className="min-w-5 rounded bg-base-800 px-1 py-0.5 font-mono text-[10px] text-base-400 ring-1 ring-base-50/5">
+                                <kbd key={k} className="min-w-5 rounded bg-neutral-200 dark:bg-neutral-800 px-1 py-0.5 font-mono text-[10px] text-neutral-600 dark:text-neutral-400 ring-1 ring-neutral-950/5 dark:ring-neutral-50/5">
                                   {k}
                                 </kbd>
                               ))}
@@ -176,9 +176,9 @@ export function CommandPalette({
               ))}
             </div>
 
-            <div className="flex items-center justify-end gap-3 border-t border-base-50/5 px-4 py-2.5 text-[11px] text-base-500">
+            <div className="flex items-center justify-end gap-3 border-t border-neutral-950/5 dark:border-neutral-50/5 px-4 py-2.5 text-[11px] text-neutral-500">
               <span className="flex items-center gap-1">
-                <kbd className="rounded bg-base-800 px-1 font-mono">↑↓</kbd> navigate
+                <kbd className="rounded bg-neutral-200 dark:bg-neutral-800 px-1 font-mono">↑↓</kbd> navigate
               </span>
               <span className="flex items-center gap-1">
                 <CornerDownLeft className="size-3" /> select
@@ -211,13 +211,13 @@ export default function Demo() {
     <div className="flex flex-col items-center gap-3">
       <button
         onClick={() => setOpen(true)}
-        className="flex h-10 w-72 items-center gap-2.5 rounded-xl bg-base-900 px-3 text-sm text-base-500 shadow-md shadow-shade/40 ring-1 ring-base-50/10 inset-shadow-2xs inset-shadow-white/5 transition-colors hover:text-base-300"
+        className="flex h-10 w-72 items-center gap-2.5 rounded-xl bg-neutral-100 dark:bg-neutral-900 px-3 text-sm text-neutral-500 shadow-md shadow-neutral-600/40 dark:shadow-black/40 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 inset-shadow-2xs inset-shadow-white/5 transition-colors hover:text-neutral-700 dark:hover:text-neutral-300"
       >
         <Search className="size-4" />
         <span className="flex-1 text-left">Search commands…</span>
-        <kbd className="rounded-md bg-base-800 px-1.5 py-0.5 font-mono text-[10px] text-base-400 ring-1 ring-base-50/10">⌘J</kbd>
+        <kbd className="rounded-md bg-neutral-200 dark:bg-neutral-800 px-1.5 py-0.5 font-mono text-[10px] text-neutral-600 dark:text-neutral-400 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10">⌘J</kbd>
       </button>
-      <p className="h-4 text-xs text-base-500">{last && <>Ran “{last}”</>}</p>
+      <p className="h-4 text-xs text-neutral-500">{last && <>Ran “{last}”</>}</p>
       <CommandPalette open={open} onOpenChange={setOpen} commands={commands} hotkey="j" onSelect={(c) => setLast(c.label)} />
     </div>
   );

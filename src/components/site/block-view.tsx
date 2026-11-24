@@ -25,7 +25,7 @@ function Pill<T extends string>({
 }) {
   const id = useId();
   return (
-    <div className="inline-flex rounded-lg bg-base-950 p-0.5 ring-1 ring-base-50/[0.08]">
+    <div className="inline-flex rounded-lg bg-neutral-50 dark:bg-neutral-950 p-0.5 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08]">
       {options.map(({ id: v, label, icon: Icon }) => (
         <button
           key={v}
@@ -35,14 +35,14 @@ function Pill<T extends string>({
           className={cn(
             "relative flex h-7 items-center gap-1.5 rounded-lg text-[13px] font-medium transition-colors",
             iconOnly ? "w-8 justify-center" : "px-3",
-            value === v ? "text-base-50" : "text-base-500 hover:text-base-300",
+            value === v ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-500 hover:text-neutral-700 dark:hover:text-neutral-300",
           )}
         >
           {value === v && (
             <motion.span
               layoutId={`${id}-pill`}
               transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-              className="absolute inset-0 rounded-lg bg-base-50/[0.07] ring-1 ring-base-50/[0.08]"
+              className="absolute inset-0 rounded-lg bg-neutral-950/[0.07] dark:bg-neutral-50/[0.07] ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08]"
             />
           )}
           <Icon className="relative size-3.5" />
@@ -79,7 +79,7 @@ export function BlockView({ slug, code }: { slug: string; code: ReactNode }) {
               onClick={() => setReload((r) => r + 1)}
               aria-label="Replay"
               title="Replay"
-              className="grid size-8 place-items-center rounded-lg text-base-500 ring-1 ring-base-50/[0.08] transition-colors hover:text-base-200 hover:ring-base-50/15"
+              className="grid size-8 place-items-center rounded-lg text-neutral-500 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] transition-colors hover:text-neutral-800 dark:hover:text-neutral-200 hover:ring-neutral-950/15 dark:hover:ring-neutral-50/15"
             >
               <RotateCcw className="size-4" />
             </button>
@@ -88,7 +88,7 @@ export function BlockView({ slug, code }: { slug: string; code: ReactNode }) {
               target="_blank"
               aria-label="Open in new tab"
               title="Open in new tab"
-              className="grid size-8 place-items-center rounded-lg text-base-500 ring-1 ring-base-50/[0.08] transition-colors hover:text-base-200 hover:ring-base-50/15"
+              className="grid size-8 place-items-center rounded-lg text-neutral-500 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] transition-colors hover:text-neutral-800 dark:hover:text-neutral-200 hover:ring-neutral-950/15 dark:hover:ring-neutral-50/15"
             >
               <ExternalLink className="size-4" />
             </a>
@@ -105,7 +105,7 @@ export function BlockView({ slug, code }: { slug: string; code: ReactNode }) {
           transition={{ duration: 0.2 }}
         >
           {view === "preview" ? (
-            <div className="rounded-2xl bg-base-900/60 p-2 ring-1 ring-base-50/[0.06] sm:p-3">
+            <div className="rounded-2xl bg-neutral-100/60 dark:bg-neutral-900/60 p-2 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06] sm:p-3">
               <BlockFrame slug={slug} width={width} reloadKey={reload} />
             </div>
           ) : (

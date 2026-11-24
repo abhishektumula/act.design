@@ -52,7 +52,7 @@ function Selection({ show, animated }: { show: boolean; animated: boolean }) {
           initial={false}
           animate={{ scale: show ? 1 : 0 }}
           transition={{ duration: animated ? 0.26 : 0, delay: animated && show ? 0.06 + i * 0.035 : 0, ease: pop }}
-          className={`absolute size-[7px] border border-[var(--typeset-color)] bg-[var(--typeset-handle)] ${p}`}
+          className={`absolute size-[7px] border border-[var(--typeset-color)] bg-white dark:bg-black ${p}`}
         />
       ))}
     </motion.span>
@@ -104,7 +104,7 @@ export function Typeset({
   highlight,
   highlightClassName = "text-[var(--typeset-color)]",
   as = "h2",
-  color = "var(--signal)",
+  color = "var(--color-blue-500)",
   startScale = 0.86,
   speed = 45,
   delay = 0.3,
@@ -249,7 +249,7 @@ export function Typeset({
 
   let index = 0;
   return (
-    <div ref={wrap} data-slot="typeset" className="relative w-fit" style={{ ["--typeset-color" as string]: color, ["--typeset-handle" as string]: "var(--color-canvas, white)" }}>
+    <div ref={wrap} data-slot="typeset" className="relative w-fit" style={{ ["--typeset-color" as string]: color }}>
       <Root
         // The tag is chosen at runtime; the ref only needs an HTMLElement.
         ref={el as React.Ref<never>}
@@ -295,7 +295,7 @@ export function Typeset({
 export default function Demo() {
   return (
     <div className="px-6">
-      <Typeset text={"Interfaces\nthat act."} highlight="act." className="text-5xl leading-[1.02] font-semibold tracking-[-0.035em] text-base-50 @md:text-6xl" />
+      <Typeset text={"Interfaces\nthat act."} highlight="act." className="text-5xl leading-[1.02] font-semibold tracking-[-0.035em] text-neutral-950 dark:text-neutral-50 @md:text-6xl" />
     </div>
   );
 }

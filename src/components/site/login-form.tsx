@@ -45,10 +45,10 @@ export function LoginForm({ next }: { next: string }) {
     <div className="grid w-full max-w-5xl items-center gap-14 lg:grid-cols-[1fr_1.05fr] lg:gap-20">
       {/* Form */}
       <div>
-        <h1 className="text-4xl leading-tight font-semibold tracking-[-0.025em] text-base-50 sm:text-5xl">
+        <h1 className="text-4xl leading-tight font-semibold tracking-[-0.025em] text-neutral-950 dark:text-neutral-50 sm:text-5xl">
           Welcome <Highlight>back</Highlight>
         </h1>
-        <p className="mt-5 max-w-sm text-lg leading-8 text-pretty text-base-400">Sign in to copy the source of every component and block.</p>
+        <p className="mt-5 max-w-sm text-lg leading-8 text-pretty text-neutral-600 dark:text-neutral-400">Sign in to copy the source of every component and block.</p>
 
         <motion.form ref={form} action={action} className="mt-10 flex max-w-sm flex-col gap-5">
           <input type="hidden" name="next" value={next} />
@@ -79,9 +79,9 @@ export function LoginForm({ next }: { next: string }) {
           </Button>
         </motion.form>
 
-        <p className="mt-8 flex items-center gap-2 text-sm text-base-500">
+        <p className="mt-8 flex items-center gap-2 text-sm text-neutral-500">
           No membership yet?
-          <Link href="/pricing" className="group inline-flex items-center gap-1 font-medium text-base-100 transition-colors hover:text-signal">
+          <Link href="/pricing" className="group inline-flex items-center gap-1 font-medium text-neutral-900 dark:text-neutral-100 transition-colors hover:text-blue-600 dark:hover:text-blue-500">
             Get All-Access <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />
           </Link>
         </p>
@@ -90,20 +90,20 @@ export function LoginForm({ next }: { next: string }) {
       {/* The lock */}
       <div aria-hidden className="relative hidden sm:block">
         <Crosses />
-        <div className="overflow-hidden rounded-2xl bg-base-900/60 ring-1 ring-base-50/[0.06]">
+        <div className="overflow-hidden rounded-2xl bg-neutral-100/60 dark:bg-neutral-900/60 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06]">
           <PanelBar label="Combination lock">
-            <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-base-400 uppercase">
+            <span className="flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] text-neutral-600 dark:text-neutral-400 uppercase">
               <span
                 className={cn(
                   "size-1.5 rounded-full transition-colors",
-                  failed ? "bg-red-500 shadow-[0_0_8px_var(--color-red-500)]" : pending ? "animate-pulse bg-signal" : "bg-signal shadow-[0_0_8px_var(--signal)]",
+                  failed ? "bg-red-500 shadow-[0_0_8px_var(--color-red-500)]" : pending ? "animate-pulse bg-blue-600 dark:bg-blue-500" : "bg-blue-600 dark:bg-blue-500 shadow-[0_0_8px_var(--color-blue-600)] dark:shadow-[0_0_8px_var(--color-blue-500)]",
                 )}
               />
               {status}
             </span>
           </PanelBar>
           <div className="relative flex flex-col items-center px-8 pt-6 pb-8">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(var(--base-800)_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_70%)] opacity-60" />
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(var(--color-neutral-200)_1px,transparent_1px)] dark:bg-[radial-gradient(var(--color-neutral-800)_1px,transparent_1px)] bg-[size:16px_16px] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_70%)] opacity-60" />
           <div ref={lock} inert className="pointer-events-none relative mt-6">
             <Dial size="lg" ticks={51} min={0} max={100} value={dial} label="Combination" format={(v) => String(Math.round(v)).padStart(2, "0")} />
           </div>
@@ -120,14 +120,14 @@ export function LoginForm({ next }: { next: string }) {
                   transition={{ type: "spring", stiffness: 600, damping: 20 }}
                   className={cn(
                     "h-3 w-1 rounded-[1px] transition-colors duration-150",
-                    lit ? (failed ? "bg-red-500" : "bg-signal shadow-[0_0_8px_var(--signal)]") : "bg-base-50/10",
+                    lit ? (failed ? "bg-red-500" : "bg-blue-600 dark:bg-blue-500 shadow-[0_0_8px_var(--color-blue-600)] dark:shadow-[0_0_8px_var(--color-blue-500)]") : "bg-neutral-950/10 dark:bg-neutral-50/10",
                   )}
                 />
               );
             })}
           </div>
           </div>
-          <div className="flex justify-between border-t border-base-50/[0.06] px-4 py-2.5 font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">
+          <div className="flex justify-between border-t border-neutral-950/[0.06] dark:border-neutral-50/[0.06] px-4 py-2.5 font-mono text-[10px] tracking-[0.14em] text-neutral-500 uppercase">
             <span>{String(Math.min(password.length, LIGHTS)).padStart(2, "0")} / {LIGHTS}</span>
             <span>pos {String(dial).padStart(2, "0")}</span>
           </div>

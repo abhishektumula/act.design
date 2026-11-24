@@ -47,7 +47,7 @@ function Selection() {
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.6, delay: 0.55, ease: enter }}
-      className="pointer-events-none absolute -inset-x-4 -inset-y-3 border border-signal/60"
+      className="pointer-events-none absolute -inset-x-4 -inset-y-3 border border-blue-600/60 dark:border-blue-500/60"
     >
       {[
         "-top-[4px] -left-[4px]",
@@ -57,7 +57,7 @@ function Selection() {
       ].map((p) => (
         <span
           key={p}
-          className={`absolute size-[7px] border border-signal bg-canvas ${p}`}
+          className={`absolute size-[7px] border border-blue-600 dark:border-blue-500 bg-white dark:bg-black ${p}`}
         />
       ))}
     </motion.span>
@@ -100,7 +100,7 @@ export function Hero() {
                 href={`/components/${latest.slug}`}
                 label="New"
                 count={
-                  <span className="inline-flex items-center gap-1.5 text-base-200">
+                  <span className="inline-flex items-center gap-1.5 text-neutral-800 dark:text-neutral-200">
                     {latest.name}{" "}
                     <ArrowRight className="size-3 transition-transform group-hover:translate-x-0.5" />
                   </span>
@@ -111,7 +111,7 @@ export function Hero() {
           )}
           <h1
             style={headline}
-            className="relative block w-fit leading-[1.02] text-base-50"
+            className="relative block w-fit leading-[1.02] text-neutral-950 dark:text-neutral-50"
           >
             <Selection />
             {/* Lines rise in one after the other, then the selection settles around them. */}
@@ -127,8 +127,8 @@ export function Hero() {
                 transition={{ type: "spring", stiffness: 260, damping: 26 }}
                 className={`inline-block pr-[0.08em] ${s.serif ? "font-serif font-normal tracking-[-0.02em] italic" : ""} ${
                   s.outline
-                    ? "text-transparent [-webkit-text-stroke:1.5px_var(--signal)]"
-                    : "text-signal"
+                    ? "text-transparent [-webkit-text-stroke:1.5px_var(--color-blue-600)] dark:[-webkit-text-stroke:1.5px_var(--color-blue-500)]"
+                    : "text-blue-600 dark:text-blue-500"
                 }`}
               >
                 act.
@@ -142,10 +142,10 @@ export function Hero() {
           {...rise(0.3)}
           className="lg:col-span-5 lg:row-start-2 lg:pb-32"
         >
-          <p className="max-w-[30rem] text-lg leading-8 text-pretty text-base-400">
+          <p className="max-w-[30rem] text-lg leading-8 text-pretty text-neutral-600 dark:text-neutral-400">
             React components that act like well-made objects. Dials with
             detents, faders with travel, switches you can throw.{" "}
-            <span className="text-base-100">
+            <span className="text-neutral-900 dark:text-neutral-100">
               Turn any of them and the headline answers.
             </span>
           </p>
@@ -164,13 +164,13 @@ export function Hero() {
               See them in a product
             </Link>
           </div>
-          <p className="mt-10 text-[13px] leading-6 text-base-500">
+          <p className="mt-10 text-[13px] leading-6 text-neutral-500">
             The inspector is made of the{" "}
             {parts.map(([name, slug], i) => (
               <span key={slug}>
                 <Link
                   href={`/components/${slug}`}
-                  className="text-base-300 underline decoration-base-700 underline-offset-4 transition-colors hover:text-base-50"
+                  className="text-neutral-700 dark:text-neutral-300 underline decoration-neutral-300 dark:decoration-neutral-700 underline-offset-4 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50"
                 >
                   {name}
                 </Link>
@@ -219,8 +219,8 @@ export function Hero() {
             >
               <div className="flex">
                 <div className="insp-controls min-w-0 shrink-0">
-                  <div className="grid border-b border-base-50/[0.07] sm:grid-cols-[auto_1fr]">
-                    <div className="flex justify-center px-8 py-7 max-sm:border-b max-sm:border-base-50/[0.07] sm:border-r sm:border-base-50/[0.07]">
+                  <div className="grid border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] sm:grid-cols-[auto_1fr]">
+                    <div className="flex justify-center px-8 py-7 max-sm:border-b max-sm:border-neutral-950/[0.07] dark:max-sm:border-neutral-50/[0.07] sm:border-r sm:border-neutral-950/[0.07] dark:sm:border-neutral-50/[0.07]">
                       <Dial
                         label="Weight"
                         min={100}
@@ -233,7 +233,7 @@ export function Hero() {
                     </div>
                     <div className="flex flex-col justify-center gap-5 px-7 py-7">
                       <div className="flex items-center justify-between gap-4">
-                        <span className="text-sm text-base-200">Size</span>
+                        <span className="text-sm text-neutral-800 dark:text-neutral-200">Size</span>
                         <Stepper
                           min={70}
                           max={110}
@@ -251,7 +251,7 @@ export function Hero() {
                       ).map(([k, l]) => (
                         <label
                           key={k}
-                          className="flex cursor-pointer items-center justify-between gap-4 text-sm text-base-200"
+                          className="flex cursor-pointer items-center justify-between gap-4 text-sm text-neutral-800 dark:text-neutral-200"
                         >
                           <span id={`hero-${k}`}>{l}</span>
                           <Switch
@@ -263,7 +263,7 @@ export function Hero() {
                       ))}
                     </div>
                   </div>
-                  <div className="border-b border-base-50/[0.07] px-7 py-6">
+                  <div className="border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] px-7 py-6">
                     <Fader
                       label="Tracking"
                       min={-10}
@@ -276,8 +276,8 @@ export function Hero() {
                       className="max-w-none"
                     />
                   </div>
-                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-base-50/[0.07] px-7 py-4">
-                    <span className="text-sm text-base-200">Case</span>
+                  <div className="flex flex-wrap items-center justify-between gap-4 border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] px-7 py-4">
+                    <span className="text-sm text-neutral-800 dark:text-neutral-200">Case</span>
                     <SegmentedControl<Case>
                       aria-label="Case"
                       size="sm"
@@ -310,7 +310,7 @@ export function Hero() {
                 {/* Filler: the layer's other properties, running off the page (wide desktop only) */}
                 <div
                   aria-hidden
-                  className="insp-more hidden shrink-0 auto-rows-min grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-x-10 gap-y-7 border-l border-base-50/[0.07] px-6 py-7 xl:grid"
+                  className="insp-more hidden shrink-0 auto-rows-min grid-cols-[repeat(auto-fill,minmax(11rem,1fr))] gap-x-10 gap-y-7 border-l border-neutral-950/[0.07] dark:border-neutral-50/[0.07] px-6 py-7 xl:grid"
                 >
                   {[
                     [64, [88, 72]],

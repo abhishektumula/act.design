@@ -8,9 +8,9 @@ import { cn } from "@/lib/utils";
 export type OrbState = "idle" | "listening" | "thinking" | "speaking";
 export type OrbVariant = "liquid" | "halo";
 
-/** Three CSS colours each: body, highlight, depth. `accent` follows your --signal token. */
+/** Three CSS colours each: body, highlight, depth. `accent` is built on Tailwind blue-500. */
 export const orbPalettes = {
-  accent: ["var(--signal)", "color-mix(in oklab, var(--signal) 45%, var(--color-sky-100))", "color-mix(in oklab, var(--signal) 62%, var(--color-fuchsia-950))"],
+  accent: ["var(--color-blue-500)", "color-mix(in oklab, var(--color-blue-500) 45%, var(--color-sky-100))", "color-mix(in oklab, var(--color-blue-500) 62%, var(--color-fuchsia-950))"],
   ocean: ["var(--color-blue-500)", "var(--color-sky-200)", "var(--color-indigo-800)"],
   moss: ["var(--color-emerald-600)", "var(--color-lime-200)", "var(--color-teal-800)"],
   ink: ["var(--color-neutral-500)", "var(--color-orange-100)", "var(--color-neutral-800)"],
@@ -261,14 +261,14 @@ export function Orb({
       className={cn(
         "relative grid shrink-0 place-items-center rounded-full",
         bezel &&
-          "bg-linear-to-b from-white to-base-800 shadow-[0_1px_0_white_inset,0_2px_4px_rgb(0_0_0/0.12),0_18px_36px_-14px_color-mix(in_oklab,var(--color-shade)_70%,transparent)] ring-1 ring-black/10 dark:from-base-700 dark:to-base-900 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)_inset,0_18px_36px_-12px_black] dark:ring-white/5",
+          "bg-linear-to-b from-white to-neutral-200 shadow-[0_1px_0_white_inset,0_2px_4px_rgb(0_0_0/0.12),0_18px_36px_-14px_color-mix(in_oklab,var(--color-neutral-600)_70%,transparent)] ring-1 ring-black/10 dark:from-neutral-700 dark:to-neutral-900 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)_inset,0_18px_36px_-12px_black] dark:ring-white/5",
         className,
       )}
     >
       <div ref={glow} style={{ background: colors[0] }} className="pointer-events-none absolute inset-[12%] rounded-full opacity-30 blur-2xl" />
       <div
         style={{ width: size, height: size }}
-        className={cn("relative rounded-full", bezel && "bg-base-950 shadow-[inset_0_2px_6px_rgb(0_0_0/0.35)] dark:bg-black")}
+        className={cn("relative rounded-full", bezel && "bg-neutral-50 shadow-[inset_0_2px_6px_rgb(0_0_0/0.35)] dark:bg-black")}
       >
         <canvas ref={canvas} style={{ width: size, height: size }} className="block rounded-full will-change-transform" />
       </div>
@@ -328,21 +328,21 @@ const palettes = Object.keys(orbPalettes) as OrbPalette[];
 
 function Pills<T extends string>({ value, options, onChange, id }: { value: T | null; options: readonly T[]; onChange: (v: T) => void; id: string }) {
   return (
-    <div className="flex rounded-full bg-base-50/[0.06] p-1 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-base-50/5">
+    <div className="flex rounded-full bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06] p-1 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-neutral-950/5 dark:ring-neutral-50/5">
       {options.map((o) => (
         <button
           key={o}
           onClick={() => onChange(o)}
           className={cn(
             "relative rounded-full px-3 py-1.5 text-xs font-medium capitalize transition-colors",
-            value === o ? "text-base-50" : "text-base-500 hover:text-base-200",
+            value === o ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200",
           )}
         >
           {value === o && (
             <motion.span
               layoutId={id}
               transition={{ type: "spring", stiffness: 520, damping: 34 }}
-              className="absolute inset-0 rounded-full bg-linear-to-b from-white to-base-950 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.14)] ring-1 ring-black/5 dark:from-base-700 dark:to-base-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)_inset] dark:ring-white/5"
+              className="absolute inset-0 rounded-full bg-linear-to-b from-white to-neutral-50 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.14)] ring-1 ring-black/5 dark:from-neutral-700 dark:to-neutral-800 dark:shadow-[0_1px_0_rgb(255_255_255/0.1)_inset] dark:ring-white/5"
             />
           )}
           <span className="relative">{o}</span>
@@ -379,7 +379,7 @@ export default function Demo() {
             aria-label={mic ? "Stop microphone" : "Use microphone"}
             className={cn(
               "grid size-9 place-items-center rounded-full ring-1 transition-colors [&_svg]:size-4",
-              mic ? "bg-signal/15 text-signal ring-signal/30" : "text-base-400 ring-base-50/10 hover:text-base-100",
+              mic ? "bg-blue-600/15 dark:bg-blue-500/15 text-blue-600 dark:text-blue-500 ring-blue-600/30 dark:ring-blue-500/30" : "text-neutral-600 dark:text-neutral-400 ring-neutral-950/10 dark:ring-neutral-50/10 hover:text-neutral-900 dark:hover:text-neutral-100",
             )}
           >
             {mic ? <MicOff /> : <Mic />}
@@ -395,8 +395,8 @@ export default function Demo() {
                 aria-label={`${p} palette`}
                 style={{ background: `linear-gradient(135deg, ${orbPalettes[p][1]}, ${orbPalettes[p][0]} 55%, ${orbPalettes[p][2]})` }}
                 className={cn(
-                  "size-5 rounded-full ring-2 ring-offset-2 ring-offset-base-950 transition-shadow",
-                  palette === p ? "ring-base-50/60" : "ring-transparent hover:ring-base-50/20",
+                  "size-5 rounded-full ring-2 ring-offset-2 ring-offset-neutral-50 dark:ring-offset-neutral-950 transition-shadow",
+                  palette === p ? "ring-neutral-950/60 dark:ring-neutral-50/60" : "ring-transparent hover:ring-neutral-950/20 dark:hover:ring-neutral-50/20",
                 )}
               />
             ))}

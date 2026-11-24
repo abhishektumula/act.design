@@ -21,8 +21,8 @@ const failing = [["FRA"], ["FRA", "LHR", "ARN"], ["FRA", "LHR", "ARN"], []];
 const elapsed = [0, 30, 31, 1039];
 const status = [
   { label: "Failing in 1 region", tone: "bg-amber-400" },
-  { label: "Down", tone: "bg-signal" },
-  { label: "Down", tone: "bg-signal" },
+  { label: "Down", tone: "bg-blue-600 dark:bg-blue-500" },
+  { label: "Down", tone: "bg-blue-600 dark:bg-blue-500" },
   { label: "Resolved", tone: "bg-emerald-500" },
 ];
 
@@ -67,11 +67,11 @@ export function IncidentFlow({ className }: { className?: string }) {
   const resolved = step === 3;
 
   return (
-    <section data-slot="incident-flow" className={cn("overflow-hidden bg-canvas px-6 py-24 sm:py-32", className)}>
+    <section data-slot="incident-flow" className={cn("overflow-hidden bg-white dark:bg-black px-6 py-24 sm:py-32", className)}>
       <div ref={ref} className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
         {/* The steps */}
         <div>
-          <h2 className="max-w-lg text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
+          <h2 className="max-w-lg text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-neutral-950 dark:text-neutral-50 sm:text-6xl">
             From a failed check to a phone call in <span className="font-serif font-normal tracking-[-0.01em] italic">31 seconds.</span>
           </h2>
           <ol className="mt-12 max-w-md">
@@ -85,9 +85,9 @@ export function IncidentFlow({ className }: { className?: string }) {
                     aria-current={on ? "step" : undefined}
                     className="group relative grid w-full grid-cols-[2rem_1fr] gap-3 py-3.5 text-left outline-none"
                   >
-                    <span className={cn("pt-px text-sm tabular-nums transition-colors", on ? "text-signal" : "text-base-600")}>0{i + 1}</span>
+                    <span className={cn("pt-px text-sm tabular-nums transition-colors", on ? "text-blue-600 dark:text-blue-500" : "text-neutral-400 dark:text-neutral-600")}>0{i + 1}</span>
                     <span>
-                      <span className={cn("block text-[17px] font-medium transition-colors", on ? "text-base-50" : "text-base-500 group-hover:text-base-300")}>
+                      <span className={cn("block text-[17px] font-medium transition-colors", on ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-500 group-hover:text-neutral-700 dark:group-hover:text-neutral-300")}>
                         {s.name}
                       </span>
                       <motion.span
@@ -96,18 +96,18 @@ export function IncidentFlow({ className }: { className?: string }) {
                         transition={{ duration: 0.35, ease: [0.25, 0.8, 0.25, 1] }}
                         className="block overflow-hidden"
                       >
-                        <span className="block pt-1.5 text-[15px] leading-6 text-pretty text-base-400">{s.body}</span>
+                        <span className="block pt-1.5 text-[15px] leading-6 text-pretty text-neutral-600 dark:text-neutral-400">{s.body}</span>
                       </motion.span>
                     </span>
                     {/* Progress along the step while it plays */}
-                    <span className="absolute bottom-0 left-0 h-px w-full bg-base-50/[0.08]">
+                    <span className="absolute bottom-0 left-0 h-px w-full bg-neutral-950/[0.08] dark:bg-neutral-50/[0.08]">
                       {on && playing && (
                         <motion.span
                           key={step}
                           initial={{ width: "0%" }}
                           animate={{ width: "100%" }}
                           transition={{ duration: STEP_MS / 1000, ease: "linear" }}
-                          className="block h-full bg-signal"
+                          className="block h-full bg-blue-600 dark:bg-blue-500"
                         />
                       )}
                     </span>
@@ -119,20 +119,20 @@ export function IncidentFlow({ className }: { className?: string }) {
         </div>
 
         {/* One incident, changing in place */}
-        <div className="overflow-hidden rounded-[16px] bg-base-950 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_8%,transparent),0_30px_60px_-30px_color-mix(in_oklab,var(--color-shade)_55%,transparent)] lg:w-[calc(100%+14rem)] dark:bg-base-900">
-          <div className="flex h-[38px] items-center gap-[6px] border-b border-base-50/[0.07] px-[14px]">
+        <div className="overflow-hidden rounded-[16px] bg-neutral-50 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-950)_8%,transparent),0_30px_60px_-30px_color-mix(in_oklab,var(--color-neutral-600)_55%,transparent)] dark:shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-50)_8%,transparent),0_30px_60px_-30px_color-mix(in_oklab,var(--color-black)_55%,transparent)] lg:w-[calc(100%+14rem)] dark:bg-neutral-900">
+          <div className="flex h-[38px] items-center gap-[6px] border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] px-[14px]">
             {["var(--color-red-400)", "var(--color-amber-400)", "var(--color-green-500)"].map((c) => (
               <span key={c} className="size-[9px] rounded-full" style={{ background: c }} />
             ))}
-            <span className="ml-3 text-[13px] font-medium text-base-100">Incidents</span>
+            <span className="ml-3 text-[13px] font-medium text-neutral-900 dark:text-neutral-100">Incidents</span>
           </div>
 
           <div className="max-w-[34rem] p-6 sm:p-7">
             {/* Status and clock */}
             <div className="flex items-start justify-between gap-6">
               <div>
-                <p className="font-mono text-[13px] text-base-300">checkout-api</p>
-                <p className="mt-2 flex items-center gap-2.5 text-xl font-semibold tracking-[-0.02em] text-base-50">
+                <p className="font-mono text-[13px] text-neutral-700 dark:text-neutral-300">checkout-api</p>
+                <p className="mt-2 flex items-center gap-2.5 text-xl font-semibold tracking-[-0.02em] text-neutral-950 dark:text-neutral-50">
                   <span className={cn("size-2.5 rounded-full transition-colors duration-500", status[step].tone)} />
                   {/* Words roll whole, never letter by letter */}
                   <span className="relative inline-grid overflow-hidden">
@@ -151,8 +151,8 @@ export function IncidentFlow({ className }: { className?: string }) {
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-base-500">Since first failure</p>
-                <p className="mt-1 font-mono text-3xl font-medium tracking-[-0.02em] text-base-50 tabular-nums">
+                <p className="text-xs text-neutral-500">Since first failure</p>
+                <p className="mt-1 font-mono text-3xl font-medium tracking-[-0.02em] text-neutral-950 dark:text-neutral-50 tabular-nums">
                   <RollingNumber value={clock(elapsed[step])} />
                 </p>
               </div>
@@ -167,7 +167,7 @@ export function IncidentFlow({ className }: { className?: string }) {
                     key={r}
                     className={cn(
                       "rounded-[6px] py-1.5 text-center font-mono text-[11px] transition-colors duration-500",
-                      bad ? "bg-signal/12 text-signal ring-1 ring-signal/30" : resolved ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : "bg-base-50/[0.04] text-base-500",
+                      bad ? "bg-blue-600/12 dark:bg-blue-500/12 text-blue-600 dark:text-blue-500 ring-1 ring-blue-600/30 dark:ring-blue-500/30" : resolved ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400" : "bg-neutral-950/[0.04] dark:bg-neutral-50/[0.04] text-neutral-500",
                     )}
                   >
                     {r}
@@ -186,17 +186,17 @@ export function IncidentFlow({ className }: { className?: string }) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
                     transition={{ duration: 0.4, ease: [0.25, 0.8, 0.25, 1] }}
-                    className="flex items-center gap-3 rounded-[12px] bg-canvas p-3 ring-1 ring-base-50/[0.07] dark:bg-base-950"
+                    className="flex items-center gap-3 rounded-[12px] bg-white p-3 ring-1 ring-neutral-950/[0.07] dark:ring-neutral-50/[0.07] dark:bg-neutral-950"
                   >
-                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-base-50 text-xs font-semibold text-base-950">MC</span>
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-neutral-950 dark:bg-neutral-50 text-xs font-semibold text-neutral-50 dark:text-neutral-950">MC</span>
                     <span className="min-w-0 flex-1">
-                      <span className="block text-sm font-medium text-base-50">Maria Chen</span>
-                      <span className="block text-xs text-base-500">{resolved ? "Answered in 38 s" : "On-call, phone ringing"}</span>
+                      <span className="block text-sm font-medium text-neutral-950 dark:text-neutral-50">Maria Chen</span>
+                      <span className="block text-xs text-neutral-500">{resolved ? "Answered in 38 s" : "On-call, phone ringing"}</span>
                     </span>
                     <span
                       className={cn(
                         "grid size-8 shrink-0 place-items-center rounded-full [&_svg]:size-4",
-                        resolved ? "bg-emerald-500/12 text-emerald-600 dark:text-emerald-400" : "bg-signal text-white",
+                        resolved ? "bg-emerald-500/12 text-emerald-600 dark:text-emerald-400" : "bg-blue-600 dark:bg-blue-500 text-white",
                       )}
                     >
                       {resolved ? (
@@ -214,7 +214,7 @@ export function IncidentFlow({ className }: { className?: string }) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex h-[3.75rem] items-center rounded-[12px] px-3 text-sm text-base-500 ring-1 ring-base-50/[0.07] ring-dashed"
+                    className="flex h-[3.75rem] items-center rounded-[12px] px-3 text-sm text-neutral-500 ring-1 ring-neutral-950/[0.07] dark:ring-neutral-50/[0.07] ring-dashed"
                   >
                     {step === 0 ? "Waiting for a second region before paging anyone" : "Incident opened, finding who's on call"}
                   </motion.p>
@@ -222,11 +222,11 @@ export function IncidentFlow({ className }: { className?: string }) {
               </AnimatePresence>
             </div>
 
-            <div className="mt-6 flex items-center justify-between gap-4 border-t border-base-50/[0.07] pt-5">
-              <p className="text-sm text-base-500">
+            <div className="mt-6 flex items-center justify-between gap-4 border-t border-neutral-950/[0.07] dark:border-neutral-50/[0.07] pt-5">
+              <p className="text-sm text-neutral-500">
                 {resolved ? (
                   <>
-                    <span className="text-base-100">Recovered.</span> Timeline saved to the postmortem.
+                    <span className="text-neutral-900 dark:text-neutral-100">Recovered.</span> Timeline saved to the postmortem.
                   </>
                 ) : (
                   "Status page updates automatically"

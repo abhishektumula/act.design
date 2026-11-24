@@ -38,11 +38,11 @@ export function SiteSearch() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="hidden h-8 w-44 items-center gap-2 rounded-md px-2.5 text-[13px] text-base-400 transition-colors hover:bg-base-50/[0.05] hover:text-base-50 md:flex"
+        className="hidden h-8 w-44 items-center gap-2 rounded-md px-2.5 text-[13px] text-neutral-600 dark:text-neutral-400 transition-colors hover:bg-neutral-950/[0.05] dark:hover:bg-neutral-50/[0.05] hover:text-neutral-950 dark:hover:text-neutral-50 md:flex"
       >
         <Search className="size-3.5" />
         <span className="flex-1 text-left">Search…</span>
-        <kbd className="rounded-[4px] bg-base-800 px-1.5 py-px font-mono text-[10px] text-base-400">⌘K</kbd>
+        <kbd className="rounded-[4px] bg-neutral-200 dark:bg-neutral-800 px-1.5 py-px font-mono text-[10px] text-neutral-600 dark:text-neutral-400">⌘K</kbd>
       </button>
       <CommandPalette
         open={open}

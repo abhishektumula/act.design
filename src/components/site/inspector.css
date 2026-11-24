@@ -10,22 +10,22 @@
   height: auto;
   user-select: auto;
   --ss-font: var(--font-inter), system-ui, sans-serif;
-  --ss-surface: var(--base-950);
-  --ss-chrome: var(--base-950);
-  --ss-canvas: var(--base-950);
-  --ss-text-strong: var(--base-50);
-  --ss-text: var(--base-400);
-  --ss-line: color-mix(in oklab, var(--base-50) 7%, transparent);
-  --ss-accent: var(--signal);
+  --ss-surface: light-dark(var(--color-neutral-50), var(--color-neutral-950));
+  --ss-chrome: light-dark(var(--color-neutral-50), var(--color-neutral-950));
+  --ss-canvas: light-dark(var(--color-neutral-50), var(--color-neutral-950));
+  --ss-text-strong: light-dark(var(--color-neutral-950), var(--color-neutral-50));
+  --ss-text: light-dark(var(--color-neutral-600), var(--color-neutral-400));
+  --ss-line: color-mix(in oklab, light-dark(var(--color-neutral-950), var(--color-neutral-50)) 7%, transparent);
+  --ss-accent: light-dark(var(--color-blue-600), var(--color-blue-500));
   --ss-radius-window: 14px;
-  color: var(--base-200);
+  color: light-dark(var(--color-neutral-800), var(--color-neutral-200));
 }
 
 .insp .insp-window {
   box-shadow:
-    0 0 0 1px color-mix(in oklab, var(--base-50) 8%, transparent),
+    0 0 0 1px color-mix(in oklab, light-dark(var(--color-neutral-950), var(--color-neutral-50)) 8%, transparent),
     0 1px 2px rgb(0 0 0 / 0.04),
-    0 24px 48px -24px color-mix(in oklab, var(--shade) 45%, transparent);
+    0 24px 48px -24px color-mix(in oklab, light-dark(var(--color-neutral-600), var(--color-black)) 45%, transparent);
 }
 .dark .insp .insp-window {
   box-shadow:
@@ -40,7 +40,7 @@
 .insp .ss-window__heading {
   font-size: 13px;
   font-weight: 500;
-  color: var(--base-100);
+  color: light-dark(var(--color-neutral-900), var(--color-neutral-100));
 }
 
 /* The corner bleed. The column is a container: the controls keep the

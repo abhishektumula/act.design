@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: PageProps<"/blocks/[slug]">):
   return { title: block ? `${block.name} block · act.design` : "Not found" };
 }
 
-const code = "rounded-[4px] bg-base-50/[0.06] px-1.5 py-0.5 font-mono text-[12px] text-base-200";
+const code = "rounded-[4px] bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06] px-1.5 py-0.5 font-mono text-[12px] text-neutral-800 dark:text-neutral-200";
 
 async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "params">) {
   const { slug } = await params;
@@ -55,8 +55,8 @@ async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "p
         <Steps
           steps={[
             <>
-              One-time setup: add the <code className={code}>cn</code> helper and theme tokens.{" "}
-              <Link href="/setup" className="text-base-100 underline decoration-base-700 underline-offset-4 hover:decoration-base-400">
+              One-time setup: add the <code className={code}>cn</code> helper and class-based dark mode.{" "}
+              <Link href="/setup" className="text-neutral-900 dark:text-neutral-100 underline decoration-neutral-300 dark:decoration-neutral-700 underline-offset-4 hover:decoration-neutral-600 dark:hover:decoration-neutral-400">
                 See setup
               </Link>
               .
@@ -74,7 +74,7 @@ async function BlockPageContent({ params }: Pick<PageProps<"/blocks/[slug]">, "p
                         <Link
                           key={u.slug}
                           href={`/components/${u.slug}`}
-                          className="rounded-[4px] bg-base-950 px-2.5 py-1 font-mono text-[12px] text-base-300 ring-1 ring-base-50/[0.08] transition-colors hover:text-base-50 hover:ring-base-50/20"
+                          className="rounded-[4px] bg-neutral-50 dark:bg-neutral-950 px-2.5 py-1 font-mono text-[12px] text-neutral-700 dark:text-neutral-300 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] transition-colors hover:text-neutral-950 dark:hover:text-neutral-50 hover:ring-neutral-950/20 dark:hover:ring-neutral-50/20"
                         >
                           components/ui/{u.slug}.tsx
                         </Link>
@@ -105,10 +105,10 @@ export default function BlockPage({ params }: PageProps<"/blocks/[slug]">) {
     <Suspense
       fallback={
         <main className="mx-auto w-full max-w-[1400px] animate-pulse px-6 pt-32 pb-24">
-          <div className="h-3 w-40 rounded-[2px] bg-base-50/[0.06]" />
-          <div className="mt-6 h-10 w-64 rounded-[4px] bg-base-50/[0.06]" />
-          <div className="mt-5 h-4 w-full max-w-xl rounded-[2px] bg-base-50/[0.06]" />
-          <div className="mt-12 h-[36rem] rounded-lg bg-base-950 ring-1 ring-base-50/[0.08]" />
+          <div className="h-3 w-40 rounded-[2px] bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06]" />
+          <div className="mt-6 h-10 w-64 rounded-[4px] bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06]" />
+          <div className="mt-5 h-4 w-full max-w-xl rounded-[2px] bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06]" />
+          <div className="mt-12 h-[36rem] rounded-lg bg-neutral-50 dark:bg-neutral-950 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08]" />
         </main>
       }
     >
