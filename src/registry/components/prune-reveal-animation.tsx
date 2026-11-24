@@ -414,11 +414,17 @@ export function PruneReveal({ src, alt, prompt, generating, duration = 5600, onR
       role="img"
       aria-label={revealed ? alt : `Generating${prompt ? `: ${prompt}` : ""}`}
       aria-busy={!revealed}
-      className={cn("relative aspect-[4/5] w-full overflow-hidden bg-neutral-900", className)}
+      className={cn(
+        // A soft lift off the page and a hairline outline
+        "relative aspect-[4/5] w-full overflow-hidden rounded-2xl bg-neutral-900 ring-1 ring-black/10 shadow-[0_1px_2px_rgb(0_0_0/0.08),0_24px_48px_-24px_rgb(0_0_0/0.45)] dark:ring-white/10 dark:shadow-[0_1px_2px_rgb(0_0_0/0.5),0_24px_48px_-20px_rgb(0_0_0/0.9)]",
+        className,
+      )}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       {src && <img src={src} alt="" draggable={false} className={cn("absolute inset-0 size-full object-cover", !showImage && "invisible")} />}
       <canvas ref={canvas} aria-hidden className="absolute inset-0 size-full" />
+      {/* An inner edge over the picture, so it sits in the frame like a print */}
+      <span aria-hidden className="pointer-events-none absolute inset-0 rounded-[inherit] ring-1 ring-white/10 ring-inset" />
     </div>
   );
 }
@@ -467,7 +473,6 @@ export default function Demo() {
         alt={SHOTS[shot].prompt}
         prompt={SHOTS[shot].prompt}
         onRevealed={() => setBusy(false)}
-        className="rounded-2xl ring-1 ring-black/10 dark:ring-white/10"
       />
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {SHOTS.map((s, i) => (
