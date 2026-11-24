@@ -51,19 +51,19 @@ export function PricingMeter({ className }: { className?: string }) {
   const { tier, price, lines } = quote(monitors, seats, Number(interval), billing === "yearly");
 
   return (
-    <section data-slot="pricing-meter" className={cn("bg-canvas px-6 py-24 sm:py-32", className)}>
+    <section data-slot="pricing-meter" className={cn("bg-white dark:bg-black px-6 py-24 sm:py-32", className)}>
       <div className="mx-auto grid max-w-6xl gap-16 lg:grid-cols-[1fr_1.15fr] lg:items-center">
         <div>
-          <h2 className="text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
+          <h2 className="text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-neutral-950 dark:text-neutral-50 sm:text-6xl">
             Pay for what you <span className="font-serif font-normal tracking-[-0.01em] italic">watch.</span>
           </h2>
-          <p className="mt-6 max-w-md text-lg leading-8 text-pretty text-base-400">
+          <p className="mt-6 max-w-md text-lg leading-8 text-pretty text-neutral-600 dark:text-neutral-400">
             Tell us how many endpoints you watch and how often. You see the price before you talk to anyone.
           </p>
           <ul className="mt-10 space-y-3">
             {["Status pages and SSL checks on every plan", "Phone, SMS and Slack alerts with no per-alert fees", "Cancel any time from settings"].map((f) => (
-              <li key={f} className="flex items-center gap-3 text-[15px] text-base-200">
-                <span className="grid size-5 place-items-center rounded-full bg-signal/10 text-signal ring-1 ring-signal/20">
+              <li key={f} className="flex items-center gap-3 text-[15px] text-neutral-800 dark:text-neutral-200">
+                <span className="grid size-5 place-items-center rounded-full bg-blue-600/10 dark:bg-blue-500/10 text-blue-600 dark:text-blue-500 ring-1 ring-blue-600/20 dark:ring-blue-500/20">
                   <Check className="size-3" />
                 </span>
                 {f}
@@ -72,18 +72,18 @@ export function PricingMeter({ className }: { className?: string }) {
           </ul>
         </div>
 
-        <div className="overflow-hidden rounded-[20px] bg-base-950 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_8%,transparent),0_30px_60px_-36px_color-mix(in_oklab,var(--color-shade)_50%,transparent)] dark:bg-base-900">
+        <div className="overflow-hidden rounded-[20px] bg-neutral-50 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-950)_8%,transparent),0_30px_60px_-36px_color-mix(in_oklab,var(--color-neutral-600)_50%,transparent)] dark:shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-50)_8%,transparent),0_30px_60px_-36px_color-mix(in_oklab,var(--color-black)_50%,transparent)] dark:bg-neutral-900">
           {/* Plan lights */}
-          <div className="grid grid-cols-3 divide-x divide-base-50/[0.07] border-b border-base-50/[0.07]">
+          <div className="grid grid-cols-3 divide-x divide-neutral-950/[0.07] dark:divide-neutral-50/[0.07] border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07]">
             {tiers.map((t) => {
               const on = t.id === tier.id;
               return (
                 <div key={t.id} className="px-4 py-4 sm:px-6">
                   <div className="flex items-center gap-2">
-                    <span className={cn("size-2 rounded-full transition-all duration-300", on ? "bg-signal shadow-[0_0_10px_var(--signal)]" : "bg-base-50/15")} />
-                    <span className={cn("text-sm font-medium transition-colors", on ? "text-base-50" : "text-base-500")}>{t.name}</span>
+                    <span className={cn("size-2 rounded-full transition-all duration-300", on ? "bg-blue-600 dark:bg-blue-500 shadow-[0_0_10px_var(--color-blue-600)] dark:shadow-[0_0_10px_var(--color-blue-500)]" : "bg-neutral-950/15 dark:bg-neutral-50/15")} />
+                    <span className={cn("text-sm font-medium transition-colors", on ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-500")}>{t.name}</span>
                   </div>
-                  <p className="mt-1.5 hidden text-xs leading-5 text-base-500 sm:block">{t.note}</p>
+                  <p className="mt-1.5 hidden text-xs leading-5 text-neutral-500 sm:block">{t.note}</p>
                 </div>
               );
             })}
@@ -105,7 +105,7 @@ export function PricingMeter({ className }: { className?: string }) {
 
             <div className="flex flex-wrap items-start justify-between gap-6">
               <div>
-                <p className="mb-3 text-sm font-medium text-base-100">Check every</p>
+                <p className="mb-3 text-sm font-medium text-neutral-900 dark:text-neutral-100">Check every</p>
                 <SegmentedControl<Interval>
                   aria-label="Check interval"
                   size="sm"
@@ -120,16 +120,16 @@ export function PricingMeter({ className }: { className?: string }) {
                 />
               </div>
               <div>
-                <p className="mb-3 text-sm font-medium text-base-100">Seats</p>
+                <p className="mb-3 text-sm font-medium text-neutral-900 dark:text-neutral-100">Seats</p>
                 <Stepper label="Seats" min={1} max={50} value={seats} onValueChange={setSeats} />
               </div>
             </div>
           </div>
 
           {/* The receipt: what the number is made of */}
-          <div className="border-t border-dashed border-base-50/15 bg-canvas/60 px-6 pt-6 pb-7 sm:px-8 dark:bg-base-950/60">
+          <div className="border-t border-dashed border-neutral-950/15 dark:border-neutral-50/15 bg-white/60 px-6 pt-6 pb-7 sm:px-8 dark:bg-neutral-950/60">
             <div className="flex items-center justify-between gap-4">
-              <p className="text-sm font-medium text-base-100">Your quote</p>
+              <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Your quote</p>
               <SegmentedControl
                 aria-label="Billing"
                 size="sm"
@@ -147,19 +147,19 @@ export function PricingMeter({ className }: { className?: string }) {
                   key={l.label}
                   className={cn("grid grid-cols-[1fr_auto] items-baseline gap-4 transition-opacity duration-300", l.amount === 0 && "opacity-40")}
                 >
-                  <dt className="min-w-0 truncate text-base-300">
-                    {l.label} <span className="text-base-500">· {l.detail}</span>
+                  <dt className="min-w-0 truncate text-neutral-700 dark:text-neutral-300">
+                    {l.label} <span className="text-neutral-500">· {l.detail}</span>
                   </dt>
-                  <dd className="text-right font-medium text-base-100 tabular-nums">
+                  <dd className="text-right font-medium text-neutral-900 dark:text-neutral-100 tabular-nums">
                     <RollingNumber value={`${l.amount < 0 ? "\u2212" : ""}$${Math.abs(l.amount)}`} />
                   </dd>
                 </div>
               ))}
             </dl>
-            <div className="mt-6 flex flex-wrap items-end justify-between gap-6 border-t border-base-50/[0.08] pt-6">
-              <p className="flex items-baseline gap-2 text-6xl font-semibold tracking-[-0.04em] text-base-50">
+            <div className="mt-6 flex flex-wrap items-end justify-between gap-6 border-t border-neutral-950/[0.08] dark:border-neutral-50/[0.08] pt-6">
+              <p className="flex items-baseline gap-2 text-6xl font-semibold tracking-[-0.04em] text-neutral-950 dark:text-neutral-50">
                 <RollingNumber value={`$${price.toLocaleString("en-US")}`} />
-                <span className="text-base font-normal tracking-normal text-base-500">/ month</span>
+                <span className="text-base font-normal tracking-normal text-neutral-500">/ month</span>
               </p>
               <Button tone={tier.id === "business" ? "ink" : "signal"} size="lg">
                 {tier.id === "free" ? "Start free" : tier.id === "team" ? "Start a 14-day trial" : "Talk to sales"}

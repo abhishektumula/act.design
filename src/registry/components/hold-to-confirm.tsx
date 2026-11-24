@@ -7,11 +7,11 @@ import { Check, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const holdVariants = cva(
-  "relative inline-flex h-12 cursor-pointer items-center overflow-hidden rounded-full bg-base-950 px-6 text-sm font-medium text-base-100 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.1),0_8px_20px_-10px_var(--color-shade)] ring-1 ring-base-50/10 outline-none select-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-base-950 dark:bg-base-900 dark:shadow-[0_1px_0_rgb(255_255_255/0.08)_inset]",
+  "relative inline-flex h-12 cursor-pointer items-center overflow-hidden rounded-full bg-neutral-50 px-6 text-sm font-medium text-neutral-900 dark:text-neutral-100 shadow-[0_1px_0_white_inset,0_1px_2px_rgb(0_0_0/0.1),0_8px_20px_-10px_var(--color-neutral-600)] ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 outline-none select-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950 dark:bg-neutral-900 dark:shadow-[0_1px_0_rgb(255_255_255/0.08)_inset]",
   {
     variants: {
       tone: {
-        signal: "[--fill:var(--signal)] focus-visible:ring-signal/60",
+        signal: "[--fill:var(--color-blue-600)] dark:[--fill:var(--color-blue-500)] focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60",
         danger: "[--fill:var(--color-red-600)] focus-visible:ring-red-500/60",
       },
     },
@@ -146,7 +146,7 @@ export function HoldToConfirm({
             initial={{ opacity: 0, y: -4 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -4 }}
-            className="text-xs text-base-500"
+            className="text-xs text-neutral-500"
           >
             Keep holding
           </motion.span>

@@ -65,7 +65,7 @@ export function LayerText({
   outline = 2,
   padding,
   handle = 8,
-  color = "var(--signal, var(--color-blue-500))",
+  color = "var(--color-blue-500)",
   showSize = true,
   className,
 }: LayerTextProps) {

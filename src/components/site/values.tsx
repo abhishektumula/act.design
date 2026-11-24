@@ -12,7 +12,7 @@ const decimals = (step: number) => (String(step).split(".")[1] ?? "").length;
 
 function Field({ control, value, onChange }: { control: Control; value: Value; onChange: (v: Value) => void }) {
   const id = useId();
-  const label = <label htmlFor={id} className="text-[13px] text-base-300">{control.label}</label>;
+  const label = <label htmlFor={id} className="text-[13px] text-neutral-700 dark:text-neutral-300">{control.label}</label>;
 
   switch (control.type) {
     case "number": {
@@ -21,9 +21,9 @@ function Field({ control, value, onChange }: { control: Control; value: Value; o
         <div>
           <div className="flex items-center justify-between gap-3">
             {label}
-            <span className="font-mono text-xs text-base-100 tabular-nums">
+            <span className="font-mono text-xs text-neutral-900 dark:text-neutral-100 tabular-nums">
               {Number(value).toFixed(d)}
-              {control.unit && <span className="text-base-500">{control.unit}</span>}
+              {control.unit && <span className="text-neutral-500">{control.unit}</span>}
             </span>
           </div>
           <input
@@ -34,7 +34,7 @@ function Field({ control, value, onChange }: { control: Control; value: Value; o
             step={control.step}
             value={Number(value)}
             onChange={(e) => onChange(Number(Number(e.target.value).toFixed(d)))}
-            className="mt-2 h-1.5 w-full cursor-pointer accent-signal"
+            className="mt-2 h-1.5 w-full cursor-pointer accent-blue-600 dark:accent-blue-500"
           />
         </div>
       );
@@ -42,7 +42,7 @@ function Field({ control, value, onChange }: { control: Control; value: Value; o
     case "boolean":
       return (
         <div className="flex items-center justify-between gap-3">
-          <span id={id} className="text-[13px] text-base-300">{control.label}</span>
+          <span id={id} className="text-[13px] text-neutral-700 dark:text-neutral-300">{control.label}</span>
           <Switch size="sm" checked={!!value} onCheckedChange={onChange} aria-labelledby={id} />
         </div>
       );
@@ -64,7 +64,7 @@ function Field({ control, value, onChange }: { control: Control; value: Value; o
               id={id}
               value={String(value)}
               onChange={(e) => onChange(e.target.value)}
-              className="h-9 w-full rounded-lg bg-base-950 px-2.5 text-[13px] text-base-100 ring-1 ring-base-50/10 outline-none focus-visible:ring-2 focus-visible:ring-signal/60"
+              className="h-9 w-full rounded-lg bg-neutral-50 dark:bg-neutral-950 px-2.5 text-[13px] text-neutral-900 dark:text-neutral-100 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 outline-none focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60"
             >
               {control.options.map((o) => (
                 <option key={o} value={o}>
@@ -83,14 +83,14 @@ function Field({ control, value, onChange }: { control: Control; value: Value; o
             id={id}
             value={String(value)}
             onChange={(e) => onChange(e.target.value)}
-            className="h-9 w-full rounded-lg bg-base-950 px-2.5 text-[13px] text-base-100 ring-1 ring-base-50/10 outline-none placeholder:text-base-600 focus-visible:ring-2 focus-visible:ring-signal/60"
+            className="h-9 w-full rounded-lg bg-neutral-50 dark:bg-neutral-950 px-2.5 text-[13px] text-neutral-900 dark:text-neutral-100 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 outline-none placeholder:text-neutral-400 dark:placeholder:text-neutral-600 focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60"
           />
         </div>
       );
     case "color":
       return (
         <div className="space-y-2">
-          <span className="text-[13px] text-base-300">{control.label}</span>
+          <span className="text-[13px] text-neutral-700 dark:text-neutral-300">{control.label}</span>
           <div role="radiogroup" aria-label={control.label} className="flex flex-wrap gap-2">
             {control.options.map((o) => (
               <button
@@ -102,8 +102,8 @@ function Field({ control, value, onChange }: { control: Control; value: Value; o
                 title={o.name}
                 onClick={() => onChange(o.value)}
                 className={cn(
-                  "size-7 rounded-full ring-offset-2 ring-offset-base-900 transition-shadow outline-none focus-visible:ring-2 focus-visible:ring-signal/60",
-                  value === o.value ? "ring-2 ring-base-50" : "ring-1 ring-base-50/10",
+                  "size-7 rounded-full ring-offset-2 ring-offset-neutral-100 dark:ring-offset-neutral-900 transition-shadow outline-none focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60",
+                  value === o.value ? "ring-2 ring-neutral-950 dark:ring-neutral-50" : "ring-1 ring-neutral-950/10 dark:ring-neutral-50/10",
                 )}
                 style={{ background: o.value }}
               />
@@ -128,39 +128,39 @@ export function Values({ slug }: { slug: string }) {
     <section id="values" className="mt-16 scroll-mt-24">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold tracking-[-0.02em] text-base-50">Values</h2>
-          <p className="mt-1.5 text-[15px] text-base-400">Change any of them and the component answers live. The code below follows along.</p>
+          <h2 className="text-2xl font-semibold tracking-[-0.02em] text-neutral-950 dark:text-neutral-50">Values</h2>
+          <p className="mt-1.5 text-[15px] text-neutral-600 dark:text-neutral-400">Change any of them and the component answers live. The code below follows along.</p>
         </div>
         <button
           type="button"
           disabled={!dirty}
           onClick={() => setValues({ ...pg.defaults })}
-          className="flex h-9 items-center gap-2 rounded-lg bg-base-900 px-3 text-sm font-medium text-base-200 ring-1 ring-base-50/[0.08] transition-colors hover:text-base-50 disabled:opacity-40"
+          className="flex h-9 items-center gap-2 rounded-lg bg-neutral-100 dark:bg-neutral-900 px-3 text-sm font-medium text-neutral-800 dark:text-neutral-200 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] transition-colors hover:text-neutral-950 dark:hover:text-neutral-50 disabled:opacity-40"
         >
           <RotateCcw className="size-4" /> Reset
         </button>
       </div>
 
-      <div className="mt-5 grid overflow-hidden rounded-2xl ring-1 ring-base-50/[0.08] lg:grid-cols-[minmax(0,1fr)_17rem]">
-        <div className="relative flex min-h-[26rem] items-center justify-center overflow-hidden bg-canvas p-6 sm:p-10">
+      <div className="mt-5 grid overflow-hidden rounded-2xl ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] lg:grid-cols-[minmax(0,1fr)_17rem]">
+        <div className="relative flex min-h-[26rem] items-center justify-center overflow-hidden bg-white dark:bg-black p-6 sm:p-10">
           <div aria-hidden className="pointer-events-none absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,#000_10%,transparent_70%)]" />
           <div key={pg.remount === false ? "live" : JSON.stringify(values)} className="@container relative flex w-full justify-center">
             {pg.render(values)}
           </div>
         </div>
-        <div className="scrollbar-thin space-y-5 overflow-y-auto border-t border-base-50/[0.06] bg-base-900/60 p-5 lg:max-h-[34rem] lg:border-t-0 lg:border-l">
+        <div className="scrollbar-thin space-y-5 overflow-y-auto border-t border-neutral-950/[0.06] dark:border-neutral-50/[0.06] bg-neutral-100/60 dark:bg-neutral-900/60 p-5 lg:max-h-[34rem] lg:border-t-0 lg:border-l">
           {pg.controls.map((c) => (
             <Field key={c.key} control={c} value={values[c.key]} onChange={set(c.key)} />
           ))}
         </div>
       </div>
 
-      <div className="mt-3 overflow-hidden rounded-2xl bg-base-900/60 ring-1 ring-base-50/[0.06]">
-        <div className="flex h-11 items-center justify-between border-b border-base-50/[0.06] pr-2 pl-4">
-          <span className="text-[13px] font-medium text-base-300">Usage</span>
+      <div className="mt-3 overflow-hidden rounded-2xl bg-neutral-100/60 dark:bg-neutral-900/60 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06]">
+        <div className="flex h-11 items-center justify-between border-b border-neutral-950/[0.06] dark:border-neutral-50/[0.06] pr-2 pl-4">
+          <span className="text-[13px] font-medium text-neutral-700 dark:text-neutral-300">Usage</span>
           <CopyButton value={code} />
         </div>
-        <pre className="scrollbar-thin overflow-x-auto p-4 font-mono text-[12.5px] leading-relaxed text-base-200">{code}</pre>
+        <pre className="scrollbar-thin overflow-x-auto p-4 font-mono text-[12.5px] leading-relaxed text-neutral-800 dark:text-neutral-200">{code}</pre>
       </div>
     </section>
   );

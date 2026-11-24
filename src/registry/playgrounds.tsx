@@ -54,7 +54,7 @@ export type Playground = {
 
 /* Tailwind palette colours offered wherever a component takes a colour. */
 const COLORS = [
-  { name: "Signal", value: "var(--signal)" },
+  { name: "Signal", value: "var(--color-blue-500)" },
   { name: "Sky", value: "var(--color-sky-500)" },
   { name: "Emerald", value: "var(--color-emerald-500)" },
   { name: "Violet", value: "var(--color-violet-500)" },
@@ -85,7 +85,7 @@ function PaletteDemo({ hotkey, placeholder }: { hotkey: string; placeholder: str
   return (
     <>
       <Button tone="paper" onClick={() => setOpen(true)}>
-        Open palette <span className="text-base-500">⌘{hotkey.toUpperCase()}</span>
+        Open palette <span className="text-neutral-500">⌘{hotkey.toUpperCase()}</span>
       </Button>
       <CommandPalette open={open} onOpenChange={setOpen} commands={commands} hotkey={hotkey} placeholder={placeholder} />
     </>
@@ -399,7 +399,7 @@ export const playgrounds: Record<string, Playground> = {
         itemHeight={n(v.itemHeight)}
         pauseOnHover={!!v.pauseOnHover}
         showOrigin={!!v.showOrigin}
-        className="h-[26rem] rounded-xl bg-base-950"
+        className="h-[26rem] rounded-xl bg-neutral-50 dark:bg-neutral-950"
         renderItem={(p) => <Photo {...p} />}
       />
     ),
@@ -432,7 +432,7 @@ export const playgrounds: Record<string, Playground> = {
         stagger={!!v.stagger}
         draggable={!!v.draggable}
         pauseOnHover={!!v.pauseOnHover}
-        className="h-[26rem] rounded-xl bg-base-950"
+        className="h-[26rem] rounded-xl bg-neutral-50 dark:bg-neutral-950"
         renderItem={(p) => <Photo {...p} />}
       />
     ),
@@ -461,7 +461,7 @@ export const playgrounds: Record<string, Playground> = {
         blur={n(v.blur)}
         itemWidth={n(v.itemWidth)}
         itemHeight={n(v.itemHeight)}
-        className="h-[26rem] rounded-xl bg-base-950"
+        className="h-[26rem] rounded-xl bg-neutral-50 dark:bg-neutral-950"
         renderItem={(p) => <Photo {...p} />}
       />
     ),
@@ -483,7 +483,7 @@ export const playgrounds: Record<string, Playground> = {
         <NumberTicker
           value={percent ? n(v.value) / 100000 : n(v.value)}
           format={{ style: str(v.style) as "decimal" | "currency" | "percent", currency: "USD", minimumFractionDigits: n(v.decimals), maximumFractionDigits: n(v.decimals) }}
-          className="text-6xl font-semibold tracking-tight text-base-50 tabular-nums"
+          className="text-6xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50 tabular-nums"
         />
       );
     },
@@ -498,7 +498,7 @@ export const playgrounds: Record<string, Playground> = {
       { type: "number", key: "speed", label: "Per letter", min: 20, max: 120, step: 5, unit: "ms" },
       { type: "color", key: "color", label: "Colour", options: COLORS },
     ],
-    defaults: { text: "Interfaces that act.", highlight: "act.", startScale: 0.86, speed: 45, color: "var(--signal)" },
+    defaults: { text: "Interfaces that act.", highlight: "act.", startScale: 0.86, speed: 45, color: "var(--color-blue-500)" },
     render: (v) => (
       <Typeset
         text={str(v.text)}
@@ -506,7 +506,7 @@ export const playgrounds: Record<string, Playground> = {
         startScale={n(v.startScale)}
         speed={n(v.speed)}
         color={str(v.color)}
-        className="text-5xl leading-[1.05] font-semibold tracking-[-0.035em] text-base-50"
+        className="text-5xl leading-[1.05] font-semibold tracking-[-0.035em] text-neutral-950 dark:text-neutral-50"
       />
     ),
     code: (v) => `<Typeset\n  text="${v.text}"\n  highlight="${v.highlight}"\n  startScale={${v.startScale}}\n  speed={${v.speed}}\n/>`,
@@ -529,7 +529,7 @@ export const playgrounds: Record<string, Playground> = {
         preset={str(v.preset) as StaggerPreset}
         stagger={n(v.stagger)}
         delay={n(v.delay)}
-        className="text-center text-5xl font-semibold tracking-tight text-base-50"
+        className="text-center text-5xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50"
       />
     ),
   },
@@ -540,7 +540,7 @@ export const playgrounds: Record<string, Playground> = {
       { type: "text", key: "meta", label: "Meta" },
       { type: "color", key: "color", label: "Colour", options: COLORS },
     ],
-    defaults: { title: "Incident reports", meta: "12 postmortems · updated today", color: "var(--signal)" },
+    defaults: { title: "Incident reports", meta: "12 postmortems · updated today", color: "var(--color-blue-500)" },
     render: (v) => <FolderCard title={str(v.title)} meta={str(v.meta)} color={str(v.color)} className="w-72" />,
   },
   "infinite-grid": {
@@ -559,7 +559,7 @@ export const playgrounds: Record<string, Playground> = {
         cellHeight={n(v.cellHeight)}
         gap={n(v.gap)}
         wheel={!!v.wheel}
-        className="h-[24rem] rounded-xl bg-base-950"
+        className="h-[24rem] rounded-xl bg-neutral-50 dark:bg-neutral-950"
         renderItem={(p) => <Photo {...p} />}
       />
     ),
@@ -578,7 +578,7 @@ export const playgrounds: Record<string, Playground> = {
       { type: "boolean", key: "showSize", label: "Show size" },
       { type: "color", key: "color", label: "Colour", options: COLORS },
     ],
-    defaults: { text: "ABHISHEK", size: 112, weight: 800, tracking: -0.04, outline: 2, padding: 12, handle: 8, showSize: true, color: "var(--signal)" },
+    defaults: { text: "ABHISHEK", size: 112, weight: 800, tracking: -0.04, outline: 2, padding: 12, handle: 8, showSize: true, color: "var(--color-blue-500)" },
     remount: false,
     render: (v) => (
       <LayerText
@@ -591,7 +591,7 @@ export const playgrounds: Record<string, Playground> = {
         handle={n(v.handle)}
         showSize={!!v.showSize}
         color={str(v.color)}
-        className="text-base-50"
+        className="text-neutral-950 dark:text-neutral-50"
       />
     ),
   },

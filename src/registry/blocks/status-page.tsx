@@ -61,13 +61,13 @@ export function StatusPage({ className }: { className?: string }) {
   };
 
   return (
-    <section data-slot="status-page" className={cn("bg-canvas px-6 py-24 sm:py-32", className)}>
+    <section data-slot="status-page" className={cn("bg-white dark:bg-black px-6 py-24 sm:py-32", className)}>
       <div className="mx-auto max-w-4xl">
         {/* Header */}
         <div className="flex flex-wrap items-end justify-between gap-8">
           <div>
-            <p className="text-sm font-medium text-base-400">Northwind status</p>
-            <h2 className="mt-3 flex items-center gap-4 text-4xl leading-none font-semibold tracking-[-0.04em] text-base-50 sm:text-5xl">
+            <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Northwind status</p>
+            <h2 className="mt-3 flex items-center gap-4 text-4xl leading-none font-semibold tracking-[-0.04em] text-neutral-950 dark:text-neutral-50 sm:text-5xl">
               <span className="relative grid size-4 shrink-0 place-items-center">
                 <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/40 [animation-duration:2.4s]" />
                 <span className="relative size-3 rounded-full bg-emerald-500" />
@@ -84,7 +84,7 @@ export function StatusPage({ className }: { className?: string }) {
                   key="done"
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex h-10 items-center gap-2 text-sm text-base-200"
+                  className="flex h-10 items-center gap-2 text-sm text-neutral-800 dark:text-neutral-200"
                 >
                   <Check className="size-4 text-emerald-500" /> Updates will go to {email}
                 </motion.p>
@@ -96,7 +96,7 @@ export function StatusPage({ className }: { className?: string }) {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
                     aria-label="Email for status updates"
-                    className="h-10 min-w-0 flex-1 rounded-[10px] bg-base-950 px-3.5 text-sm text-base-50 ring-1 ring-base-50/10 outline-none placeholder:text-base-500 focus:ring-signal/50 sm:w-56 dark:bg-base-900"
+                    className="h-10 min-w-0 flex-1 rounded-[10px] bg-neutral-50 px-3.5 text-sm text-neutral-950 dark:text-neutral-50 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 outline-none placeholder:text-neutral-500 focus:ring-blue-600/50 dark:focus:ring-blue-500/50 sm:w-56 dark:bg-neutral-900"
                   />
                   <Button type="submit" tone="ink">
                     Subscribe
@@ -108,9 +108,9 @@ export function StatusPage({ className }: { className?: string }) {
         </div>
 
         {/* Components */}
-        <div className="mt-12 overflow-hidden rounded-[20px] bg-base-950 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_8%,transparent)] dark:bg-base-900">
-          <div className="flex items-center justify-between gap-4 border-b border-base-50/[0.07] px-5 py-3 sm:px-7">
-            <p className="text-sm text-base-400">Uptime, last {n} days</p>
+        <div className="mt-12 overflow-hidden rounded-[20px] bg-neutral-50 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-950)_8%,transparent)] dark:shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-50)_8%,transparent)] dark:bg-neutral-900">
+          <div className="flex items-center justify-between gap-4 border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] px-5 py-3 sm:px-7">
+            <p className="text-sm text-neutral-600 dark:text-neutral-400">Uptime, last {n} days</p>
             <SegmentedControl
               aria-label="Range"
               size="sm"
@@ -122,16 +122,16 @@ export function StatusPage({ className }: { className?: string }) {
               ]}
             />
           </div>
-          <ul className="divide-y divide-base-50/[0.07]">
+          <ul className="divide-y divide-neutral-950/[0.07] dark:divide-neutral-50/[0.07]">
             {components.map((c, row) => {
               const days = c.days.slice(90 - n);
               return (
                 <li key={c.name} className="px-5 py-5 sm:px-7">
                   <div className="flex items-baseline justify-between gap-4">
-                    <span className="flex items-center gap-2.5 text-[15px] font-medium text-base-50">
+                    <span className="flex items-center gap-2.5 text-[15px] font-medium text-neutral-950 dark:text-neutral-50">
                       {c.name}
                     </span>
-                    <span className="text-sm text-base-500 tabular-nums">{uptime(days) === 100 ? "100" : uptime(days).toFixed(n === 30 ? 2 : 3)}%</span>
+                    <span className="text-sm text-neutral-500 tabular-nums">{uptime(days) === 100 ? "100" : uptime(days).toFixed(n === 30 ? 2 : 3)}%</span>
                   </div>
                   <div className="relative mt-3" onPointerLeave={() => setHover(null)}>
                     <div className="flex h-8 gap-[2px]">
@@ -144,7 +144,7 @@ export function StatusPage({ className }: { className?: string }) {
                             onPointerEnter={() => setHover({ row, day: index })}
                             className={cn(
                               "flex-1 rounded-[2px] transition-[opacity,transform] duration-150",
-                              d.level === "major" ? "bg-signal" : d.level === "minor" ? "bg-amber-400" : "bg-emerald-500/50",
+                              d.level === "major" ? "bg-blue-600 dark:bg-blue-500" : d.level === "minor" ? "bg-amber-400" : "bg-emerald-500/50",
                               hover?.row === row && !on && "opacity-50",
                               on && "scale-y-110",
                             )}
@@ -161,7 +161,7 @@ export function StatusPage({ className }: { className?: string }) {
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.12 }}
                           style={{ left: `${((hover.day - (90 - n) + 0.5) / n) * 100}%` }}
-                          className="pointer-events-none absolute bottom-full z-10 mb-2 w-52 -translate-x-1/2 rounded-[10px] bg-base-50 px-3 py-2 text-xs text-base-950 shadow-lg"
+                          className="pointer-events-none absolute bottom-full z-10 mb-2 w-52 -translate-x-1/2 rounded-[10px] bg-neutral-950 dark:bg-neutral-50 px-3 py-2 text-xs text-neutral-50 dark:text-neutral-950 shadow-lg"
                         >
                           <span className="block font-medium">{dateOf(hover.day)}</span>
                           <span className="block opacity-75">{c.days[hover.day].note ?? "No incidents"}</span>
@@ -169,7 +169,7 @@ export function StatusPage({ className }: { className?: string }) {
                       )}
                     </AnimatePresence>
                   </div>
-                  <div className="mt-2 flex justify-between text-xs text-base-500">
+                  <div className="mt-2 flex justify-between text-xs text-neutral-500">
                     <span>{n} days ago</span>
                     <span>Today</span>
                   </div>
@@ -182,18 +182,18 @@ export function StatusPage({ className }: { className?: string }) {
         {/* The latest incident */}
         <div className="mt-12 grid gap-8 sm:grid-cols-[12rem_1fr]">
           <div>
-            <p className="text-sm text-base-500">{dateOf(84)}</p>
-            <h3 className="mt-1 text-lg font-medium tracking-[-0.01em] text-base-50">Checkout API down</h3>
+            <p className="text-sm text-neutral-500">{dateOf(84)}</p>
+            <h3 className="mt-1 text-lg font-medium tracking-[-0.01em] text-neutral-950 dark:text-neutral-50">Checkout API down</h3>
             <p className="mt-1 text-sm text-emerald-600 dark:text-emerald-400">Resolved after 17 minutes</p>
           </div>
-          <ol className="space-y-5 border-l border-base-50/10 pl-6">
+          <ol className="space-y-5 border-l border-neutral-950/10 dark:border-neutral-50/10 pl-6">
             {updates.map(([state, time, text], i) => (
               <li key={state} className="relative">
-                <span className={cn("absolute top-1.5 -left-[1.6rem] size-2 rounded-full ring-4 ring-canvas", i === 0 ? "bg-emerald-500" : "bg-base-50/25")} />
+                <span className={cn("absolute top-1.5 -left-[1.6rem] size-2 rounded-full ring-4 ring-white dark:ring-black", i === 0 ? "bg-emerald-500" : "bg-neutral-950/25 dark:bg-neutral-50/25")} />
                 <p className="text-sm">
-                  <span className="font-medium text-base-50">{state}</span> <span className="text-base-500 tabular-nums">{time}</span>
+                  <span className="font-medium text-neutral-950 dark:text-neutral-50">{state}</span> <span className="text-neutral-500 tabular-nums">{time}</span>
                 </p>
-                <p className="mt-1 max-w-lg text-sm leading-6 text-base-400">{text}</p>
+                <p className="mt-1 max-w-lg text-sm leading-6 text-neutral-600 dark:text-neutral-400">{text}</p>
               </li>
             ))}
           </ol>

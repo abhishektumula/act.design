@@ -6,17 +6,17 @@ import { getUser } from "@/lib/session";
 import { btnPrimary } from "./styles";
 
 const frame =
-  "overflow-hidden rounded-2xl bg-base-900/60 ring-1 ring-base-50/[0.06]";
+  "overflow-hidden rounded-2xl bg-neutral-100/60 dark:bg-neutral-900/60 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06]";
 
 const fakeLines = [40, 62, 0, 28, 74, 55, 66, 0, 36, 81, 47, 58, 70, 33, 0, 52, 64, 44, 25, 60];
 
 export function CodeSkeleton() {
   return (
     <div className={`${frame} min-h-[30rem]`}>
-      <div className="h-11 border-b border-base-50/[0.06]" />
+      <div className="h-11 border-b border-neutral-950/[0.06] dark:border-neutral-50/[0.06]" />
       <div className="space-y-3 p-6">
         {fakeLines.slice(0, 12).map((w, i) => (
-          <div key={i} className="h-2.5 animate-pulse rounded-[2px] bg-base-50/[0.06]" style={{ width: `${w || 8}%` }} />
+          <div key={i} className="h-2.5 animate-pulse rounded-[2px] bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06]" style={{ width: `${w || 8}%` }} />
         ))}
       </div>
     </div>
@@ -41,23 +41,23 @@ export async function CodePanel({ slug, kind = "components" }: { slug: string; k
         <div className="space-y-3 p-8 blur-[3px]" aria-hidden>
           {fakeLines.map((w, i) => (
             <div key={i} className="flex gap-6">
-              <span className="w-4 text-right font-mono text-[10px] text-base-700">{i + 1}</span>
+              <span className="w-4 text-right font-mono text-[10px] text-neutral-300 dark:text-neutral-700">{i + 1}</span>
               {w > 0 && (
                 <div
-                  className={`h-2.5 rounded-[2px] ${i % 3 === 0 ? "bg-signal/20" : i % 4 === 1 ? "bg-base-50/[0.12]" : "bg-base-50/[0.07]"}`}
+                  className={`h-2.5 rounded-[2px] ${i % 3 === 0 ? "bg-blue-600/20 dark:bg-blue-500/20" : i % 4 === 1 ? "bg-neutral-950/[0.12] dark:bg-neutral-50/[0.12]" : "bg-neutral-950/[0.07] dark:bg-neutral-50/[0.07]"}`}
                   style={{ width: `${w}%`, marginLeft: `${(i % 4) * 16}px` }}
                 />
               )}
             </div>
           ))}
         </div>
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-linear-to-b from-base-950/40 via-base-950/80 to-base-950 text-center">
-          <span className="grid size-10 place-items-center rounded-lg bg-base-950 text-base-200 ring-1 ring-base-50/10">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-linear-to-b from-neutral-50/40 dark:from-neutral-950/40 via-neutral-50/80 dark:via-neutral-950/80 to-neutral-50 dark:to-neutral-950 text-center">
+          <span className="grid size-10 place-items-center rounded-lg bg-neutral-50 dark:bg-neutral-950 text-neutral-800 dark:text-neutral-200 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10">
             <Lock className="size-4" />
           </span>
-          <p className="mt-5 font-mono text-[10px] tracking-[0.16em] text-base-500 uppercase">Members only</p>
-          <p className="mt-2 text-base font-medium text-base-100">Sign in to view the code</p>
-          <p className="mt-1.5 max-w-xs text-sm text-base-500">Source code is available to signed-in members.</p>
+          <p className="mt-5 font-mono text-[10px] tracking-[0.16em] text-neutral-500 uppercase">Members only</p>
+          <p className="mt-2 text-base font-medium text-neutral-900 dark:text-neutral-100">Sign in to view the code</p>
+          <p className="mt-1.5 max-w-xs text-sm text-neutral-500">Source code is available to signed-in members.</p>
           <Link href={`/login?next=${paths[kind].page}/${slug}`} className={`${btnPrimary} mt-6 h-9 rounded-lg px-5 text-[13px]`}>
             Sign in
           </Link>
@@ -70,10 +70,10 @@ export async function CodePanel({ slug, kind = "components" }: { slug: string; k
 
   return (
     <div className={frame}>
-      <div className="flex h-11 items-center gap-2 border-b border-base-50/[0.06] pr-2 pl-4">
-        <FileCode2 className="size-3.5 text-base-500" />
-        <span className="font-mono text-[12px] text-base-300">{paths[kind].file}/{slug}.tsx</span>
-        <span className="ml-2 font-mono text-[10px] tracking-[0.12em] text-base-600 uppercase">{lines} lines</span>
+      <div className="flex h-11 items-center gap-2 border-b border-neutral-950/[0.06] dark:border-neutral-50/[0.06] pr-2 pl-4">
+        <FileCode2 className="size-3.5 text-neutral-500" />
+        <span className="font-mono text-[12px] text-neutral-700 dark:text-neutral-300">{paths[kind].file}/{slug}.tsx</span>
+        <span className="ml-2 font-mono text-[10px] tracking-[0.12em] text-neutral-400 dark:text-neutral-600 uppercase">{lines} lines</span>
         <CopyButton value={source.code} className="ml-auto" />
       </div>
       <div

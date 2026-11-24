@@ -6,7 +6,7 @@ import { BellRing, Moon, Radio } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export const switchVariants = cva(
-  "group relative inline-flex shrink-0 cursor-pointer touch-none items-center rounded-full bg-base-50/10 p-[3px] shadow-[inset_0_1px_2px_rgb(0_0_0/0.2)] outline-none select-none hover:bg-base-50/[0.14] focus-visible:ring-2 focus-visible:ring-signal/60 focus-visible:ring-offset-2 focus-visible:ring-offset-base-950 disabled:cursor-not-allowed disabled:opacity-50",
+  "group relative inline-flex shrink-0 cursor-pointer touch-none items-center rounded-full bg-neutral-950/10 dark:bg-neutral-50/10 p-[3px] shadow-[inset_0_1px_2px_rgb(0_0_0/0.2)] outline-none select-none hover:bg-neutral-950/[0.14] dark:hover:bg-neutral-50/[0.14] focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950 disabled:cursor-not-allowed disabled:opacity-50",
   {
     variants: {
       size: {
@@ -103,13 +103,13 @@ export function Switch({
     >
       <span
         aria-hidden
-        className={cn("absolute inset-0 rounded-full bg-signal transition-opacity", ease, shown ? "opacity-100" : "opacity-0")}
+        className={cn("absolute inset-0 rounded-full bg-blue-600 dark:bg-blue-500 transition-opacity", ease, shown ? "opacity-100" : "opacity-0")}
       />
       <span
         aria-hidden
         style={{ width: s.thumb, height: s.thumb, transform: `translateX(${shown ? travel : 0}px)` }}
         className={cn(
-          "relative rounded-full bg-white shadow-[0_1px_1px_rgb(0_0_0/0.12),0_2px_5px_-1px_rgb(0_0_0/0.2)] transition-transform will-change-transform dark:bg-base-100",
+          "relative rounded-full bg-white shadow-[0_1px_1px_rgb(0_0_0/0.12),0_2px_5px_-1px_rgb(0_0_0/0.2)] transition-transform will-change-transform dark:bg-neutral-100",
           ease,
         )}
       />
@@ -122,12 +122,12 @@ function Row({ icon, title, body, children }: { icon: ReactNode; title: string; 
   const ids = { label: `${id}-l`, desc: `${id}-d` };
   return (
     <div className="flex items-center gap-4 px-5 py-4">
-      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-base-50/5 text-base-300 ring-1 ring-base-50/5 [&_svg]:size-4">{icon}</span>
+      <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-neutral-950/5 dark:bg-neutral-50/5 text-neutral-700 dark:text-neutral-300 ring-1 ring-neutral-950/5 dark:ring-neutral-50/5 [&_svg]:size-4">{icon}</span>
       <div className="min-w-0 flex-1">
-        <p id={ids.label} className="text-sm font-medium text-base-100">
+        <p id={ids.label} className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
           {title}
         </p>
-        <p id={ids.desc} className="text-[13px] text-base-500">
+        <p id={ids.desc} className="text-[13px] text-neutral-500">
           {body}
         </p>
       </div>
@@ -139,7 +139,7 @@ function Row({ icon, title, body, children }: { icon: ReactNode; title: string; 
 export default function Demo() {
   const [live, setLive] = useState(true);
   return (
-    <div className="w-full max-w-sm divide-y divide-base-50/5 overflow-hidden rounded-3xl bg-base-950 shadow-[0_1px_0_white_inset,0_20px_40px_-24px_var(--color-shade)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset]">
+    <div className="w-full max-w-sm divide-y divide-neutral-950/5 dark:divide-neutral-50/5 overflow-hidden rounded-3xl bg-neutral-50 dark:bg-neutral-950 shadow-[0_1px_0_white_inset,0_20px_40px_-24px_var(--color-neutral-600)] ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset]">
       <Row icon={<Radio />} title="Go live" body={live ? "Broadcasting to 1,204 people" : "Only you can see this"}>
         {(ids) => <Switch checked={live} onCheckedChange={setLive} aria-labelledby={ids.label} aria-describedby={ids.desc} />}
       </Row>

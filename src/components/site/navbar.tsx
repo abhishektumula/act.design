@@ -14,7 +14,7 @@ async function NavAccount() {
   if (user) return <AccountMenu user={user} />;
   return (
     <>
-      <Link href="/login" className="px-2 text-sm font-medium text-base-400 transition-colors hover:text-base-50">
+      <Link href="/login" className="px-2 text-sm font-medium text-neutral-600 dark:text-neutral-400 transition-colors hover:text-neutral-950 dark:hover:text-neutral-50">
         Sign in
       </Link>
       <Link href="/pricing" className={`${btnPrimary} h-9 rounded-lg px-4 text-sm max-sm:hidden`}>
@@ -31,12 +31,12 @@ export function Navbar() {
       <NavLinks />
       <div className="ml-auto flex items-center gap-3">
         {/* Theme and search share one tray */}
-        <div className="flex items-center gap-0.5 rounded-lg bg-base-900 p-0.5 ring-1 ring-base-50/[0.06]">
+        <div className="flex items-center gap-0.5 rounded-lg bg-neutral-100 dark:bg-neutral-900 p-0.5 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06]">
           <ThemeToggle />
           <SiteSearch />
         </div>
-        <span aria-hidden className="hidden h-5 w-px bg-base-50/10 sm:block" />
-        <Suspense fallback={<div className="h-9 w-40 animate-pulse rounded-lg bg-base-900" />}>
+        <span aria-hidden className="hidden h-5 w-px bg-neutral-950/10 dark:bg-neutral-50/10 sm:block" />
+        <Suspense fallback={<div className="h-9 w-40 animate-pulse rounded-lg bg-neutral-100 dark:bg-neutral-900" />}>
           <NavAccount />
         </Suspense>
       </div>

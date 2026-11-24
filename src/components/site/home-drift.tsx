@@ -33,16 +33,16 @@ export function HomeDrift() {
                 href={`/components/${slug}`}
                 draggable={false}
                 data-glow
-                className="group flex size-full cursor-[inherit] flex-col rounded-2xl bg-base-900/70 p-2 ring-1 ring-base-50/[0.06] transition-colors hover:ring-base-50/20"
+                className="group flex size-full cursor-[inherit] flex-col rounded-2xl bg-neutral-100/70 dark:bg-neutral-900/70 p-2 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06] transition-colors hover:ring-neutral-950/20 dark:hover:ring-neutral-50/20"
               >
-                <div inert className="pointer-events-none relative min-h-0 flex-1 overflow-hidden rounded-xl bg-canvas p-4 ring-1 ring-base-50/[0.06]">
+                <div inert className="pointer-events-none relative min-h-0 flex-1 overflow-hidden rounded-xl bg-white dark:bg-black p-4 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06]">
                   <Fit>
                     <Preview slug={slug} />
                   </Fit>
                 </div>
                 <span className="flex items-center justify-between px-2 pt-3 pb-1 text-sm">
-                  <span className="font-medium text-base-100">{item.name}</span>
-                  <span className="text-base-500">{item.category}</span>
+                  <span className="font-medium text-neutral-900 dark:text-neutral-100">{item.name}</span>
+                  <span className="text-neutral-500">{item.category}</span>
                 </span>
               </Link>
             );

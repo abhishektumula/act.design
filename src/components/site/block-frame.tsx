@@ -34,17 +34,17 @@ export function BlockFrame({ slug, width, reloadKey }: { slug: string; width: nu
   return (
     <div className="flex justify-center">
       <div
-        className="relative max-w-full overflow-hidden rounded-xl ring-1 ring-base-50/10 transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        className="relative max-w-full overflow-hidden rounded-xl ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 transition-[width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
         style={{ width: width === "100%" ? "100%" : `${width}px` }}
       >
-        {!loaded && <div className="absolute inset-0 animate-pulse bg-base-950" />}
+        {!loaded && <div className="absolute inset-0 animate-pulse bg-neutral-50 dark:bg-neutral-950" />}
         <iframe
           key={reloadKey}
           ref={ref}
           src={`/view/blocks/${slug}`}
           title={`${slug} preview`}
           onLoad={() => setLoaded(true)}
-          className={cn("block w-full bg-canvas transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
+          className={cn("block w-full bg-white dark:bg-black transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
           style={{ height }}
         />
       </div>
@@ -69,8 +69,8 @@ export function BlockThumb({ slug, className }: { slug: string; className?: stri
   }, []);
 
   return (
-    <div ref={box} className={cn("relative overflow-hidden bg-canvas", className)}>
-      {!loaded && <div className="absolute inset-0 animate-pulse bg-base-950" />}
+    <div ref={box} className={cn("relative overflow-hidden bg-white dark:bg-black", className)}>
+      {!loaded && <div className="absolute inset-0 animate-pulse bg-neutral-50 dark:bg-neutral-950" />}
       {scale > 0 && (
         <iframe
           src={`/view/blocks/${slug}`}
@@ -79,7 +79,7 @@ export function BlockThumb({ slug, className }: { slug: string; className?: stri
           tabIndex={-1}
           aria-hidden
           onLoad={() => setLoaded(true)}
-          className="pointer-events-none absolute top-0 left-0 origin-top-left bg-canvas"
+          className="pointer-events-none absolute top-0 left-0 origin-top-left bg-white dark:bg-black"
           style={{ width: VIEWPORT, height: `${100 / scale}%`, transform: `scale(${scale})` }}
         />
       )}

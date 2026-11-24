@@ -85,7 +85,7 @@ export function MembershipCard({
                   y1={100 + r1 * Math.sin(a)}
                   x2={100 + r2 * Math.cos(a)}
                   y2={100 + r2 * Math.sin(a)}
-                  stroke={i < lit ? "var(--signal)" : "rgb(255 255 255 / 0.14)"}
+                  stroke={i < lit ? "var(--color-blue-500)" : "rgb(255 255 255 / 0.14)"}
                   strokeWidth={major ? 2.2 : 1.4}
                   strokeLinecap="round"
                 />
@@ -97,7 +97,7 @@ export function MembershipCard({
             <span className="mt-0.5 text-xl font-medium tracking-[-0.03em] tabular-nums">{Math.round(unlocked * 100)}%</span>
           </div>
         </div>
-        <div className="pointer-events-none absolute -top-28 -right-24 size-72 rounded-full bg-signal/25 blur-3xl" />
+        <div className="pointer-events-none absolute -top-28 -right-24 size-72 rounded-full bg-blue-600/25 dark:bg-blue-500/25 blur-3xl" />
         <div className="grain pointer-events-none absolute inset-0 opacity-[0.10] mix-blend-overlay" />
         <motion.div className="pointer-events-none absolute inset-0" style={{ background: sheen }} />
 
@@ -113,7 +113,7 @@ export function MembershipCard({
             <p className="font-mono text-[9px] tracking-[0.18em] text-white/40 uppercase">Member</p>
             <p className="mt-1 truncate text-lg font-medium tracking-[-0.01em]">{name}</p>
             <p className="mt-2 flex items-center gap-2 font-mono text-[9px] tracking-[0.18em] whitespace-nowrap text-white/40 uppercase">
-              <span className="size-1.5 shrink-0 rounded-full bg-signal shadow-[0_0_8px_var(--signal)]" />
+              <span className="size-1.5 shrink-0 rounded-full bg-blue-600 dark:bg-blue-500 shadow-[0_0_8px_var(--color-blue-600)] dark:shadow-[0_0_8px_var(--color-blue-500)]" />
               Since <span className="text-white/75">{since}</span>
             </p>
           </div>

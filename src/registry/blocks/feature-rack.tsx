@@ -11,9 +11,9 @@ import { cn } from "@/lib/utils";
 /* One tile: a run-in title over its picture. Every tile shares the padding and puts its copy on top. */
 function Tile({ lead, rest, children, className }: { lead: string; rest: string; children: ReactNode; className?: string }) {
   return (
-    <div className={cn("relative flex flex-col overflow-hidden bg-base-950 dark:bg-base-900", className)}>
-      <p className="max-w-md px-7 pt-7 text-[17px] leading-6 text-pretty text-base-500 sm:px-8 sm:pt-8">
-        <span className="font-medium text-base-50">{lead}</span> {rest}
+    <div className={cn("relative flex flex-col overflow-hidden bg-neutral-50 dark:bg-neutral-900", className)}>
+      <p className="max-w-md px-7 pt-7 text-[17px] leading-6 text-pretty text-neutral-500 sm:px-8 sm:pt-8">
+        <span className="font-medium text-neutral-950 dark:text-neutral-50">{lead}</span> {rest}
       </p>
       <div className="flex flex-1 flex-col px-7 pt-8 pb-7 sm:px-8 sm:pb-8">{children}</div>
     </div>
@@ -34,15 +34,15 @@ function Timeline() {
   const on = useInView(ref, { once: true, margin: "-80px" });
   return (
     <div ref={ref} className="-mb-7 sm:-mb-8">
-      <div className="overflow-hidden rounded-t-[12px] bg-canvas shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_8%,transparent)] dark:bg-base-950">
-        <div className="flex h-[38px] items-center gap-[6px] border-b border-base-50/[0.07] px-[14px]">
+      <div className="overflow-hidden rounded-t-[12px] bg-white shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-950)_8%,transparent)] dark:shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-50)_8%,transparent)] dark:bg-neutral-950">
+        <div className="flex h-[38px] items-center gap-[6px] border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] px-[14px]">
           {["var(--color-red-400)", "var(--color-amber-400)", "var(--color-green-500)"].map((c) => (
             <span key={c} className="size-[9px] rounded-full" style={{ background: c }} />
           ))}
-          <span className="ml-3 truncate text-[13px] font-medium text-base-100">checkout-api is down</span>
+          <span className="ml-3 truncate text-[13px] font-medium text-neutral-900 dark:text-neutral-100">checkout-api is down</span>
         </div>
         <ol className="relative px-5 py-4">
-          <span aria-hidden className="absolute top-6 bottom-6 left-[1.6rem] w-px bg-base-50/10" />
+          <span aria-hidden className="absolute top-6 bottom-6 left-[1.6rem] w-px bg-neutral-950/10 dark:bg-neutral-50/10" />
           {events.map(([time, text, kind], i) => (
             <motion.li
               key={time}
@@ -53,12 +53,12 @@ function Timeline() {
             >
               <span
                 className={cn(
-                  "relative mx-auto mt-1.5 size-2 rounded-full ring-4 ring-canvas dark:ring-base-950",
-                  kind === "fail" ? "bg-signal" : kind === "call" ? "bg-base-50" : "bg-emerald-500",
+                  "relative mx-auto mt-1.5 size-2 rounded-full ring-4 ring-white dark:ring-neutral-950",
+                  kind === "fail" ? "bg-blue-600 dark:bg-blue-500" : kind === "call" ? "bg-neutral-950 dark:bg-neutral-50" : "bg-emerald-500",
                 )}
               />
-              <span className="font-mono text-[12px] text-base-500 tabular-nums">{time}</span>
-              <span className={cn("text-pretty", kind === "ok" && i === events.length - 1 ? "font-medium text-base-50" : "text-base-200")}>{text}</span>
+              <span className="font-mono text-[12px] text-neutral-500 tabular-nums">{time}</span>
+              <span className={cn("text-pretty", kind === "ok" && i === events.length - 1 ? "font-medium text-neutral-950 dark:text-neutral-50" : "text-neutral-800 dark:text-neutral-200")}>{text}</span>
             </motion.li>
           ))}
         </ol>
@@ -72,12 +72,12 @@ function Timeline() {
 function Regions() {
   return (
     <div>
-      <p className="text-6xl font-semibold tracking-[-0.045em] whitespace-nowrap text-base-50 lg:text-7xl">
-        12 <span className="text-3xl font-medium tracking-[-0.02em] text-base-400">regions</span>
+      <p className="text-6xl font-semibold tracking-[-0.045em] whitespace-nowrap text-neutral-950 dark:text-neutral-50 lg:text-7xl">
+        12 <span className="text-3xl font-medium tracking-[-0.02em] text-neutral-600 dark:text-neutral-400">regions</span>
       </p>
       <div aria-hidden className="mt-6 flex gap-2">
         {Array.from({ length: 12 }, (_, i) => (
-          <span key={i} className={cn("size-2.5 rounded-full", [2, 3, 4].includes(i) ? "bg-signal" : "bg-base-50/12")} />
+          <span key={i} className={cn("size-2.5 rounded-full", [2, 3, 4].includes(i) ? "bg-blue-600 dark:bg-blue-500" : "bg-neutral-950/12 dark:bg-neutral-50/12")} />
         ))}
       </div>
     </div>
@@ -100,8 +100,8 @@ function Frequency() {
           { value: "10", label: "10 s" },
         ]}
       />
-      <p className="mt-5 text-sm text-base-500">
-        <span className="font-medium text-base-100">
+      <p className="mt-5 text-sm text-neutral-500">
+        <span className="font-medium text-neutral-900 dark:text-neutral-100">
           <NumberTicker value={86400 / Number(every)} />
         </span>{" "}
         checks a day, per monitor
@@ -115,26 +115,26 @@ function Certificate() {
   const ref = useRef<HTMLDivElement>(null);
   const on = useInView(ref, { once: true, margin: "-60px" });
   return (
-    <div ref={ref} className="mt-auto rounded-[12px] bg-canvas p-4 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-base-50)_8%,transparent)] dark:bg-base-950">
+    <div ref={ref} className="mt-auto rounded-[12px] bg-white p-4 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-950)_8%,transparent)] dark:shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-50)_8%,transparent)] dark:bg-neutral-950">
       <div className="flex items-center gap-2.5">
         <span className="grid size-7 place-items-center rounded-md bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
           <Lock className="size-3.5" />
         </span>
         <span className="min-w-0">
-          <span className="block truncate font-mono text-[13px] text-base-50">*.northwind.app</span>
-          <span className="block text-xs text-base-500">Let&apos;s Encrypt, renews automatically</span>
+          <span className="block truncate font-mono text-[13px] text-neutral-950 dark:text-neutral-50">*.northwind.app</span>
+          <span className="block text-xs text-neutral-500">Let&apos;s Encrypt, renews automatically</span>
         </span>
       </div>
-      <div className="mt-4 h-1 overflow-hidden rounded-full bg-base-50/10">
+      <div className="mt-4 h-1 overflow-hidden rounded-full bg-neutral-950/10 dark:bg-neutral-50/10">
         <motion.div
           initial={{ width: "100%" }}
           animate={on ? { width: "25%" } : undefined}
           transition={{ duration: 1.4, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="h-full rounded-full bg-signal"
+          className="h-full rounded-full bg-blue-600 dark:bg-blue-500"
         />
       </div>
-      <p className="mt-2 text-xs text-base-500">
-        Expires in <span className="font-medium text-base-100">23 days</span>
+      <p className="mt-2 text-xs text-neutral-500">
+        Expires in <span className="font-medium text-neutral-900 dark:text-neutral-100">23 days</span>
       </p>
     </div>
   );
@@ -143,13 +143,13 @@ function Certificate() {
 /* Component: where an alert goes, as switches you can flip. */
 function Channels() {
   return (
-    <div className="mt-auto divide-y divide-base-50/[0.07]">
+    <div className="mt-auto divide-y divide-neutral-950/[0.07] dark:divide-neutral-50/[0.07]">
       {[
         ["Slack, #incidents", true],
         ["SMS to on-call", true],
         ["Phone call after 5 min", false],
       ].map(([name, on]) => (
-        <label key={name as string} className="flex cursor-pointer items-center justify-between gap-4 py-2.5 text-sm text-base-200">
+        <label key={name as string} className="flex cursor-pointer items-center justify-between gap-4 py-2.5 text-sm text-neutral-800 dark:text-neutral-200">
           {name}
           <Switch size="sm" defaultChecked={on as boolean} aria-label={name as string} />
         </label>
@@ -164,18 +164,18 @@ function Channels() {
  */
 export function FeatureRack({ className }: { className?: string }) {
   return (
-    <section data-slot="feature-rack" className={cn("bg-canvas px-6 py-24 sm:py-32", className)}>
+    <section data-slot="feature-rack" className={cn("bg-white dark:bg-black px-6 py-24 sm:py-32", className)}>
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-wrap items-end justify-between gap-6">
-          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-base-50 sm:text-6xl">
+          <h2 className="max-w-xl text-5xl leading-[0.98] font-semibold tracking-[-0.04em] text-balance text-neutral-950 dark:text-neutral-50 sm:text-6xl">
             Built for <span className="font-serif font-normal tracking-[-0.01em] italic">3 a.m.</span>
           </h2>
-          <p className="max-w-xs text-base leading-7 text-base-400">
+          <p className="max-w-xs text-base leading-7 text-neutral-600 dark:text-neutral-400">
             Everything that matters when something breaks, and nothing that pages you when it doesn&apos;t.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-px overflow-hidden rounded-[20px] bg-base-50/[0.08] ring-1 ring-base-50/[0.08] md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-px overflow-hidden rounded-[20px] bg-neutral-950/[0.08] dark:bg-neutral-50/[0.08] ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] md:grid-cols-2 lg:grid-cols-3">
           <Tile lead="Every incident, in order." rest="Failed checks, pages and recoveries, ready to paste into the postmortem." className="md:col-span-2">
             <Timeline />
           </Tile>

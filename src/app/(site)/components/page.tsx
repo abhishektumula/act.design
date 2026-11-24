@@ -31,11 +31,11 @@ export default function ComponentsIndex() {
         const items = registry.filter((r) => r.category === cat);
         return (
           <section key={cat} id={cat.toLowerCase().replace(/\s/g, "-")} className="mt-20 scroll-mt-24">
-            <div className="mb-6 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-base-50/[0.07] pb-4">
-              <span className="grid size-6 place-items-center self-center rounded-md bg-base-900 font-mono text-[11px] text-base-300 tabular-nums ring-1 ring-base-50/10">{i + 1}</span>
-              <h2 className="text-2xl font-semibold tracking-[-0.02em] text-base-50">{cat}</h2>
-              <span className="text-sm text-base-500">{blurbs[cat]}</span>
-              <span className="ml-auto font-mono text-[10px] tracking-[0.14em] text-base-500 uppercase">
+            <div className="mb-6 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] pb-4">
+              <span className="grid size-6 place-items-center self-center rounded-md bg-neutral-100 dark:bg-neutral-900 font-mono text-[11px] text-neutral-700 dark:text-neutral-300 tabular-nums ring-1 ring-neutral-950/10 dark:ring-neutral-50/10">{i + 1}</span>
+              <h2 className="text-2xl font-semibold tracking-[-0.02em] text-neutral-950 dark:text-neutral-50">{cat}</h2>
+              <span className="text-sm text-neutral-500">{blurbs[cat]}</span>
+              <span className="ml-auto font-mono text-[10px] tracking-[0.14em] text-neutral-500 uppercase">
                 {items.length} {items.length === 1 ? "piece" : "pieces"}
               </span>
             </div>

@@ -144,7 +144,7 @@ export function CodeInput({
             const divider = groupSize > 0 && i > 0 && i % groupSize === 0;
             return (
               <Fragment key={i}>
-                {divider && <span className="h-0.5 w-[min(0.625rem,3cqi)] shrink-0 rounded-full bg-base-50/20" />}
+                {divider && <span className="h-0.5 w-[min(0.625rem,3cqi)] shrink-0 rounded-full bg-neutral-950/20 dark:bg-neutral-50/20" />}
                 <motion.div
                   animate={
                     status === "verifying"
@@ -155,9 +155,9 @@ export function CodeInput({
                   }
                   style={status === "error" ? { ["--ring" as string]: DANGER } : undefined}
                   className={cn(
-                    "relative grid aspect-[11/14] max-w-11 min-w-0 flex-1 place-items-center overflow-hidden rounded-[min(0.75rem,3.5cqi)] bg-base-50/[0.06] font-mono text-[clamp(1rem,7.2cqi,1.5rem)] font-medium text-base-50 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-base-50/10 transition-[box-shadow,background-color,color] duration-200",
-                    isActive && "bg-base-50/[0.03] ring-2 ring-signal/70",
-                    status === "success" && "bg-signal/15 text-signal ring-signal/40",
+                    "relative grid aspect-[11/14] max-w-11 min-w-0 flex-1 place-items-center overflow-hidden rounded-[min(0.75rem,3.5cqi)] bg-neutral-950/[0.06] dark:bg-neutral-50/[0.06] font-mono text-[clamp(1rem,7.2cqi,1.5rem)] font-medium text-neutral-950 dark:text-neutral-50 shadow-[inset_0_1px_2px_rgb(0_0_0/0.12)] ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 transition-[box-shadow,background-color,color] duration-200",
+                    isActive && "bg-neutral-950/[0.03] dark:bg-neutral-50/[0.03] ring-2 ring-blue-600/70 dark:ring-blue-500/70",
+                    status === "success" && "bg-blue-600/15 dark:bg-blue-500/15 text-blue-600 dark:text-blue-500 ring-blue-600/40 dark:ring-blue-500/40",
                     status === "error" && "text-(--ring) ring-(--ring)/60",
                     disabled && "opacity-50",
                   )}
@@ -179,7 +179,7 @@ export function CodeInput({
                     <motion.span
                       animate={{ opacity: [1, 1, 0, 0] }}
                       transition={{ duration: 1, repeat: Infinity, times: [0, 0.5, 0.5, 1], ease: "linear" }}
-                      className="absolute h-[43%] w-0.5 rounded-full bg-signal"
+                      className="absolute h-[43%] w-0.5 rounded-full bg-blue-600 dark:bg-blue-500"
                     />
                   )}
                 </motion.div>
@@ -231,7 +231,7 @@ export function CodeInput({
               style={status === "error" ? { color: DANGER } : undefined}
               className={cn(
                 "flex items-center gap-1.5 font-mono text-[11px] tracking-[0.12em] whitespace-nowrap uppercase [&_svg]:size-3.5",
-                status === "success" ? "text-signal" : "text-base-500",
+                status === "success" ? "text-blue-600 dark:text-blue-500" : "text-neutral-500",
               )}
             >
               {message.icon}
@@ -255,10 +255,10 @@ export default function Demo() {
   }, [wait]);
 
   return (
-    <div className="flex w-full max-w-sm flex-col items-center rounded-3xl bg-base-950 px-[clamp(1rem,6%,1.5rem)] pt-7 pb-5 text-center shadow-[0_1px_0_white_inset,0_20px_40px_-24px_var(--color-shade)] ring-1 ring-base-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset]">
-      <p className="text-base font-semibold text-base-50">Check your phone</p>
-      <p className="mt-1 text-sm text-balance text-base-500">
-        We sent a 6-digit code to •••• 4821. Try <span className="font-mono text-base-300">424242</span>.
+    <div className="flex w-full max-w-sm flex-col items-center rounded-3xl bg-neutral-50 dark:bg-neutral-950 px-[clamp(1rem,6%,1.5rem)] pt-7 pb-5 text-center shadow-[0_1px_0_white_inset,0_20px_40px_-24px_var(--color-neutral-600)] ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset]">
+      <p className="text-base font-semibold text-neutral-950 dark:text-neutral-50">Check your phone</p>
+      <p className="mt-1 text-sm text-balance text-neutral-500">
+        We sent a 6-digit code to •••• 4821. Try <span className="font-mono text-neutral-700 dark:text-neutral-300">424242</span>.
       </p>
       <CodeInput
         key={key}
@@ -272,7 +272,7 @@ export default function Demo() {
           setKey((k) => k + 1);
           setWait(30);
         }}
-        className="mt-2 rounded-md px-2 py-1 text-[13px] font-medium text-base-300 outline-none hover:text-base-50 focus-visible:ring-2 focus-visible:ring-signal/60 disabled:cursor-default disabled:text-base-500 disabled:hover:text-base-500"
+        className="mt-2 rounded-md px-2 py-1 text-[13px] font-medium text-neutral-700 dark:text-neutral-300 outline-none hover:text-neutral-950 dark:hover:text-neutral-50 focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60 disabled:cursor-default disabled:text-neutral-500 disabled:hover:text-neutral-500"
       >
         {wait > 0 ? <span className="tabular-nums">Resend code in 0:{String(wait).padStart(2, "0")}</span> : "Resend code"}
       </button>

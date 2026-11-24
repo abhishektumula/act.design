@@ -7,8 +7,8 @@ import { Preview } from "@/registry/previews";
 
 type View = "preview" | "code";
 
-const tray = "inline-flex items-center gap-0.5 rounded-xl bg-base-900 p-1 ring-1 ring-base-50/[0.06]";
-const key = "flex h-8 items-center gap-2 rounded-lg px-3 text-sm font-medium text-base-300 transition-colors hover:bg-base-800 hover:text-base-50";
+const tray = "inline-flex items-center gap-0.5 rounded-xl bg-neutral-100 dark:bg-neutral-900 p-1 ring-1 ring-neutral-950/[0.06] dark:ring-neutral-50/[0.06]";
+const key = "flex h-8 items-center gap-2 rounded-lg px-3 text-sm font-medium text-neutral-700 dark:text-neutral-300 transition-colors hover:bg-neutral-200 dark:hover:bg-neutral-800 hover:text-neutral-950 dark:hover:text-neutral-50";
 
 /** Copies an agent prompt or the install line, from a small menu. */
 function CopyPrompt({ prompt, install }: { prompt: string; install: string }) {
@@ -44,7 +44,7 @@ function CopyPrompt({ prompt, install }: { prompt: string; install: string }) {
   return (
     <div ref={root} className={`${tray} relative`}>
       <button type="button" onClick={() => copy("prompt", prompt)} className={key}>
-        {done ? <Check className="size-4 text-signal" /> : <Sparkles className="size-4" />}
+        {done ? <Check className="size-4 text-blue-600 dark:text-blue-500" /> : <Sparkles className="size-4" />}
         {done === "install" ? "Copied command" : done ? "Copied prompt" : "Copy prompt"}
       </button>
       <button type="button" aria-label="More copy options" aria-expanded={open} onClick={() => setOpen((o) => !o)} className={`${key} px-2`}>
@@ -57,19 +57,19 @@ function CopyPrompt({ prompt, install }: { prompt: string; install: string }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -4, scale: 0.98 }}
             transition={{ duration: 0.14 }}
-            className="absolute top-full right-0 z-30 mt-2 w-72 origin-top-right rounded-xl bg-base-950 p-1 shadow-2xl ring-1 ring-base-50/10"
+            className="absolute top-full right-0 z-30 mt-2 w-72 origin-top-right rounded-xl bg-neutral-50 dark:bg-neutral-950 p-1 shadow-2xl ring-1 ring-neutral-950/10 dark:ring-neutral-50/10"
           >
             {options.map((o) => (
               <button
                 key={o.id}
                 type="button"
                 onClick={() => copy(o.id, o.text)}
-                className="flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left transition-colors hover:bg-base-900"
+                className="flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-900"
               >
-                <o.icon className="mt-0.5 size-4 shrink-0 text-base-400" />
+                <o.icon className="mt-0.5 size-4 shrink-0 text-neutral-600 dark:text-neutral-400" />
                 <span className="min-w-0">
-                  <span className="block text-sm font-medium text-base-50">{o.label}</span>
-                  <span className="block truncate text-xs text-base-500">{o.hint}</span>
+                  <span className="block text-sm font-medium text-neutral-950 dark:text-neutral-50">{o.label}</span>
+                  <span className="block truncate text-xs text-neutral-500">{o.hint}</span>
                 </span>
               </button>
             ))}
@@ -112,14 +112,14 @@ export function ComponentView({ slug, code, prompt, install }: { slug: string; c
               key={value}
               onClick={() => setView(value)}
               className={`relative flex h-8 items-center gap-2 rounded-lg px-3 text-sm font-medium transition-colors ${
-                view === value ? "text-base-50" : "text-base-400 hover:text-base-200"
+                view === value ? "text-neutral-950 dark:text-neutral-50" : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-800 dark:hover:text-neutral-200"
               }`}
             >
               {view === value && (
                 <motion.span
                   layoutId={`${id}-view`}
                   transition={{ type: "spring", bounce: 0.15, duration: 0.4 }}
-                  className="absolute inset-0 rounded-lg bg-base-800 shadow-[inset_0_1px_0_color-mix(in_oklab,var(--base-50)_8%,transparent)]"
+                  className="absolute inset-0 rounded-lg bg-neutral-200 dark:bg-neutral-800 shadow-[inset_0_1px_0_color-mix(in_oklab,var(--color-neutral-950)_8%,transparent)] dark:shadow-[inset_0_1px_0_color-mix(in_oklab,var(--color-neutral-50)_8%,transparent)]"
                 />
               )}
               <Icon className="relative size-4" />
@@ -154,7 +154,7 @@ export function ComponentView({ slug, code, prompt, install }: { slug: string; c
           {view === "preview" ? (
             <div
               ref={stage}
-              className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-2xl bg-canvas p-4 ring-1 ring-base-50/[0.08] sm:p-10"
+              className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-2xl bg-white dark:bg-black p-4 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] sm:p-10"
             >
               <div className="pointer-events-none absolute inset-0 bg-dots [mask-image:radial-gradient(ellipse_at_center,#000_10%,transparent_70%)]" />
               <div key={run} className="@container relative flex w-full justify-center">

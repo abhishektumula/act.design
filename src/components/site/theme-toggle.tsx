@@ -54,7 +54,7 @@ export function ThemeToggle() {
       type="button"
       aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
       onClick={() => setTheme(dark ? "light" : "dark")}
-      className="relative grid size-8 place-items-center rounded-md text-base-400 transition-colors outline-none hover:bg-base-50/[0.05] hover:text-base-50 focus-visible:ring-2 focus-visible:ring-signal/60"
+      className="relative grid size-8 place-items-center rounded-md text-neutral-600 dark:text-neutral-400 transition-colors outline-none hover:bg-neutral-950/[0.05] dark:hover:bg-neutral-50/[0.05] hover:text-neutral-950 dark:hover:text-neutral-50 focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60"
     >
       <Sun data-theme-icon className={cn(icon, dark ? "scale-50 -rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100")} />
       <Moon data-theme-icon className={cn(icon, dark ? "scale-100 rotate-0 opacity-100" : "scale-50 rotate-90 opacity-0")} />

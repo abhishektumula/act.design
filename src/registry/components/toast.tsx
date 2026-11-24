@@ -217,7 +217,7 @@ export function Toaster({
               exit={{ opacity: 0, scaleX: 0.7 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
               className={cn(
-                "absolute -inset-x-2 z-60 h-1.5 rounded-full bg-base-700 inset-shadow-xs inset-shadow-black/25 dark:bg-base-800 dark:inset-shadow-black",
+                "absolute -inset-x-2 z-60 h-1.5 rounded-full bg-neutral-300 inset-shadow-xs inset-shadow-black/25 dark:bg-neutral-800 dark:inset-shadow-black",
                 bottom ? "-bottom-[3px]" : "-top-[3px]",
               )}
             />
@@ -283,8 +283,8 @@ function StampMark({ still, delay = 0 }: { still?: boolean; delay?: number }) {
 function WorkingMark({ still }: { still?: boolean }) {
   return (
     <svg viewBox="0 0 20 20" fill="none" strokeWidth={2} strokeLinecap="round" className={cn("size-5", !still && "animate-spin [animation-duration:900ms]")}>
-      <circle cx="10" cy="10" r="7.5" className="stroke-base-50/10" />
-      <circle cx="10" cy="10" r="7.5" strokeDasharray="12 48" className="stroke-base-400" />
+      <circle cx="10" cy="10" r="7.5" className="stroke-neutral-950/10 dark:stroke-neutral-50/10" />
+      <circle cx="10" cy="10" r="7.5" strokeDasharray="12 48" className="stroke-neutral-600 dark:stroke-neutral-400" />
     </svg>
   );
 }
@@ -351,7 +351,7 @@ function Strip({ i, height, bottom, children }: { i: number; height: number; bot
           animate={{ opacity: 1 }}
           transition={{ duration: GRIP }}
           style={{ left: `${left}%` }}
-          className="absolute inset-y-0 w-px bg-base-50/15"
+          className="absolute inset-y-0 w-px bg-neutral-950/15 dark:bg-neutral-50/15"
         />
       )}
     </motion.div>
@@ -534,7 +534,7 @@ function TicketView({
               ticket.action?.onClick();
               tear(1);
             }}
-            className="-my-0.5 h-7 shrink-0 cursor-pointer rounded-lg bg-base-50 px-2.5 text-[13px] font-medium text-base-950 transition-colors outline-none hover:bg-base-200 focus-visible:ring-2 focus-visible:ring-signal/60"
+            className="-my-0.5 h-7 shrink-0 cursor-pointer rounded-lg bg-neutral-950 dark:bg-neutral-50 px-2.5 text-[13px] font-medium text-neutral-50 dark:text-neutral-950 transition-colors outline-none hover:bg-neutral-800 dark:hover:bg-neutral-200 focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60"
           >
             {ticket.action.label}
           </button>
@@ -547,7 +547,7 @@ function TicketView({
           aria-label="Dismiss"
           onPointerDownCapture={(e) => e.stopPropagation()}
           onClick={close}
-          className="absolute top-2.5 right-2.5 grid size-6 cursor-pointer place-items-center rounded-md text-base-500 opacity-0 transition-[opacity,color,background-color] outline-none group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-base-50/[0.06] hover:text-base-50 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-signal/60 max-sm:opacity-100"
+          className="absolute top-2.5 right-2.5 grid size-6 cursor-pointer place-items-center rounded-md text-neutral-500 opacity-0 transition-[opacity,color,background-color] outline-none group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-neutral-950/[0.06] dark:hover:bg-neutral-50/[0.06] hover:text-neutral-950 dark:hover:text-neutral-50 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60 max-sm:opacity-100"
         >
           <X className="size-3.5" />
         </button>
@@ -559,7 +559,7 @@ function TicketView({
   );
 
   const shell =
-    "rounded-2xl bg-white shadow-lg ring-1 shadow-black/[0.08] ring-base-50/[0.08] dark:bg-base-900 dark:shadow-black/40";
+    "rounded-2xl bg-white shadow-lg ring-1 shadow-black/[0.08] ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] dark:bg-neutral-900 dark:shadow-black/40";
 
   return (
     <motion.li
@@ -597,7 +597,7 @@ function TicketView({
         transition={reduced ? { duration: 0 } : springy}
         style={{ x, y, rotate, rotateX: tilt, transformPerspective: 700, opacity: shade, clipPath, transformOrigin: bottom ? "50% 100%" : "50% 0%" }}
         className={cn(
-          "group relative touch-pan-y overflow-hidden outline-none select-none focus-visible:ring-2 focus-visible:ring-signal/60",
+          "group relative touch-pan-y overflow-hidden outline-none select-none focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60",
           shell,
           live ? "cursor-grab active:cursor-grabbing" : "pointer-events-none",
           leaving === "shred" && "invisible",
@@ -724,22 +724,22 @@ function Typewriter({
       {head ? (
         <>
           <span className="sr-only">{head}</span>
-          {line(head, titleTyped, !inBody, "text-sm leading-5 font-medium text-base-50")}
+          {line(head, titleTyped, !inBody, "text-sm leading-5 font-medium text-neutral-950 dark:text-neutral-50")}
         </>
       ) : (
-        <p className="text-sm leading-5 font-medium text-base-50">{title}</p>
+        <p className="text-sm leading-5 font-medium text-neutral-950 dark:text-neutral-50">{title}</p>
       )}
       {description &&
         (body ? (
           <>
             <span className="sr-only">{body}</span>
-            {line(body, bodyTyped, inBody, "mt-0.5 text-[13px] leading-5 text-base-400")}
+            {line(body, bodyTyped, inBody, "mt-0.5 text-[13px] leading-5 text-neutral-600 dark:text-neutral-400")}
           </>
         ) : (
-          <p className="mt-0.5 text-[13px] leading-5 text-base-400">{description}</p>
+          <p className="mt-0.5 text-[13px] leading-5 text-neutral-600 dark:text-neutral-400">{description}</p>
         ))}
       {steps > 0 && !reduced && (
-        <motion.span aria-hidden style={{ x: cx, y: cy, opacity: caret }} className="pointer-events-none absolute top-0.5 left-0 h-4 w-0.5 rounded-full bg-signal" />
+        <motion.span aria-hidden style={{ x: cx, y: cy, opacity: caret }} className="pointer-events-none absolute top-0.5 left-0 h-4 w-0.5 rounded-full bg-blue-600 dark:bg-blue-500" />
       )}
     </div>
   );
@@ -749,14 +749,14 @@ function TearLine({ life, timed, working, bottom }: { life: MotionValue<number>;
   const dashes = "bg-[repeating-linear-gradient(90deg,currentColor_0_3px,transparent_3px_7px)]";
   return (
     <span aria-hidden className={cn("absolute inset-x-4 h-px", bottom ? "bottom-2" : "top-2")}>
-      <span className={cn("absolute inset-0 text-base-50/[0.12]", dashes)} />
-      {timed && <motion.span style={{ scaleX: life }} className={cn("absolute inset-0 origin-left text-base-50/40", dashes)} />}
+      <span className={cn("absolute inset-0 text-neutral-950/[0.12] dark:text-neutral-50/[0.12]", dashes)} />
+      {timed && <motion.span style={{ scaleX: life }} className={cn("absolute inset-0 origin-left text-neutral-950/40 dark:text-neutral-50/40", dashes)} />}
       {/* Still working: a print head shuttling along the line */}
       {working && (
         <motion.span
           animate={{ left: ["0%", "78%"] }}
           transition={{ duration: 0.9, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
-          className={cn("absolute inset-y-0 w-[22%] text-base-50/50", dashes)}
+          className={cn("absolute inset-y-0 w-[22%] text-neutral-950/50 dark:text-neutral-50/50", dashes)}
         />
       )}
     </span>
@@ -772,7 +772,7 @@ function DemoButton({ onClick, children }: { onClick: () => void; children: Reac
     <button
       type="button"
       onClick={onClick}
-      className="h-9 cursor-pointer rounded-[10px] bg-base-950 px-3.5 text-[13px] font-medium text-base-100 shadow-sm ring-1 shadow-black/[0.06] ring-base-50/10 transition-colors outline-none select-none hover:bg-base-900 focus-visible:ring-2 focus-visible:ring-signal/50 active:bg-base-800 dark:bg-base-900 dark:hover:bg-base-800"
+      className="h-9 cursor-pointer rounded-[10px] bg-neutral-50 px-3.5 text-[13px] font-medium text-neutral-900 dark:text-neutral-100 shadow-sm ring-1 shadow-black/[0.06] ring-neutral-950/10 dark:ring-neutral-50/10 transition-colors outline-none select-none hover:bg-neutral-100 focus-visible:ring-2 focus-visible:ring-blue-600/50 dark:focus-visible:ring-blue-500/50 active:bg-neutral-200 dark:active:bg-neutral-800 dark:bg-neutral-900 dark:hover:bg-neutral-800"
     >
       {children}
     </button>

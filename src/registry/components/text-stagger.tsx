@@ -112,7 +112,7 @@ export function StreamingText({
           {token}
         </motion.span>
       ))}
-      {count < tokens.length && <span className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.15em] animate-pulse rounded-full bg-signal" />}
+      {count < tokens.length && <span className="ml-0.5 inline-block h-[1em] w-[2px] translate-y-[0.15em] animate-pulse rounded-full bg-blue-600 dark:bg-blue-500" />}
     </p>
   );
 }
@@ -126,15 +126,15 @@ export default function Demo() {
         as="h3"
         preset="rise"
         text="Ship the update without the all-nighter."
-        className="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-balance text-base-50 @md:text-4xl"
+        className="text-3xl leading-[1.08] font-semibold tracking-[-0.03em] text-balance text-neutral-950 dark:text-neutral-50 @md:text-4xl"
       />
       <StreamingText
-        className="mt-5 text-[15px] leading-7 text-pretty text-base-400"
+        className="mt-5 text-[15px] leading-7 text-pretty text-neutral-600 dark:text-neutral-400"
         text="Release notes write themselves from your merged pull requests. Each one lands as a short, plain sentence your customers can actually read."
       />
       <button
         onClick={() => setRun((r) => r + 1)}
-        className="mt-6 flex w-fit items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-base-500 transition-colors hover:bg-base-50/5 hover:text-base-100"
+        className="mt-6 flex w-fit items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-neutral-500 transition-colors hover:bg-neutral-950/5 dark:hover:bg-neutral-50/5 hover:text-neutral-900 dark:hover:text-neutral-100"
       >
         <RotateCcw className="size-3" /> Replay
       </button>
