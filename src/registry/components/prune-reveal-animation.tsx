@@ -9,7 +9,7 @@ export type PruneHandle = {
   prune: (at?: { x: number; y: number }) => Promise<void>;
 };
 
-export type PruneImageProps = {
+export type PruneRevealProps = {
   src: string;
   alt: string;
   /** How long the glowing front takes to cross the whole image, in ms. */
@@ -43,12 +43,12 @@ function palette(el: Element) {
 }
 
 /**
- * An image that can be pruned. It is touched at one spot, flashes and jitters out of sync,
+ * Prune reveal: an image that can be pruned to show what is behind it. It is touched at one spot, flashes and jitters out of sync,
  * then a ragged orange front spreads from that spot, heating the picture just ahead of it.
  * Behind the front there is nothing left: the image comes off the edge as embers that rise
  * and burn out. Whatever sits behind the frame shows through as it goes.
  */
-export function PruneImage({ src, alt, duration = 1900, pruneOnClick = true, onPruned, className, ref }: PruneImageProps) {
+export function PruneReveal({ src, alt, duration = 1900, pruneOnClick = true, onPruned, className, ref }: PruneRevealProps) {
   const reduce = useReducedMotion();
   const box = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -92,6 +92,7 @@ export function PruneImage({ src, alt, duration = 1900, pruneOnClick = true, onP
   useEffect(() => {
     const img = new Image();
     img.decoding = "async";
+    img.crossOrigin = "anonymous";
     img.onload = () => {
       image.current = img;
       run.current.gone = false;
@@ -301,26 +302,18 @@ export function PruneImage({ src, alt, duration = 1900, pruneOnClick = true, onP
 
 /* ----------------------------------- demo ---------------------------------- */
 
-/** Flat colour scenes as SVG, so the demo needs no image files. The hex values are Tailwind
-    palette colours (sky-200, amber-300, emerald-600…), written out because a data URI cannot read CSS variables. */
-const scene = (sky: string, sun: string, far: string, near: string, ground: string) =>
-  `data:image/svg+xml,${encodeURIComponent(
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600"><rect width="800" height="600" fill="${sky}"/><circle cx="560" cy="190" r="70" fill="${sun}"/><path d="M0 380 L140 250 L260 340 L400 200 L540 330 L680 240 L800 330 L800 600 L0 600Z" fill="${far}"/><path d="M0 450 L170 350 L330 440 L480 360 L640 430 L800 380 L800 600 L0 600Z" fill="${near}"/><rect y="500" width="800" height="100" fill="${ground}"/></svg>`,
-  )}`;
-
-const SCENES = [
-  { alt: "Mountains at noon", src: scene("#bae6fd", "#fcd34d", "#38bdf8", "#059669", "#065f46") },
-  { alt: "Dunes at dusk", src: scene("#fecaca", "#fb923c", "#fda4af", "#c2410c", "#7c2d12") },
-  { alt: "Peaks at night", src: scene("#0f172a", "#e2e8f0", "#1e293b", "#334155", "#020617") },
-  { alt: "Hills in fog", src: scene("#e5e5e5", "#fafafa", "#a3a3a3", "#737373", "#404040") },
+const PHOTOS = [
+  { alt: "A city skyline at dusk under storm clouds", src: "https://images.unsplash.com/photo-1795307026712-1116f5902e4f?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" },
+  { alt: "Palms framing a lagoon at sunset", src: "https://images.unsplash.com/photo-1500485035595-cbe6f645feb1?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" },
+  { alt: "A breakwater running out into a stormy sea", src: "https://images.unsplash.com/photo-1793740687112-e7545e5d5568?q=80&w=1065&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" },
 ];
 
 export default function Demo() {
   const [index, setIndex] = useState(0);
   const [busy, setBusy] = useState(false);
   const prune = useRef<PruneHandle>(null);
-  const current = SCENES[index % SCENES.length];
-  const next = SCENES[(index + 1) % SCENES.length];
+  const current = PHOTOS[index % PHOTOS.length];
+  const next = PHOTOS[(index + 1) % PHOTOS.length];
 
   const go = async () => {
     setBusy(true);
@@ -328,16 +321,17 @@ export default function Demo() {
   };
 
   return (
-    <div className="w-full max-w-lg">
+    <div className="w-full max-w-md">
       <div className="relative overflow-hidden rounded-2xl bg-neutral-950 ring-1 ring-black/10 dark:ring-white/10">
         {/* The next picture waits underneath and shows through as the current one is pruned */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={next.src} alt="" aria-hidden className="absolute inset-0 size-full object-cover" />
-        <PruneImage
+        <PruneReveal
           key={index}
           ref={prune}
           src={current.src}
           alt={current.alt}
+          className="aspect-[4/5]"
           onPruned={() => {
             setBusy(false);
             setIndex((i) => i + 1);

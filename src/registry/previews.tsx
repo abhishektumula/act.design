@@ -13,7 +13,7 @@ import HoldToConfirm from "@/components/ui/hold-to-confirm";
 import Button from "@/components/ui/button";
 import NumberTicker from "@/components/ui/number-ticker";
 import PromptInput from "@/components/ui/prompt-input";
-import PruneAnimation from "@/components/ui/prune-animation";
+import PruneRevealAnimation from "@/components/ui/prune-reveal-animation";
 import SegmentedControl from "@/components/ui/segmented-control";
 import FolderCard from "@/components/ui/folder-card";
 import Stepper from "@/components/ui/stepper";
@@ -35,7 +35,7 @@ export const previews: Record<string, ComponentType> = {
   button: Button,
   "number-ticker": NumberTicker,
   "prompt-input": PromptInput,
-  "prune-animation": PruneAnimation,
+  "prune-reveal-animation": PruneRevealAnimation,
   "segmented-control": SegmentedControl,
   "folder-card": FolderCard,
   "stepper": Stepper,

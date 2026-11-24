@@ -274,35 +274,22 @@ function Label({ side, text, hidden }: { side: "left" | "right"; text: string; h
 
 /* ----------------------------------- demo ---------------------------------- */
 
-/** The same valley twice: once at noon, once at night. Flat colour layers only. */
-function Valley({ night }: { night?: boolean }) {
-  const c = night
-    ? { sky: "var(--color-slate-950)", orb: "var(--color-slate-200)", far: "var(--color-slate-800)", mid: "var(--color-slate-700)", near: "var(--color-slate-900)", lake: "var(--color-slate-800)", glint: "var(--color-slate-400)" }
-    : { sky: "var(--color-sky-200)", orb: "var(--color-amber-300)", far: "var(--color-sky-400)", mid: "var(--color-emerald-600)", near: "var(--color-emerald-800)", lake: "var(--color-sky-500)", glint: "var(--color-white)" };
-  return (
-    <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" className="size-full" aria-hidden>
-      <rect width="800" height="500" fill={c.sky} />
-      {night &&
-        Array.from({ length: 40 }, (_, i) => (
-          <circle key={i} cx={(i * 197) % 800} cy={(i * 89) % 230} r={i % 5 === 0 ? 1.8 : 1} fill="white" opacity={0.4 + (i % 3) * 0.2} />
-        ))}
-      <circle cx="590" cy="120" r={night ? 34 : 44} fill={c.orb} />
-      {night && <circle cx="606" cy="108" r="32" fill={c.sky} />}
-      <path d="M0 300 L120 190 L230 270 L360 150 L500 260 L620 180 L800 290 L800 500 L0 500Z" fill={c.far} />
-      <path d="M0 340 L150 250 L300 330 L430 240 L590 320 L720 260 L800 300 L800 500 L0 500Z" fill={c.mid} />
-      <rect y="380" width="800" height="120" fill={c.lake} />
-      {[0, 1, 2, 3].map((i) => (
-        <rect key={i} x={540 + i * 14 - i * i * 6} y={398 + i * 18} width={100 - i * 22} height="3" rx="1.5" fill={c.glint} opacity={0.5} />
-      ))}
-      <path d="M0 360 L90 330 L200 375 L0 400Z M800 350 L690 335 L600 380 L800 405Z" fill={c.near} />
-    </svg>
-  );
-}
+const PHOTO = "https://images.unsplash.com/photo-1795307026712-1116f5902e4f?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D";
 
 export default function Demo() {
+  const photo = "absolute inset-0 size-full object-cover";
   return (
     <div className="w-full max-w-xl">
-      <CompareSlider before={<Valley />} after={<Valley night />} beforeLabel="Noon" afterLabel="Midnight" aria-label="Noon and midnight" />
+      <CompareSlider
+        className="aspect-[4/3]"
+        /* eslint-disable-next-line @next/next/no-img-element */
+        before={<img src={PHOTO} alt="" draggable={false} className={`${photo} grayscale`} />}
+        /* eslint-disable-next-line @next/next/no-img-element */
+        after={<img src={PHOTO} alt="" draggable={false} className={photo} />}
+        beforeLabel="Black and white"
+        afterLabel="Colour"
+        aria-label="A city skyline at dusk, in black and white and in colour"
+      />
     </div>
   );
 }
