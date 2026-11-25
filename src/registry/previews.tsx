@@ -25,7 +25,6 @@ import Stepper from "@/components/ui/stepper";
 import Switch from "@/components/ui/switch";
 import TextFocus from "@/components/ui/text-focus";
 import Typeset from "@/components/ui/typeset";
-import Toast from "@/components/ui/toast";
 import TrashBin from "@/components/ui/trash-bin";
 
 export const previews: Record<string, ComponentType> = {
@@ -53,7 +52,6 @@ export const previews: Record<string, ComponentType> = {
   "switch": Switch,
   "text-focus": TextFocus,
   typeset: Typeset,
-  toast: Toast,
   "trash-bin": TrashBin,
 };
 

@@ -26,7 +26,6 @@ import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
 import { TextFocus } from "@/components/ui/text-focus";
 import { Typeset } from "@/components/ui/typeset";
-import { Toaster, toast, type ToasterPosition } from "@/components/ui/toast";
 import { TrashBin } from "@/components/ui/trash-bin";
 
 /* --------------------------------- schema --------------------------------- */
@@ -97,28 +96,6 @@ function PaletteDemo({ hotkey, placeholder }: { hotkey: string; placeholder: str
       </Button>
       <CommandPalette open={open} onOpenChange={setOpen} commands={commands} hotkey={hotkey} placeholder={placeholder} />
     </>
-  );
-}
-
-function ToastDemo({ position, duration, visible }: { position: ToasterPosition; duration: number; visible: number }) {
-  return (
-    <div className="relative flex h-[26rem] w-full items-center justify-center overflow-hidden">
-      <div className="flex flex-wrap justify-center gap-2">
-        <Button tone="paper" size="sm" onClick={() => toast.success("Changes saved", { description: "Your profile is up to date." })}>
-          Success
-        </Button>
-        <Button tone="paper" size="sm" onClick={() => toast.error("Payment declined", { description: "The card was declined." })}>
-          Error
-        </Button>
-        <Button tone="paper" size="sm" onClick={() => toast.promise(new Promise((r) => setTimeout(r, 1800)), { loading: "Deploying…", success: "Deployed", error: "Failed" })}>
-          Promise
-        </Button>
-        <Button tone="paper" size="sm" onClick={() => toast("Link copied")}>
-          Plain
-        </Button>
-      </div>
-      <Toaster position={position} duration={duration} visible={visible} className="absolute" />
-    </div>
   );
 }
 
@@ -363,7 +340,6 @@ export const playgrounds: Record<string, Playground> = {
         size={str(v.size) as "sm" | "md" | "lg"}
         hotkey={str(v.hotkey) || undefined}
         disabled={!!v.disabled}
-        onClick={() => toast(`${v.children}`)}
       >
         {str(v.children)}
       </Button>
@@ -383,17 +359,6 @@ export const playgrounds: Record<string, Playground> = {
         {str(v.children)}
       </HoldToConfirm>
     ),
-  },
-  toast: {
-    component: "Toaster",
-    controls: [
-      { type: "select", key: "position", label: "Position", options: ["top-left", "top-center", "top-right", "bottom-left", "bottom-center", "bottom-right"] },
-      { type: "number", key: "duration", label: "Stays for", min: 1000, max: 10000, step: 500, unit: "ms" },
-      { type: "number", key: "visible", label: "At once", min: 1, max: 5, step: 1 },
-    ],
-    defaults: { position: "bottom-center", duration: 4000, visible: 3 },
-    render: (v) => <ToastDemo position={str(v.position) as ToasterPosition} duration={n(v.duration)} visible={n(v.visible)} />,
-    code: (v) => `<Toaster position="${v.position}" duration={${v.duration}} visible={${v.visible}} />\n\ntoast.success("Changes saved", { description: "Your profile is up to date." });`,
   },
   "trash-bin": {
     component: "TrashBin",
@@ -687,7 +652,7 @@ export const playgrounds: Record<string, Playground> = {
     defaults: { placeholder: "Ask anything…", busy: false },
     render: (v) => (
       <div className="w-full max-w-xl">
-        <PromptInput placeholder={str(v.placeholder)} busy={!!v.busy} onSubmit={(text) => toast(`Sent: ${text}`)} />
+        <PromptInput placeholder={str(v.placeholder)} busy={!!v.busy} onSubmit={() => {}} />
       </div>
     ),
   },
