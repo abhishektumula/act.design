@@ -1,4 +1,4 @@
-export const categories = ["Controls", "Actions", "Text", "Motion", "AI", "Navigation"] as const;
+export const categories = ["Controls", "Actions", "Text", "Motion", "AI"] as const;
 
 export type Category = (typeof categories)[number];
 
@@ -29,6 +29,7 @@ export const registry: RegistryItem[] = [
   // Actions
   { slug: "button", name: "Button", category: "Actions", description: "A quiet button with four tones and a minimal shadow. Bind a hotkey and the key is printed inside it, and pressing it on the keyboard clicks the button.", deps: [M, L, V] },
   { slug: "hold-to-confirm", name: "Hold to Confirm", category: "Actions", description: "For actions that deserve intent. A fill sweeps across and inverts the label; let go early and it springs back with a shake.", deps: [M, L, V] },
+  { slug: "command-palette", name: "Command Palette", category: "Actions", description: "A keyboard-first command menu with fuzzy filtering, groups and shortcuts.", deps: [M, L] },
   { slug: "trash-bin", name: "Trash Bin", category: "Actions", description: "Delete by hand. Hold a file and the sheet crumples into a ball under your finger; drag it over the bin and the rim lifts to meet it, let go and it drops in with a wobble. Miss and it rolls home and smooths back out. Delete on the keyboard throws it in an arc. The bin is a wire-mesh can you can see the crumpled files through; Empty flings them all into the corner of the screen, where they burn away to a little heap of ash.", deps: [M], isNew: true },
 
   // Text
@@ -41,6 +42,7 @@ export const registry: RegistryItem[] = [
   { slug: "card-stack", name: "Card Stack", category: "Motion", description: "A deck you deal by hand. Fling the top card and it tucks itself under the pile while the rest rise to meet you.", deps: [M, L] },
   { slug: "number-ticker", name: "Number Ticker", category: "Motion", description: "Numbers that arrive at speed. When the value changes every digit from the first one that moved races up through the count, smeared sideways with motion blur and trailing afterimages, then locks in one at a time from left to right with a spark.", deps: [M] },
   { slug: "drift-canvas", name: "Drift Canvas", category: "Motion", description: "An endless canvas that drifts one way, like a marquee in two dimensions: sideways, up, down or on any diagonal. Grab it and move it anywhere; let go and it carries on with momentum, then eases back into its drift. Only the cards on screen are rendered, so it costs the same however long it runs.", deps: [M], isNew: true },
+  { slug: "infinite-grid", name: "Infinite Grid", category: "Motion", description: "A canvas that goes on forever in every direction. Drag it and it carries on with momentum, scroll it with a trackpad or step it with the arrow keys. Only the cells on screen are rendered, staggered like bricks so the same item rarely sits beside itself.", deps: [M], isNew: true },
   { slug: "focus-canvas", name: "Focus Canvas", category: "Motion", description: "A camera that tours an endless canvas on its own. It rests on one card, sharp and centred while everything around it goes soft, then pulls back, crosses the canvas in one smooth arc and closes in on the next. The blur and the sharpening follow the zoom, so they always happen together.", deps: [M], isNew: true },
   { slug: "folder-card", name: "Folder Card", category: "Motion", description: "A folder you can peek into. Hover or focus it and the front flap tips open while the papers inside slide up and fan out. Tap toggles it on touch screens.", deps: [M] },
   { slug: "prune-reveal-animation", name: "Prune Reveal Animation", category: "AI", description: "An AI image that arrives by being pruned into view. While the model works the frame pulses with the prompt; when the image is ready the surface is touched at a random spot and burns away from there along a path of its own, never the same twice, with a soft glowing edge, the picture heating orange ahead of it and embers and ash rising off it. Regenerate and the pulse fades back in over the old image.", deps: [M], isNew: true },
@@ -49,9 +51,6 @@ export const registry: RegistryItem[] = [
   { slug: "orb", name: "Orb", category: "AI", description: "A fluid orb drawn by a small WebGL shader: colour folds through itself like ink in water. Idle, listening, thinking and speaking each flow differently and melt into one another. Liquid and halo variants, and it reacts to real microphone input.", deps: [M, L] },
   { slug: "prompt-input", name: "Prompt Input", category: "AI", description: "An agent composer with model, effort and access pickers, attachments, auto-growing textarea and a send button that morphs into stop.", deps: [M, L] },
 
-  // Navigation
-  { slug: "command-palette", name: "Command Palette", category: "Navigation", description: "A keyboard-first command menu with fuzzy filtering, groups and shortcuts.", deps: [M, L] },
-  { slug: "infinite-grid", name: "Infinite Grid", category: "Navigation", description: "A canvas that goes on forever in every direction. Drag it and it carries on with momentum, scroll it with a trackpad or step it with the arrow keys. Only the cells on screen are rendered, staggered like bricks so the same item rarely sits beside itself.", deps: [M], isNew: true },
 ];
 
 export function getItem(slug: string) {

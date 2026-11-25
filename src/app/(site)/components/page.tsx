@@ -12,7 +12,6 @@ const blurbs: Record<(typeof categories)[number], string> = {
   Text: "Type that gets made in front of you.",
   Motion: "Movement that carries meaning.",
   AI: "Surfaces for talking to a model.",
-  Navigation: "Getting around, fast.",
 };
 
 export default function ComponentsIndex() {

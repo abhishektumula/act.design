@@ -58,7 +58,6 @@ const access: Record<Category | "Blocks", PlanId[]> = {
   Actions: ["pro", "max"],
   Text: ["pro", "max"],
   Motion: ["pro", "max"],
-  Navigation: ["pro", "max"],
   AI: ["max"],
   Blocks: ["max"],
 };

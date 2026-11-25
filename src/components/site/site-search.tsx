@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Bot, Component, LayoutTemplate, MousePointerClick, Type, Search, SlidersHorizontal, Sparkles } from "lucide-react";
+import { Bot, LayoutTemplate, MousePointerClick, Type, Search, SlidersHorizontal, Sparkles } from "lucide-react";
 import { CommandPalette, type Command } from "@/components/ui/command-palette";
 import { blocks, registry, type Category } from "@/registry/meta";
 
@@ -12,7 +12,6 @@ const icons: Record<Category, Command["icon"]> = {
   Text: Type,
   Motion: Sparkles,
   AI: Bot,
-  Navigation: Component,
 };
 
 const commands: Command[] = [

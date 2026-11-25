@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState, type ComponentType, type Keyboard
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "motion/react";
-import { Bot, Compass, LayoutGrid, MousePointerClick, Search, SlidersHorizontal, Sparkles, Type, X } from "lucide-react";
+import { Bot, LayoutGrid, MousePointerClick, Search, SlidersHorizontal, Sparkles, Type, X } from "lucide-react";
 import { categories, registry, type Category, type RegistryItem } from "@/registry/meta";
 import { NewMark } from "./fx";
 
@@ -17,7 +17,6 @@ const icons: Record<Filter, ComponentType<{ className?: string }>> = {
   Text: Type,
   Motion: Sparkles,
   AI: Bot,
-  Navigation: Compass,
 };
 
 const filters: Filter[] = ["All", ...categories];
