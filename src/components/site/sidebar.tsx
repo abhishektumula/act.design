@@ -149,29 +149,11 @@ export function Sidebar() {
         )}
       </label>
 
-      {/* Categories */}
-      <div role="radiogroup" aria-label="Category" className="mt-3 flex flex-wrap gap-1.5">
-        {filters.map((f) => {
-          const on = filter === f;
-          const Icon = icons[f];
-          return (
-            <button
-              key={f}
-              type="button"
-              role="radio"
-              aria-checked={on}
-              onClick={() => setFilter(f)}
-              className={`relative flex h-7 items-center gap-1.5 rounded-full px-2.5 text-xs font-medium transition-colors ${
-                on ? "text-white dark:text-neutral-950" : "text-neutral-600 ring-1 ring-neutral-950/[0.08] hover:text-neutral-950 hover:ring-neutral-950/20 dark:text-neutral-400 dark:ring-neutral-50/[0.08] dark:hover:text-neutral-50 dark:hover:ring-neutral-50/20"
-              }`}
-            >
-              {on && <motion.span layoutId="sidebar-filter" transition={{ type: "spring", stiffness: 500, damping: 38 }} className="absolute inset-0 rounded-full bg-neutral-950 dark:bg-neutral-50" />}
-              <Icon className="relative size-3.5" />
-              <span className="relative">{f === "All" ? "Browse all" : f}</span>
-              <span className={`relative font-mono text-[10px] tabular-nums ${on ? "opacity-60" : "text-neutral-400 dark:text-neutral-500"}`}>{counts[f]}</span>
-            </button>
-          );
-        })}
+      {/* Categories: one row of icons; the name rises over each on hover */}
+      <div role="radiogroup" aria-label="Category" className="mt-3 flex items-center gap-1">
+        {filters.map((f) => (
+          <FilterChip key={f} first={f === "All"} filter={f} on={filter === f} count={counts[f]} onPick={() => setFilter(f)} />
+        ))}
       </div>
 
       {/* Results */}
@@ -213,5 +195,46 @@ export function Sidebar() {
         )}
       </div>
     </nav>
+  );
+}
+
+/** One category as an icon. Its name and count rise over it on hover or keyboard focus. */
+function FilterChip({ filter, on, count, first, onPick }: { filter: Filter; on: boolean; count: number; first: boolean; onPick: () => void }) {
+  const [peek, setPeek] = useState(false);
+  const Icon = icons[filter];
+  const label = filter === "All" ? "Browse all" : filter;
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={on}
+      aria-label={`${label}, ${count}`}
+      onClick={onPick}
+      onPointerEnter={() => setPeek(true)}
+      onPointerLeave={() => setPeek(false)}
+      onFocus={(e) => setPeek(e.currentTarget.matches(":focus-visible"))}
+      onBlur={() => setPeek(false)}
+      className={`relative grid size-8 place-items-center rounded-lg outline-none transition-colors focus-visible:ring-2 focus-visible:ring-blue-600/50 dark:focus-visible:ring-blue-500/50 ${
+        on ? "text-white dark:text-neutral-950" : "text-neutral-500 hover:bg-neutral-950/[0.05] hover:text-neutral-950 dark:text-neutral-400 dark:hover:bg-neutral-50/[0.07] dark:hover:text-neutral-50"
+      }`}
+    >
+      {on && <motion.span layoutId="sidebar-filter" transition={{ type: "spring", stiffness: 500, damping: 38 }} className="absolute inset-0 rounded-lg bg-neutral-950 dark:bg-neutral-50" />}
+      <Icon className="relative size-4" />
+      <AnimatePresence>
+        {peek && (
+          <motion.span
+            aria-hidden
+            initial={{ opacity: 0, y: 4, scale: 0.94, filter: "blur(3px)" }}
+            animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
+            exit={{ opacity: 0, y: 2, scale: 0.97, filter: "blur(2px)", transition: { duration: 0.1 } }}
+            transition={{ type: "spring", stiffness: 600, damping: 32 }}
+            className={`pointer-events-none absolute bottom-full z-10 mb-2 flex items-center gap-1.5 rounded-md bg-neutral-950 px-2 py-1 text-xs font-medium whitespace-nowrap text-white shadow-[0_6px_16px_-6px_rgb(0_0_0/0.4)] dark:bg-neutral-50 dark:text-neutral-950 ${first ? "left-0" : "left-1/2 -translate-x-1/2"}`}
+          >
+            {label}
+            <span className="font-mono text-[10px] tabular-nums opacity-55">{count}</span>
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </button>
   );
 }
