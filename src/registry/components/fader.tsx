@@ -192,20 +192,9 @@ export function Fader({
 }
 
 export default function Demo() {
-  const [speed, setSpeed] = useState(1);
   const [focus, setFocus] = useState(62);
-
   return (
-    <div className="flex w-full max-w-sm flex-col gap-10">
-      <Fader
-        label="Playback speed"
-        min={0.25}
-        max={3}
-        step={0.05}
-        value={speed}
-        onValueChange={setSpeed}
-        format={(v) => `${v.toFixed(2)}×`}
-      />
+    <div className="w-full max-w-sm">
       <Fader label="Focus" value={focus} onValueChange={setFocus} format={(v) => `${Math.round(v)}%`} marks={["Soft", "Sharp"]} />
     </div>
   );
