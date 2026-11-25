@@ -9,6 +9,7 @@ import { CodeInput } from "@/components/ui/code-input";
 import { CommandPalette, type Command } from "@/components/ui/command-palette";
 import { CompareSlider } from "@/components/ui/compare-slider";
 import { Dial } from "@/components/ui/dial";
+import { DialGallery, type DialGalleryItem, type DialGalleryReveal } from "@/components/ui/dial-gallery";
 import { Fader } from "@/components/ui/fader";
 import { DriftCanvas } from "@/components/ui/drift-canvas";
 import { FocusCanvas } from "@/components/ui/focus-canvas";
@@ -152,6 +153,16 @@ function PruneDemo({ photo, duration, wait }: { photo: string; duration: number;
   );
 }
 
+const GALLERY: DialGalleryItem[] = [
+  { label: "Moonrise", caption: "Open water", src: "https://images.unsplash.com/photo-1792802992164-c43f3b404891?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" },
+  { label: "Spire", caption: "Manhattan", src: "https://images.unsplash.com/photo-1795337259685-2865d38f0e44?q=80&w=988&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" },
+  { label: "Haze", caption: "Bangkok", src: "https://images.unsplash.com/photo-1795412288110-4669a977d984?q=80&w=987&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D" },
+  { label: "Waterfall", caption: "Columbia Gorge", src: "https://images.unsplash.com/photo-1433086966358-54859d0ed716?q=80&w=987&auto=format&fit=crop" },
+  { label: "Summit", caption: "Swiss Alps", src: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1200&auto=format&fit=crop" },
+  { label: "Angles", caption: "Cleveland", src: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?q=80&w=1200&auto=format&fit=crop" },
+  { label: "Highlands", caption: "Isle of Skye", src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop" },
+  { label: "Towers", caption: "City centre", src: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1200&auto=format&fit=crop" },
+];
 const PHOTO = PHOTOS.Skyline.src;
 const IMAGES = Object.entries(PHOTOS).map(([name, p]) => ({ src: p.src, alt: name }));
 function Photo({ src, alt }: { src: string; alt: string }) {
@@ -199,6 +210,34 @@ export const playgrounds: Record<string, Playground> = {
     ),
     code: (v) =>
       `<Dial\n  label="${v.label}"\n  min={${v.min}}\n  max={${v.max}}\n  defaultValue={${v.defaultValue}}${v.tone === "level" ? `\n  tone="level"\n  danger={${v.danger}}` : ""}\n/>`,
+  },
+  "dial-gallery": {
+    component: "DialGallery",
+    controls: [
+      { type: "select", key: "reveal", label: "Reveal", options: ["iris", "wipe", "fade"] },
+      { type: "select", key: "side", label: "Image side", options: ["right", "left"] },
+      { type: "number", key: "depth", label: "Depth blur", min: 0, max: 2, step: 0.1 },
+      { type: "number", key: "defaultValue", label: "Start at", min: 0, max: 7, step: 1 },
+      { type: "boolean", key: "brackets", label: "Brackets" },
+      { type: "number", key: "spacing", label: "Spacing", min: 1.4, max: 3.2, step: 0.1, unit: "×" },
+      { type: "color", key: "accent", label: "Brackets", options: COLORS },
+    ],
+    defaults: { reveal: "iris", side: "right", depth: 1, spacing: 2, defaultValue: 1, brackets: true, accent: "var(--color-blue-500)" },
+    render: (v) => (
+      <DialGallery
+        items={GALLERY}
+        reveal={str(v.reveal) as DialGalleryReveal}
+        side={str(v.side) as "left" | "right"}
+        depth={n(v.depth)}
+        defaultValue={n(v.defaultValue)}
+        brackets={!!v.brackets}
+        spacing={n(v.spacing)}
+        accent={str(v.accent)}
+        className="h-[clamp(17rem,calc(75cqw-10rem),30rem)] max-w-3xl"
+      />
+    ),
+    code: (v) =>
+      `<DialGallery\n  items={photos}\n  reveal="${v.reveal}"\n  side="${v.side}"\n  depth={${v.depth}}\n  spacing={${v.spacing}}\n  defaultValue={${v.defaultValue}}${v.brackets ? "" : "\n  brackets={false}"}\n  accent="${v.accent}"\n/>`,
   },
   fader: {
     component: "Fader",

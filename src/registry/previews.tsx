@@ -9,6 +9,7 @@ import CompareSlider from "@/components/ui/compare-slider";
 import InfiniteGrid from "@/components/ui/infinite-grid";
 import CommandPalette from "@/components/ui/command-palette";
 import Dial from "@/components/ui/dial";
+import DialGallery from "@/components/ui/dial-gallery";
 import Fader from "@/components/ui/fader";
 import HoldToConfirm from "@/components/ui/hold-to-confirm";
 import Button from "@/components/ui/button";
@@ -36,6 +37,7 @@ export const previews: Record<string, ComponentType> = {
   "infinite-grid": InfiniteGrid,
   "command-palette": CommandPalette,
   "dial": Dial,
+  "dial-gallery": DialGallery,
   "fader": Fader,
   "hold-to-confirm": HoldToConfirm,
   button: Button,
