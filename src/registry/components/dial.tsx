@@ -273,22 +273,5 @@ export function Dial({
 
 export default function Demo() {
   const [temp, setTemp] = useState(0.7);
-  const [gain, setGain] = useState(-6);
-  const [mix, setMix] = useState(40);
-
-  return (
-    <div className="relative flex items-end gap-6 rounded-[28px] bg-neutral-50 dark:bg-neutral-950 px-8 pt-8 pb-6 shadow-[0_1px_0_white_inset,0_20px_40px_-20px_color-mix(in_oklab,var(--color-neutral-600)_60%,transparent)] ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 dark:shadow-[0_1px_0_rgb(255_255_255/0.06)_inset,0_20px_40px_-20px_black] @sm:gap-8">
-      {[
-        "top-3 left-3",
-        "top-3 right-3",
-        "bottom-3 left-3",
-        "bottom-3 right-3",
-      ].map((p) => (
-        <span key={p} className={cn("absolute size-1.5 rounded-full bg-neutral-200 ring-1 ring-black/5 dark:bg-neutral-800", p)} />
-      ))}
-      <Dial size="sm" ticks={31} tone="level" danger={0} label="Gain" min={-24} max={12} step={0.5} value={gain} onValueChange={setGain} defaultValue={-6} format={(v) => `${v > 0 ? "+" : ""}${v.toFixed(1)} dB`} />
-      <Dial size="lg" label="Temperature" min={0} max={2} step={0.01} value={temp} onValueChange={setTemp} defaultValue={0.7} format={(v) => v.toFixed(2)} />
-      <Dial size="sm" ticks={31} label="Mix" value={mix} onValueChange={setMix} defaultValue={40} format={(v) => `${Math.round(v)}%`} />
-    </div>
-  );
+  return <Dial size="lg" label="Temperature" min={0} max={2} step={0.01} value={temp} onValueChange={setTemp} defaultValue={0.7} format={(v) => v.toFixed(2)} />;
 }
