@@ -5,8 +5,31 @@ import { motion, useInView } from "motion/react";
 import { Lock } from "lucide-react";
 import { NumberTicker } from "@/components/ui/number-ticker";
 import { SegmentedControl } from "@/components/ui/segmented-control";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+
+/* A small on/off toggle, kept here so the block needs nothing more than itself. */
+function Toggle({ checked, defaultChecked = false, onCheckedChange, ...aria }: { checked?: boolean; defaultChecked?: boolean; onCheckedChange?: (on: boolean) => void; "aria-label"?: string; "aria-labelledby"?: string }) {
+  const [inner, setInner] = useState(defaultChecked);
+  const on = checked ?? inner;
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      onClick={() => {
+        setInner(!on);
+        onCheckedChange?.(!on);
+      }}
+      className={cn(
+        "relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full p-[3px] shadow-[inset_0_1px_2px_rgb(0_0_0/0.2)] outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60",
+        on ? "bg-blue-600 dark:bg-blue-500" : "bg-neutral-950/10 dark:bg-neutral-50/10",
+      )}
+      {...aria}
+    >
+      <span className={cn("size-[18px] rounded-full bg-white shadow-[0_1px_1px_rgb(0_0_0/0.12),0_2px_5px_-1px_rgb(0_0_0/0.2)] transition-transform duration-200 ease-[cubic-bezier(0.3,0.7,0.2,1)]", on && "translate-x-4")} />
+    </button>
+  );
+}
 
 /* One tile: a run-in title over its picture. Every tile shares the padding and puts its copy on top. */
 function Tile({ lead, rest, children, className }: { lead: string; rest: string; children: ReactNode; className?: string }) {
@@ -151,7 +174,7 @@ function Channels() {
       ].map(([name, on]) => (
         <label key={name as string} className="flex cursor-pointer items-center justify-between gap-4 py-2.5 text-sm text-neutral-800 dark:text-neutral-200">
           {name}
-          <Switch size="sm" defaultChecked={on as boolean} aria-label={name as string} />
+          <Toggle defaultChecked={on as boolean} aria-label={name as string} />
         </label>
       ))}
     </div>

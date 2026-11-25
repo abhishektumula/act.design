@@ -6,8 +6,31 @@ import { ArrowRight, Hash, Moon, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Fader } from "@/components/ui/fader";
 import { Stepper } from "@/components/ui/stepper";
-import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
+
+/* A small on/off toggle, kept here so the block needs nothing more than itself. */
+function Toggle({ checked, defaultChecked = false, onCheckedChange, ...aria }: { checked?: boolean; defaultChecked?: boolean; onCheckedChange?: (on: boolean) => void; "aria-label"?: string; "aria-labelledby"?: string }) {
+  const [inner, setInner] = useState(defaultChecked);
+  const on = checked ?? inner;
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      onClick={() => {
+        setInner(!on);
+        onCheckedChange?.(!on);
+      }}
+      className={cn(
+        "relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full p-[3px] shadow-[inset_0_1px_2px_rgb(0_0_0/0.2)] outline-none transition-colors duration-200 focus-visible:ring-2 focus-visible:ring-blue-600/60 dark:focus-visible:ring-blue-500/60",
+        on ? "bg-blue-600 dark:bg-blue-500" : "bg-neutral-950/10 dark:bg-neutral-50/10",
+      )}
+      {...aria}
+    >
+      <span className={cn("size-[18px] rounded-full bg-white shadow-[0_1px_1px_rgb(0_0_0/0.12),0_2px_5px_-1px_rgb(0_0_0/0.2)] transition-transform duration-200 ease-[cubic-bezier(0.3,0.7,0.2,1)]", on && "translate-x-4")} />
+    </button>
+  );
+}
 
 /** The last hour of 30-second checks: steady around 180 ms, one slow spell at 14:19 and a short outage at 14:41. */
 const checks = Array.from({ length: 120 }, (_, i) => {
@@ -160,7 +183,7 @@ export function HeroMonitor({ className }: { className?: string }) {
                 </p>
                 <label className="flex cursor-pointer items-center gap-2.5 text-sm text-neutral-700 dark:text-neutral-300">
                   <span id="hero-monitor-call">Phone the on-call</span>
-                  <Switch size="sm" checked={call} onCheckedChange={setCall} aria-labelledby="hero-monitor-call" />
+                  <Toggle checked={call} onCheckedChange={setCall} aria-labelledby="hero-monitor-call" />
                 </label>
               </div>
               {/* Room for the notification that straddles the window's foot */}
