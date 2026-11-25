@@ -23,7 +23,6 @@ import { PromptInput } from "@/components/ui/prompt-input";
 import { PruneReveal } from "@/components/ui/prune-reveal-animation";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Stepper } from "@/components/ui/stepper";
-import { Switch } from "@/components/ui/switch";
 import { TextFocus } from "@/components/ui/text-focus";
 import { Typeset } from "@/components/ui/typeset";
 import { TrashBin } from "@/components/ui/trash-bin";
@@ -308,16 +307,6 @@ export const playgrounds: Record<string, Playground> = {
       const lv = list(v.levels);
       return `<ValueBar\n  label="${v.label}"\n  size="${v.size}"\n  min={${v.min}}\n  max={${v.max}}\n  step={${v.step}}\n  defaultValue={${v.defaultValue}}\n  ticks={${v.ticks}}${v.suffix ? `\n  format={(v) => \`\${v}${v.suffix}\`}` : ""}${lv.length ? `\n  levels={${JSON.stringify(lv)}}` : ""}\n  accent="${v.accent}"${v.hideValue ? "\n  hideValue" : ""}${v.disabled ? "\n  disabled" : ""}\n/>`;
     },
-  },
-  switch: {
-    component: "Switch",
-    controls: [
-      { type: "select", key: "size", label: "Size", options: ["sm", "md"] },
-      { type: "boolean", key: "defaultChecked", label: "On at start" },
-      { type: "boolean", key: "disabled", label: "Disabled" },
-    ],
-    defaults: { size: "md", defaultChecked: true, disabled: false },
-    render: (v) => <Switch size={str(v.size) as "sm" | "md"} defaultChecked={!!v.defaultChecked} disabled={!!v.disabled} aria-label="Example switch" />,
   },
   "segmented-control": {
     component: "SegmentedControl",

@@ -68,7 +68,6 @@ const parts = [
   ["Dial", "dial"],
   ["Fader", "fader"],
   ["Stepper", "stepper"],
-  ["Switch", "switch"],
   ["Segmented Control", "segmented-control"],
 ] as const;
 
@@ -144,7 +143,7 @@ export function Hero() {
         >
           <p className="max-w-[30rem] text-lg leading-8 text-pretty text-neutral-600 dark:text-neutral-400">
             React components that act like well-made objects. Dials with
-            detents, faders with travel, switches you can throw.{" "}
+            detents, faders with travel, steppers that roll.{" "}
             <span className="text-neutral-900 dark:text-neutral-100">
               Turn any of them and the headline answers.
             </span>
