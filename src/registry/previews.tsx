@@ -23,7 +23,7 @@ import FocusCanvas from "@/components/ui/focus-canvas";
 import FolderCard from "@/components/ui/folder-card";
 import Stepper from "@/components/ui/stepper";
 import Switch from "@/components/ui/switch";
-import TextStagger from "@/components/ui/text-stagger";
+import TextFocus from "@/components/ui/text-focus";
 import Typeset from "@/components/ui/typeset";
 import Toast from "@/components/ui/toast";
 import TrashBin from "@/components/ui/trash-bin";
@@ -51,7 +51,7 @@ export const previews: Record<string, ComponentType> = {
   "folder-card": FolderCard,
   "stepper": Stepper,
   "switch": Switch,
-  "text-stagger": TextStagger,
+  "text-focus": TextFocus,
   typeset: Typeset,
   toast: Toast,
   "trash-bin": TrashBin,

@@ -24,7 +24,7 @@ import { PruneReveal } from "@/components/ui/prune-reveal-animation";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Stepper } from "@/components/ui/stepper";
 import { Switch } from "@/components/ui/switch";
-import { TextStagger, staggerPresets, type StaggerPreset } from "@/components/ui/text-stagger";
+import { TextFocus } from "@/components/ui/text-focus";
 import { Typeset } from "@/components/ui/typeset";
 import { Toaster, toast, type ToasterPosition } from "@/components/ui/toast";
 import { TrashBin } from "@/components/ui/trash-bin";
@@ -563,27 +563,30 @@ export const playgrounds: Record<string, Playground> = {
     ),
     code: (v) => `<Typeset\n  text="${v.text}"\n  highlight="${v.highlight}"\n  startScale={${v.startScale}}\n  speed={${v.speed}}\n/>`,
   },
-  "text-stagger": {
-    component: "TextStagger",
+  "text-focus": {
+    component: "TextFocus",
     controls: [
       { type: "text", key: "text", label: "Text" },
-      { type: "select", key: "by", label: "By", options: ["word", "char"] },
-      { type: "select", key: "preset", label: "Preset", options: Object.keys(staggerPresets) },
-      { type: "number", key: "stagger", label: "Stagger", min: 0.01, max: 0.2, step: 0.01, unit: "s" },
-      { type: "number", key: "delay", label: "Delay", min: 0, max: 1, step: 0.05, unit: "s" },
+      { type: "select", key: "frame", label: "Frame", options: ["brackets", "handles"] },
+      { type: "number", key: "blur", label: "Blur", min: 0, max: 0.25, step: 0.01, unit: "em" },
+      { type: "number", key: "dim", label: "Dim to", min: 0, max: 1, step: 0.05 },
+      { type: "boolean", key: "remember", label: "Remember read words" },
+      { type: "color", key: "color", label: "Colour", options: COLORS },
     ],
-    defaults: { text: "Interfaces with weight", by: "word", preset: "blur", stagger: 0.06, delay: 0 },
+    defaults: { text: "Text Focus Component", frame: "brackets", blur: 0.09, dim: 0.45, remember: false, color: "var(--color-blue-500)" },
     render: (v) => (
-      <TextStagger
+      <TextFocus
         as="h2"
         text={str(v.text)}
-        by={str(v.by) as "word" | "char"}
-        preset={str(v.preset) as StaggerPreset}
-        stagger={n(v.stagger)}
-        delay={n(v.delay)}
-        className="text-center text-5xl font-semibold tracking-tight text-neutral-950 dark:text-neutral-50"
+        frame={str(v.frame) as "brackets" | "handles"}
+        blur={n(v.blur)}
+        dim={n(v.dim)}
+        remember={!!v.remember}
+        color={str(v.color)}
+        className="max-w-xl text-center text-6xl leading-[1.1] font-semibold tracking-[-0.035em] text-neutral-950 dark:text-neutral-50"
       />
     ),
+    code: (v) => `<TextFocus\n  as="h2"\n  text="${v.text}"\n  frame="${v.frame}"\n  blur={${v.blur}}\n  dim={${v.dim}}${v.remember ? "\n  remember" : ""}\n/>`,
   },
   "folder-card": {
     component: "FolderCard",
