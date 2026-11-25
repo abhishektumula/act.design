@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import { AnimatePresence, motion, useSpring, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +20,7 @@ export function Fader({
   label,
   format = (v) => String(Math.round(v)),
   marks,
+  accent = "var(--color-blue-500)",
   className,
 }: {
   value?: number;
@@ -33,6 +34,8 @@ export function Fader({
   format?: (value: number) => string;
   /** Labels under the ruler, spread evenly. Defaults to min and max. */
   marks?: string[];
+  /** Thumb and glow colour. Any CSS colour. */
+  accent?: string;
   className?: string;
 }) {
   const id = useId();
@@ -101,7 +104,7 @@ export function Fader({
   const labels = marks ?? [format(min), format(max)];
 
   return (
-    <div data-slot="fader" className={cn("w-full max-w-sm select-none", className)}>
+    <div data-slot="fader" className={cn("w-full max-w-sm select-none", className)} style={{ "--fader-accent": accent } as CSSProperties}>
       {label && (
         <div className="mb-3 flex items-baseline justify-between">
           <span id={`${id}-label`} className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
@@ -129,7 +132,7 @@ export function Fader({
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         onKeyDown={onKeyDown}
-        className="group relative h-14 cursor-pointer touch-none rounded-md outline-none focus-visible:ring-2 focus-visible:ring-blue-600/50 dark:focus-visible:ring-blue-500/50 focus-visible:ring-offset-8 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950"
+        className="group relative h-14 cursor-pointer touch-none rounded-md outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_oklab,var(--fader-accent)_50%,transparent)] focus-visible:ring-offset-8 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950"
       >
         {/* Ruler */}
         <div className="absolute inset-x-0 bottom-3 flex h-10 items-end justify-between">
@@ -160,9 +163,9 @@ export function Fader({
           <motion.div
             style={{ scaleX }}
             animate={{ scaleY: dragging ? 1.04 : 1 }}
-            className="absolute bottom-0 left-0 h-full w-[3px] -translate-x-1/2 rounded-full bg-blue-600 dark:bg-blue-500 shadow-[0_0_12px_color-mix(in_oklab,var(--color-blue-600)_70%,transparent)] dark:shadow-[0_0_12px_color-mix(in_oklab,var(--color-blue-500)_70%,transparent)]"
+            className="absolute bottom-0 left-0 h-full w-[3px] -translate-x-1/2 rounded-full bg-(--fader-accent) shadow-[0_0_12px_color-mix(in_oklab,var(--fader-accent)_70%,transparent)]"
           />
-          <span className="absolute bottom-0 left-0 size-2.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-blue-600 dark:bg-blue-500 ring-4 ring-neutral-50 dark:ring-neutral-950" />
+          <span className="absolute bottom-0 left-0 size-2.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-(--fader-accent) ring-4 ring-neutral-50 dark:ring-neutral-950" />
           <AnimatePresence>
             {show && (
               <motion.span

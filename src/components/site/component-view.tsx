@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, ChevronDown, Code2, Eye, Maximize, Minimize, RotateCcw, Sparkles, Terminal } from "lucide-react";
 import { Preview } from "@/registry/previews";
+import { Customize, useValues } from "./values";
 
 type View = "preview" | "code";
 
@@ -86,6 +87,8 @@ export function ComponentView({ slug, code, prompt, install }: { slug: string; c
   const [run, setRun] = useState(0);
   const [full, setFull] = useState(false);
   const stage = useRef<HTMLDivElement>(null);
+  const live = useValues(slug);
+  const { pg } = live;
 
   useEffect(() => {
     const sync = () => setFull(document.fullscreenElement === stage.current && !!stage.current);
@@ -156,8 +159,9 @@ export function ComponentView({ slug, code, prompt, install }: { slug: string; c
               ref={stage}
               className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-2xl bg-white dark:bg-black p-4 ring-1 ring-neutral-950/[0.08] dark:ring-neutral-50/[0.08] sm:p-10"
             >
-              <div key={run} className="@container relative flex w-full justify-center">
-                <Preview slug={slug} />
+              {/* The showcase is the one copy being customized below; a remount replays it. */}
+              <div key={`${run}:${pg && pg.remount !== false ? JSON.stringify(live.values) : ""}`} className="@container relative flex w-full justify-center">
+                {pg ? pg.render(live.values) : <Preview slug={slug} />}
               </div>
             </div>
           ) : (
@@ -165,6 +169,8 @@ export function ComponentView({ slug, code, prompt, install }: { slug: string; c
           )}
         </motion.div>
       </AnimatePresence>
+
+      {pg && view === "preview" && <Customize {...live} pg={pg} />}
     </div>
   );
 }

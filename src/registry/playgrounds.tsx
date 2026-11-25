@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { CalendarDays, CreditCard, FilePlus2, Kanban, LayoutDashboard, List, Moon, Rows3, Settings, Table2, Trash2, UserPlus } from "lucide-react";
+import { CalendarDays, CreditCard, FilePlus2, Image, Kanban, LayoutDashboard, LayoutGrid, List, Monitor, Moon, Music, Rows3, Settings, Sun, Table2, Trash2, UserPlus, Video, type LucideIcon } from "lucide-react";
 import { Burst } from "@/components/ui/burst";
 import { Button } from "@/components/ui/button";
 import { CardStack } from "@/components/ui/card-stack";
@@ -27,10 +27,13 @@ import { Switch } from "@/components/ui/switch";
 import { TextFocus } from "@/components/ui/text-focus";
 import { Typeset } from "@/components/ui/typeset";
 import { TrashBin } from "@/components/ui/trash-bin";
+import { ValueBar } from "@/components/ui/value-bar";
 
 /* --------------------------------- schema --------------------------------- */
 
-export type Value = string | number | boolean;
+/** One row of an `items` control: a title and the name of an icon from `ICONS`. */
+export type Item = { label: string; icon: string };
+export type Value = string | number | boolean | Item[];
 export type Values = Record<string, Value>;
 
 export type Control =
@@ -38,7 +41,8 @@ export type Control =
   | { type: "boolean"; key: string; label: string }
   | { type: "select"; key: string; label: string; options: string[] }
   | { type: "text"; key: string; label: string }
-  | { type: "color"; key: string; label: string; options: { name: string; value: string }[] };
+  | { type: "color"; key: string; label: string; options: { name: string; value: string }[] }
+  | { type: "items"; key: string; label: string; min: number; max: number };
 
 export type Playground = {
   /** The named export, as it appears in the snippet. */
@@ -140,20 +144,48 @@ const GALLERY: DialGalleryItem[] = [
   { label: "Highlands", caption: "Isle of Skye", src: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop" },
   { label: "Towers", caption: "City centre", src: "https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1200&auto=format&fit=crop" },
 ];
-const PHOTO = PHOTOS.Skyline.src;
 const IMAGES = Object.entries(PHOTOS).map(([name, p]) => ({ src: p.src, alt: name }));
 function Photo({ src, alt }: { src: string; alt: string }) {
   // eslint-disable-next-line @next/next/no-img-element
   return <img src={src} alt={alt} draggable={false} className="size-full rounded-2xl object-cover shadow-[0_20px_40px_-20px_rgb(0_0_0/0.6)] ring-1 ring-white/10" />;
 }
 const STACK = ["bg-blue-600 text-white", "bg-neutral-800 text-white", "bg-sky-400 text-sky-950", "bg-neutral-200 text-neutral-900", "bg-blue-950 text-blue-100", "bg-neutral-500 text-white", "bg-sky-700 text-white", "bg-neutral-950 text-white"];
-const SEGMENTS = [
-  { label: "List", icon: List, iconName: "List" },
-  { label: "Board", icon: Kanban, iconName: "Kanban" },
-  { label: "Calendar", icon: CalendarDays, iconName: "CalendarDays" },
-  { label: "Rows", icon: Rows3, iconName: "Rows3" },
-  { label: "Table", icon: Table2, iconName: "Table2" },
-];
+/** Icons an `items` control can pick from. "None" leaves the option without one. */
+export const ICONS: Record<string, LucideIcon | null> = { None: null, List, Kanban, CalendarDays, Rows3, Table2, LayoutGrid, Image, Video, Music, Sun, Moon, Monitor };
+const items = (v: Value) => (Array.isArray(v) ? v : []);
+const slugify = (s: string, i: number) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || `option-${i + 1}`;
+
+/* Things to put either side of a compare slider. */
+function MockCard({ dark }: { dark?: boolean }) {
+  return (
+    <div className={`absolute inset-0 grid place-items-center ${dark ? "bg-neutral-900" : "bg-neutral-100"}`}>
+      <div className={`w-3/5 max-w-64 rounded-2xl p-5 ring-1 ${dark ? "bg-neutral-800 ring-white/10" : "bg-white shadow-lg ring-black/5"}`}>
+        <div className="flex items-center gap-3">
+          <span className="size-9 rounded-full bg-linear-to-br from-sky-400 to-blue-600" />
+          <span className="flex-1 space-y-1.5">
+            <span className={`block h-2 w-3/4 rounded-full ${dark ? "bg-neutral-600" : "bg-neutral-300"}`} />
+            <span className={`block h-2 w-1/2 rounded-full ${dark ? "bg-neutral-700" : "bg-neutral-200"}`} />
+          </span>
+        </div>
+        <span className={`mt-5 block h-16 rounded-lg ${dark ? "bg-neutral-700/60" : "bg-neutral-100"}`} />
+        <span className="mt-4 flex justify-end">
+          <span className={`h-7 w-20 rounded-lg ${dark ? "bg-neutral-50" : "bg-neutral-950"}`} />
+        </span>
+      </div>
+    </div>
+  );
+}
+const photo = "absolute inset-0 size-full object-cover";
+const SIDES: Record<string, ReactNode> = {
+  /* eslint-disable @next/next/no-img-element */
+  "Skyline · mono": <img src={PHOTOS.Skyline.src} alt="" draggable={false} className={`${photo} grayscale`} />,
+  Skyline: <img src={PHOTOS.Skyline.src} alt="" draggable={false} className={photo} />,
+  Lagoon: <img src={PHOTOS.Lagoon.src} alt="" draggable={false} className={photo} />,
+  Breakwater: <img src={PHOTOS.Breakwater.src} alt="" draggable={false} className={photo} />,
+  /* eslint-enable @next/next/no-img-element */
+  "Card · light": <MockCard />,
+  "Card · dark": <MockCard dark />,
+};
 
 /* ------------------------------- playgrounds ------------------------------- */
 
@@ -225,15 +257,57 @@ export const playgrounds: Record<string, Playground> = {
       { type: "number", key: "step", label: "Step", min: 1, max: 10, step: 1 },
       { type: "number", key: "ticks", label: "Ticks", min: 11, max: 81, step: 2 },
       { type: "number", key: "defaultValue", label: "Start at", min: 0, max: 200, step: 1 },
-      { type: "text", key: "marks", label: "Marks (comma separated)" },
+      { type: "text", key: "marks", label: "Marks" },
+      { type: "color", key: "accent", label: "Accent", options: COLORS },
     ],
-    defaults: { label: "Focus", min: 0, max: 100, step: 1, ticks: 41, defaultValue: 62, marks: "Soft, Sharp" },
+    defaults: { label: "Focus", min: 0, max: 100, step: 1, ticks: 41, defaultValue: 62, marks: "Soft, Sharp", accent: "var(--color-blue-500)" },
     render: (v) => (
       <div className="w-full max-w-sm">
-        <Fader label={str(v.label)} min={n(v.min)} max={n(v.max)} step={n(v.step)} ticks={n(v.ticks)} defaultValue={n(v.defaultValue)} marks={list(v.marks)} />
+        <Fader label={str(v.label)} min={n(v.min)} max={n(v.max)} step={n(v.step)} ticks={n(v.ticks)} defaultValue={n(v.defaultValue)} marks={list(v.marks)} accent={str(v.accent)} />
       </div>
     ),
-    code: (v) => `<Fader label="${v.label}" min={${v.min}} max={${v.max}} step={${v.step}} ticks={${v.ticks}} defaultValue={${v.defaultValue}} marks={${JSON.stringify(list(v.marks))}} />`,
+    code: (v) =>
+      `<Fader\n  label="${v.label}"\n  min={${v.min}}\n  max={${v.max}}\n  step={${v.step}}\n  ticks={${v.ticks}}\n  defaultValue={${v.defaultValue}}\n  marks={${JSON.stringify(list(v.marks))}}\n  accent="${v.accent}"\n/>`,
+  },
+  "value-bar": {
+    component: "ValueBar",
+    controls: [
+      { type: "text", key: "label", label: "Label" },
+      { type: "select", key: "size", label: "Size", options: ["sm", "md", "lg"] },
+      { type: "number", key: "min", label: "Min", min: 0, max: 50, step: 1 },
+      { type: "number", key: "max", label: "Max", min: 1, max: 200, step: 1 },
+      { type: "number", key: "step", label: "Step", min: 1, max: 20, step: 1 },
+      { type: "number", key: "defaultValue", label: "Start at", min: 0, max: 200, step: 1 },
+      { type: "number", key: "ticks", label: "Ticks", min: 0, max: 24, step: 1 },
+      { type: "text", key: "suffix", label: "Suffix" },
+      { type: "text", key: "levels", label: "Levels" },
+      { type: "color", key: "accent", label: "Accent", options: [{ name: "Neutral", value: "var(--color-neutral-500)" }, ...COLORS.filter((c) => c.name !== "Neutral")] },
+      { type: "boolean", key: "hideValue", label: "Hide value" },
+      { type: "boolean", key: "disabled", label: "Disabled" },
+    ],
+    defaults: { label: "Strength", size: "lg", min: 0, max: 9, step: 1, defaultValue: 3, ticks: 9, suffix: "", levels: "Off, Low, Medium, High, Max", accent: "var(--color-neutral-500)", hideValue: false, disabled: false },
+    render: (v) => (
+      <div className="w-full max-w-md">
+        <ValueBar
+          label={str(v.label)}
+          size={str(v.size) as "sm" | "md" | "lg"}
+          min={n(v.min)}
+          max={Math.max(n(v.min) + 1, n(v.max))}
+          step={n(v.step)}
+          defaultValue={n(v.defaultValue)}
+          ticks={n(v.ticks)}
+          format={(x) => `${x}${str(v.suffix)}`}
+          levels={list(v.levels).length ? list(v.levels) : undefined}
+          accent={str(v.accent)}
+          hideValue={!!v.hideValue}
+          disabled={!!v.disabled}
+        />
+      </div>
+    ),
+    code: (v) => {
+      const lv = list(v.levels);
+      return `<ValueBar\n  label="${v.label}"\n  size="${v.size}"\n  min={${v.min}}\n  max={${v.max}}\n  step={${v.step}}\n  defaultValue={${v.defaultValue}}\n  ticks={${v.ticks}}${v.suffix ? `\n  format={(v) => \`\${v}${v.suffix}\`}` : ""}${lv.length ? `\n  levels={${JSON.stringify(lv)}}` : ""}\n  accent="${v.accent}"${v.hideValue ? "\n  hideValue" : ""}${v.disabled ? "\n  disabled" : ""}\n/>`;
+    },
   },
   switch: {
     component: "Switch",
@@ -248,19 +322,32 @@ export const playgrounds: Record<string, Playground> = {
   "segmented-control": {
     component: "SegmentedControl",
     controls: [
-      { type: "number", key: "count", label: "Options", min: 2, max: 5, step: 1 },
-      { type: "boolean", key: "icons", label: "Icons" },
+      { type: "items", key: "options", label: "Options", min: 2, max: 6 },
       { type: "select", key: "size", label: "Size", options: ["sm", "md"] },
     ],
-    defaults: { count: 3, icons: true, size: "md" },
+    defaults: {
+      options: [
+        { label: "List", icon: "List" },
+        { label: "Board", icon: "Kanban" },
+        { label: "Calendar", icon: "CalendarDays" },
+      ],
+      size: "md",
+    },
     render: (v) => {
-      const options = SEGMENTS.slice(0, n(v.count)).map((s) => ({ value: s.label.toLowerCase(), label: s.label, icon: v.icons ? <s.icon /> : undefined }));
+      const options = items(v.options).map((o, i) => {
+        const Icon = ICONS[o.icon];
+        return { value: `${slugify(o.label, i)}-${i}`, label: o.label, icon: Icon ? <Icon /> : undefined };
+      });
+      if (!options.length) return null;
       return <SegmentedControl aria-label="View" size={str(v.size) as "sm" | "md"} options={options} defaultValue={options[0].value} />;
     },
-    code: (v) =>
-      `<SegmentedControl\n  size="${v.size}"\n  defaultValue="list"\n  options={[\n${SEGMENTS.slice(0, n(v.count))
-        .map((s) => `    { value: "${s.label.toLowerCase()}", label: "${s.label}"${v.icons ? `, icon: <${s.iconName} />` : ""} },`)
-        .join("\n")}\n  ]}\n/>`,
+    code: (v) => {
+      const opts = items(v.options);
+      const used = [...new Set(opts.map((o) => o.icon).filter((i) => ICONS[i]))];
+      return `${used.length ? `import { ${used.join(", ")} } from "lucide-react";\n\n` : ""}<SegmentedControl\n  size="${v.size}"\n  defaultValue="${slugify(opts[0]?.label ?? "", 0)}"\n  options={[\n${opts
+        .map((o, i) => `    { value: "${slugify(o.label, i)}", label: "${o.label}"${ICONS[o.icon] ? `, icon: <${o.icon} />` : ""} },`)
+        .join("\n")}\n  ]}\n/>`;
+    },
   },
   stepper: {
     component: "Stepper",
@@ -303,26 +390,31 @@ export const playgrounds: Record<string, Playground> = {
   "compare-slider": {
     component: "CompareSlider",
     controls: [
+      { type: "select", key: "before", label: "Before", options: Object.keys(SIDES) },
+      { type: "select", key: "after", label: "After", options: Object.keys(SIDES) },
       { type: "number", key: "defaultValue", label: "Divider at", min: 0, max: 100, step: 1, unit: "%" },
+      { type: "number", key: "motionBlur", label: "Motion blur", min: 0, max: 24, step: 1, unit: "px" },
+      { type: "number", key: "glitch", label: "Glitch", min: 0, max: 2, step: 0.05 },
       { type: "text", key: "beforeLabel", label: "Before label" },
       { type: "text", key: "afterLabel", label: "After label" },
     ],
-    defaults: { defaultValue: 50, beforeLabel: "Black and white", afterLabel: "Colour" },
+    defaults: { before: "Skyline · mono", after: "Skyline", defaultValue: 50, motionBlur: 9, glitch: 1, beforeLabel: "Black and white", afterLabel: "Colour" },
     render: (v) => (
       <div className="w-full max-w-lg">
         <CompareSlider
           className="aspect-[4/3]"
           defaultValue={n(v.defaultValue)}
+          motionBlur={n(v.motionBlur)}
+          glitch={n(v.glitch)}
           beforeLabel={str(v.beforeLabel)}
           afterLabel={str(v.afterLabel)}
-          /* eslint-disable-next-line @next/next/no-img-element */
-          before={<img src={PHOTO} alt="" draggable={false} className="absolute inset-0 size-full object-cover grayscale" />}
-          /* eslint-disable-next-line @next/next/no-img-element */
-          after={<img src={PHOTO} alt="" draggable={false} className="absolute inset-0 size-full object-cover" />}
+          before={SIDES[str(v.before)]}
+          after={SIDES[str(v.after)]}
         />
       </div>
     ),
-    code: (v) => `<CompareSlider\n  defaultValue={${v.defaultValue}}\n  beforeLabel="${v.beforeLabel}"\n  afterLabel="${v.afterLabel}"\n  before={<img src={bw} alt="" />}\n  after={<img src={colour} alt="" />}\n/>`,
+    code: (v) =>
+      `<CompareSlider\n  defaultValue={${v.defaultValue}}\n  motionBlur={${v.motionBlur}}\n  glitch={${v.glitch}}\n  beforeLabel="${v.beforeLabel}"\n  afterLabel="${v.afterLabel}"\n  before={<Before />}\n  after={<After />}\n/>`,
   },
   button: {
     component: "Button",

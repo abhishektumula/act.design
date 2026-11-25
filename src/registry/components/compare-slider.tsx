@@ -15,6 +15,10 @@ export type CompareSliderProps = {
   /** Where the divider starts, 0 to 100. */
   defaultValue?: number;
   onValueChange?: (value: number) => void;
+  /** How far the views smear sideways at full speed, in px. 0 turns it off. */
+  motionBlur?: number;
+  /** How hard the views tear when you let go, 0 to 1. 0 turns it off. */
+  glitch?: number;
   className?: string;
   "aria-label"?: string;
 };
@@ -31,6 +35,8 @@ export function CompareSlider({
   afterLabel = "After",
   defaultValue = 50,
   onValueChange,
+  motionBlur = 9,
+  glitch: glitchAmount = 1,
   className,
   "aria-label": label = "Compare",
 }: CompareSliderProps) {
@@ -90,12 +96,12 @@ export function CompareSlider({
   useMotionValueEvent(bend, "change", (b) => {
     if (reduce || glitch.current) return;
     const k = Math.min(1, Math.abs(b) / 70);
-    fx.current = { blur: k * 9, split: Math.sign(b) * k * 2.5, tear: 0 };
+    fx.current = { blur: k * motionBlur, split: Math.sign(b) * k * motionBlur * 0.28, tear: 0 };
     paint();
   });
 
   const release = () => {
-    if (reduce || travelled.current - pressedAt.current < 0.04) return;
+    if (reduce || glitchAmount <= 0 || travelled.current - pressedAt.current < 0.04) return;
     glitch.current?.stop();
     glitch.current = animate(0, 1, {
       duration: 0.38,
@@ -106,8 +112,8 @@ export function CompareSlider({
         const hard = Math.random() > 0.35;
         fx.current = {
           blur: fx.current.blur * 0.7,
-          split: (Math.random() > 0.5 ? 1 : -1) * 7 * fade * (hard ? 1 : 0.3),
-          tear: 34 * fade * (hard ? 1 : 0.15),
+          split: (Math.random() > 0.5 ? 1 : -1) * 7 * glitchAmount * fade * (hard ? 1 : 0.3),
+          tear: 34 * glitchAmount * fade * (hard ? 1 : 0.15),
         };
         paint(Math.floor(Math.random() * 1000));
       },

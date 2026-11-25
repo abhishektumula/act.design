@@ -26,6 +26,7 @@ import Switch from "@/components/ui/switch";
 import TextFocus from "@/components/ui/text-focus";
 import Typeset from "@/components/ui/typeset";
 import TrashBin from "@/components/ui/trash-bin";
+import ValueBar from "@/components/ui/value-bar";
 
 export const previews: Record<string, ComponentType> = {
   orb: Orb,
@@ -53,6 +54,7 @@ export const previews: Record<string, ComponentType> = {
   "text-focus": TextFocus,
   typeset: Typeset,
   "trash-bin": TrashBin,
+  "value-bar": ValueBar,
 };
 
 export function Preview({ slug }: { slug: string }) {
