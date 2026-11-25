@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import { ChevronDown, Plus, RotateCcw, X } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "./kit/switch";
 import { ValueBar } from "@/components/ui/value-bar";
 import { ICONS, playgrounds, snippet, type Control, type Item, type Playground, type Value, type Values as V } from "@/registry/playgrounds";
 import { CopyButton } from "./kit/copy-button";

@@ -9,7 +9,7 @@ import { Fader } from "@/components/ui/fader";
 import { Button } from "@/components/ui/button";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Stepper } from "@/components/ui/stepper";
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "./kit/switch";
 import { Chip } from "./fx";
 import { btnPrimary, btnSecondary } from "./styles";
 import { registry } from "@/registry/meta";

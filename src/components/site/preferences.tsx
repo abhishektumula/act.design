@@ -1,6 +1,6 @@
 "use client";
 
-import { Switch } from "@/components/ui/switch";
+import { Switch } from "./kit/switch";
 import { setTheme, useTheme } from "./theme-toggle";
 
 /** Site preferences, made from the components themselves. */
