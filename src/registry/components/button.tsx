@@ -177,17 +177,6 @@ export default function Demo() {
           </motion.span>
         </AnimatePresence>
       </Button>
-      <div className="flex items-center gap-2">
-        <Button size="sm" hotkey="z">
-          Undo
-        </Button>
-        <Button size="sm" tone="ink" hotkey="s">
-          Save
-        </Button>
-        <Button size="sm" tone="ghost">
-          Cancel
-        </Button>
-      </div>
     </div>
   );
 }
