@@ -639,10 +639,16 @@ export const playgrounds: Record<string, Playground> = {
     controls: [
       { type: "text", key: "title", label: "Title" },
       { type: "text", key: "meta", label: "Meta" },
+      { type: "text", key: "files", label: "Files (comma separated)" },
       { type: "color", key: "color", label: "Colour", options: COLORS },
     ],
-    defaults: { title: "Incident reports", meta: "12 postmortems · updated today", color: "var(--color-blue-500)" },
-    render: (v) => <FolderCard title={str(v.title)} meta={str(v.meta)} color={str(v.color)} className="w-72" />,
+    defaults: { title: "Incident reports", meta: "12 postmortems · updated today", files: "api-outage.md, timeline.csv, postmortem.pdf, latency.png, runbook.md", color: "var(--color-blue-500)" },
+    render: (v) => (
+      <div className="px-10 pt-28 pb-4">
+        <FolderCard title={str(v.title)} meta={str(v.meta)} files={list(v.files)} color={str(v.color)} className="w-72" />
+      </div>
+    ),
+    code: (v) => `<FolderCard\n  title="${v.title}"\n  meta="${v.meta}"\n  files={[${list(v.files).map((f) => `"${f}"`).join(", ")}]}\n/>`,
   },
   "infinite-grid": {
     component: "InfiniteGrid",
