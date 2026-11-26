@@ -27,9 +27,7 @@ const layout: [string, string][] = [
   ["fader", "h-[540px]"],
   ["trash-bin", "lg:col-span-2 h-[500px]"],
   ["card-stack", "h-[500px]"],
-  ["segmented-control", "h-[460px]"],
-  ["hold-to-confirm", "h-[460px]"],
-  ["orb", "h-[460px]"],
+  ["timeline", "lg:col-span-3 h-[500px]"],
 ];
 
 export default function Home() {
