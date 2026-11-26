@@ -23,6 +23,7 @@ import { PromptInput } from "@/components/ui/prompt-input";
 import { PruneReveal } from "@/components/ui/prune-reveal-animation";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import { Stepper } from "@/components/ui/stepper";
+import { Timeline, timelinePalettes, type TimelinePalette } from "@/components/ui/timeline";
 import { TextFocus } from "@/components/ui/text-focus";
 import { Typeset } from "@/components/ui/typeset";
 import { TrashBin } from "@/components/ui/trash-bin";
@@ -633,6 +634,36 @@ export const playgrounds: Record<string, Playground> = {
       />
     ),
     code: (v) => `<TextFocus\n  as="h2"\n  text="${v.text}"\n  frame="${v.frame}"\n  blur={${v.blur}}\n  dim={${v.dim}}${v.remember ? "\n  remember" : ""}\n/>`,
+  },
+  timeline: {
+    component: "Timeline",
+    controls: [
+      { type: "select", key: "palette", label: "Colours", options: Object.keys(timelinePalettes) },
+      { type: "text", key: "titles", label: "Titles (comma separated)" },
+      { type: "text", key: "dates", label: "Dates (comma separated)" },
+      { type: "number", key: "peak", label: "Peak", min: 30, max: 140, step: 2, unit: "px" },
+      { type: "number", key: "strokeWidth", label: "Line", min: 1, max: 6, step: 0.5, unit: "px" },
+      { type: "number", key: "defaultValue", label: "Start at", min: 0, max: 7, step: 1 },
+      { type: "boolean", key: "wheel", label: "Scroll to step" },
+    ],
+    defaults: { palette: "rainbow", titles: "First sketch, Prototype, Public beta, Blocks, Now", dates: "2019, 2021, 2023, 2025, 2026", peak: 84, strokeWidth: 2.5, defaultValue: 2, wheel: true },
+    render: (v) => {
+      const dates = list(v.dates);
+      const items = list(v.titles).map((title, i) => ({ title, date: dates[i], description: `Everything that happened around ${title.toLowerCase()}${dates[i] ? `, in ${dates[i]}` : ""}.` }));
+      return (
+        <Timeline
+          items={items}
+          colors={timelinePalettes[str(v.palette) as TimelinePalette]}
+          peak={n(v.peak)}
+          strokeWidth={n(v.strokeWidth)}
+          defaultValue={n(v.defaultValue)}
+          wheel={!!v.wheel}
+          className="max-w-4xl"
+        />
+      );
+    },
+    code: (v) =>
+      `<Timeline\n  items={milestones}\n  colors={timelinePalettes.${v.palette}}\n  peak={${v.peak}}\n  strokeWidth={${v.strokeWidth}}\n  defaultValue={${v.defaultValue}}${v.wheel ? "" : "\n  wheel={false}"}\n/>`,
   },
   "folder-card": {
     component: "FolderCard",
