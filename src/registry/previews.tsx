@@ -22,6 +22,7 @@ import DriftCanvas from "@/components/ui/drift-canvas";
 import FocusCanvas from "@/components/ui/focus-canvas";
 import FolderCard from "@/components/ui/folder-card";
 import Stepper from "@/components/ui/stepper";
+import Timeline from "@/components/ui/timeline";
 import TextFocus from "@/components/ui/text-focus";
 import Typeset from "@/components/ui/typeset";
 import TrashBin from "@/components/ui/trash-bin";
@@ -50,6 +51,7 @@ export const previews: Record<string, ComponentType> = {
   "folder-card": FolderCard,
   "stepper": Stepper,
   "text-focus": TextFocus,
+  timeline: Timeline,
   typeset: Typeset,
   "trash-bin": TrashBin,
   "value-bar": ValueBar,
