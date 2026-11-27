@@ -76,7 +76,7 @@ export function installCommand(deps: string[], code?: string) {
 
 /* ---------------------------------- blocks --------------------------------- */
 
-export const blockCategories = ["Hero", "How it works", "Features", "Pricing", "Social proof", "Status", "Conversion"] as const;
+export const blockCategories = ["Hero", "How it works", "Features", "Pricing", "Social proof", "Status", "Conversion", "Utility"] as const;
 
 export type BlockCategory = (typeof blockCategories)[number];
 
@@ -100,6 +100,7 @@ export const blocks: BlockItem[] = [
   { slug: "testimonials-deck", name: "Testimonial Deck", category: "Social proof", description: "Customer quotes dealt as a deck you can fling. Each card leads with its outcome in large type, beside a review score and customer names.", deps: [M, L], uses: ["card-stack"], isNew: true },
   { slug: "status-page", name: "Status Page", category: "Status", description: "A public status page: the headline state, every component's daily uptime as bars you can hover for what happened that day, a 30 or 90 day range, a subscribe form and the latest incident written up update by update.", deps: [M, L], uses: ["button", "segmented-control"], isNew: true },
   { slug: "cta-check", name: "Site Check CTA", category: "Conversion", description: "A closing call to action people actually use: type a domain, get an instant check from four regions with certificate expiry, then start monitoring it. It opens on an example result, so it never sits empty.", deps: [M, L], uses: ["button"], isNew: true },
+  { slug: "not-found", name: "Not Found", category: "Utility", description: "A 404 for a product that watches websites, told as a check. Six regions try the missing address one after another: each reaches the site fast and each gets the same 404, so the site is fine and only the page is gone. Once they all agree, a card suggests the page that does answer. Check again replays it.", deps: [M, L], uses: ["button"], isNew: true },
 ];
 
 export function getBlock(slug: string) {
