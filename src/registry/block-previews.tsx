@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import BentoFocus from "@/components/blocks/bento-focus";
 import CtaCheck from "@/components/blocks/cta-check";
+import FeatureIllustrations from "@/components/blocks/feature-illustrations";
 import FeatureRack from "@/components/blocks/feature-rack";
 import HeroHorizon from "@/components/blocks/hero-horizon";
 import HeroMonitor from "@/components/blocks/hero-monitor";
@@ -17,6 +18,7 @@ import TestimonialsDeck from "@/components/blocks/testimonials-deck";
 export const blockPreviews: Record<string, ComponentType> = {
   "bento-focus": BentoFocus,
   "cta-check": CtaCheck,
+  "feature-illustrations": FeatureIllustrations,
   "feature-rack": FeatureRack,
   "hero-horizon": HeroHorizon,
   "hero-monitor": HeroMonitor,
