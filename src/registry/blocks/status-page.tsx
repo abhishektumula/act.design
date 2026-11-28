@@ -2,19 +2,17 @@
 
 import { useState, type FormEvent } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Check } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { SegmentedControl } from "@/components/ui/segmented-control";
+import { Bell, Check, Rss } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Day = { level: "ok" | "minor" | "major"; note?: string };
 
 /** 90 days per component, newest last. Mostly clean, with the few bad days a real service has. */
 const components: { name: string; days: Day[] }[] = [
-  { name: "API", incidents: { 61: ["minor", "Elevated latency in Frankfurt, 22 min"], 84: ["major", "Checkout API down, 17 min"] } },
-  { name: "Dashboard", incidents: { 33: ["minor", "Slow chart loading, 41 min"] } },
-  { name: "Webhooks", incidents: { 84: ["minor", "Deliveries delayed, 25 min"], 12: ["minor", "Retries backed up, 1 h 5 min"] } },
-  { name: "Email alerts", incidents: {} },
+  { name: "Chat models", incidents: { 61: ["minor", "Slower first tokens in Europe, 22 min"], 84: ["minor", "Slower answers while traffic moved, 17 min"] } },
+  { name: "Image generation", incidents: { 33: ["minor", "Long queue for 4K images, 41 min"], 84: ["major", "Requests failing, 17 min"] } },
+  { name: "Fine-tuning", incidents: { 84: ["minor", "Jobs paused, 25 min"], 12: ["minor", "Jobs queued, 1 h 5 min"] } },
+  { name: "Console", incidents: {} },
 ].map(({ name, incidents }) => ({
   name,
   days: Array.from({ length: 90 }, (_, i): Day => {
@@ -37,10 +35,10 @@ const dateOf = (index: number) => {
 };
 
 const updates = [
-  ["Resolved", "15:02", "Checkout requests are succeeding again in every region. We'll publish a postmortem tomorrow."],
-  ["Monitoring", "14:52", "A fix is deployed and error rates are back to normal. We're watching it."],
-  ["Identified", "14:47", "A bad config push took the checkout service offline. Rolling it back now."],
-  ["Investigating", "14:42", "Checkout API requests are failing from Frankfurt, London and Stockholm."],
+  ["Resolved", "15:02", "Image requests are succeeding again for every model. We'll publish a write-up tomorrow."],
+  ["Monitoring", "14:52", "Capacity is back and the queue has drained. We're watching it."],
+  ["Identified", "14:47", "A bad rollout took a GPU cluster offline. Moving traffic to the others now."],
+  ["Investigating", "14:42", "Some image generation requests are failing or timing out."],
 ] as const;
 
 /**
@@ -60,81 +58,86 @@ export function StatusPage({ className }: { className?: string }) {
     if (/\S+@\S+\.\S+/.test(email)) setSubscribed(true);
   };
 
+  const smallButton = "inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-neutral-950/15 px-3 text-[13px] font-medium text-neutral-800 transition-colors outline-none hover:border-neutral-950/35 hover:bg-neutral-950/[0.03] focus-visible:border-emerald-600 dark:border-neutral-50/15 dark:text-neutral-200 dark:hover:border-neutral-50/35 dark:hover:bg-neutral-50/[0.04] [&_svg]:size-3.5";
+
   return (
-    <section data-slot="status-page" className={cn("bg-white dark:bg-black px-6 py-24 sm:py-32", className)}>
-      <div className="mx-auto max-w-4xl">
-        {/* Header */}
-        <div className="flex flex-wrap items-end justify-between gap-8">
-          <div>
-            <p className="text-sm font-medium text-neutral-600 dark:text-neutral-400">Northwind status</p>
-            <h2 className="mt-3 flex items-center gap-4 text-4xl leading-none font-semibold tracking-[-0.04em] text-neutral-950 dark:text-neutral-50 sm:text-5xl">
-              <span className="relative grid size-4 shrink-0 place-items-center">
-                <span className="absolute inset-0 animate-ping rounded-full bg-emerald-500/40 [animation-duration:2.4s]" />
-                <span className="relative size-3 rounded-full bg-emerald-500" />
-              </span>
-              <span>
-                All systems <span className="font-serif font-normal tracking-[-0.01em] italic">operational.</span>
-              </span>
-            </h2>
-          </div>
-          <form onSubmit={subscribe} className="flex w-full max-w-sm items-center gap-2 sm:w-auto">
+    <section data-slot="status-page" className={cn("bg-neutral-50 px-6 py-20 sm:py-24 dark:bg-neutral-950", className)}>
+      <div className="mx-auto max-w-3xl">
+        {/* Top bar: the product, and the small ways to follow along */}
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <p className="text-[15px] font-semibold tracking-[-0.01em] text-neutral-950 dark:text-neutral-50">
+            Lumen AI <span className="font-normal text-neutral-500">Status</span>
+          </p>
+          <form onSubmit={subscribe} className="flex items-center gap-2">
             <AnimatePresence mode="wait" initial={false}>
               {subscribed ? (
-                <motion.p
-                  key="done"
-                  initial={{ opacity: 0, y: 4 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex h-10 items-center gap-2 text-sm text-neutral-800 dark:text-neutral-200"
-                >
-                  <Check className="size-4 text-emerald-500" /> Updates will go to {email}
+                <motion.p key="done" initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} className="flex h-8 items-center gap-2 text-[13px] text-neutral-700 dark:text-neutral-300">
+                  <Check className="size-3.5 text-emerald-600" /> Updates go to {email}
                 </motion.p>
               ) : (
-                <motion.div key="form" exit={{ opacity: 0, y: -4 }} className="flex w-full items-center gap-2">
+                <motion.div key="form" exit={{ opacity: 0, y: -4 }} className="flex items-center gap-2">
                   <input
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@company.com"
                     aria-label="Email for status updates"
-                    className="h-10 min-w-0 flex-1 rounded-[10px] bg-neutral-50 px-3.5 text-sm text-neutral-950 dark:text-neutral-50 ring-1 ring-neutral-950/10 dark:ring-neutral-50/10 outline-none placeholder:text-neutral-500 focus:ring-blue-600/50 dark:focus:ring-blue-500/50 sm:w-56 dark:bg-neutral-900"
+                    className="h-8 w-44 rounded-[6px] border border-neutral-950/15 bg-white px-2.5 text-[13px] text-neutral-950 outline-none placeholder:text-neutral-400 focus:border-emerald-600 sm:w-52 dark:border-neutral-50/15 dark:bg-neutral-900 dark:text-neutral-50"
                   />
-                  <Button type="submit" tone="ink">
-                    Subscribe
-                  </Button>
+                  <button type="submit" className={smallButton}>
+                    <Bell /> Subscribe
+                  </button>
+                  <a href="#" className={cn(smallButton, "hidden sm:inline-flex")}>
+                    <Rss /> RSS
+                  </a>
                 </motion.div>
               )}
             </AnimatePresence>
           </form>
         </div>
 
-        {/* Components */}
-        <div className="mt-12 overflow-hidden rounded-[20px] bg-neutral-50 shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-950)_8%,transparent)] dark:shadow-[0_0_0_1px_color-mix(in_oklab,var(--color-neutral-50)_8%,transparent)] dark:bg-neutral-900">
-          <div className="flex items-center justify-between gap-4 border-b border-neutral-950/[0.07] dark:border-neutral-50/[0.07] px-5 py-3 sm:px-7">
-            <p className="text-sm text-neutral-600 dark:text-neutral-400">Uptime, last {n} days</p>
-            <SegmentedControl
-              aria-label="Range"
-              size="sm"
-              value={range}
-              onValueChange={setRange}
-              options={[
-                { value: "30", label: "30 days" },
-                { value: "90", label: "90 days" },
-              ]}
-            />
+        {/* The banner: the whole answer, first */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-[8px] bg-emerald-600 px-5 py-4 text-white">
+          <h2 className="flex items-center gap-3 text-[17px] font-semibold">
+            <span className="grid size-6 place-items-center rounded-full bg-white/20">
+              <Check className="size-3.5 stroke-[3]" />
+            </span>
+            All systems operational
+          </h2>
+          <span className="text-[13px] text-white/80">Checked 40 seconds ago</span>
+        </div>
+
+        {/* Components: one dense row each */}
+        <div className="mt-6 rounded-[8px] border border-neutral-950/10 bg-white dark:border-neutral-50/10 dark:bg-neutral-900">
+          <div className="flex items-center justify-between gap-4 border-b border-neutral-950/10 px-4 py-2.5 dark:border-neutral-50/10">
+            <span className="text-[13px] text-neutral-500">Uptime, last {n} days</span>
+            <div role="radiogroup" aria-label="Range" className="flex overflow-hidden rounded-[6px] border border-neutral-950/15 dark:border-neutral-50/15">
+              {(["30", "90"] as const).map((r) => (
+                <button
+                  key={r}
+                  type="button"
+                  role="radio"
+                  aria-checked={range === r}
+                  onClick={() => setRange(r)}
+                  className={cn("h-7 px-3 text-[12px] font-medium transition-colors outline-none", range === r ? "bg-neutral-950 text-white dark:bg-neutral-50 dark:text-neutral-950" : "text-neutral-600 hover:bg-neutral-950/[0.04] dark:text-neutral-400")}
+                >
+                  {r} days
+                </button>
+              ))}
+            </div>
           </div>
           <ul className="divide-y divide-neutral-950/[0.07] dark:divide-neutral-50/[0.07]">
             {components.map((c, row) => {
               const days = c.days.slice(90 - n);
+              const worst = days.some((d) => d.level === "major") ? "major" : days.some((d) => d.level === "minor") ? "minor" : "ok";
               return (
-                <li key={c.name} className="px-5 py-5 sm:px-7">
-                  <div className="flex items-baseline justify-between gap-4">
-                    <span className="flex items-center gap-2.5 text-[15px] font-medium text-neutral-950 dark:text-neutral-50">
-                      {c.name}
-                    </span>
-                    <span className="text-sm text-neutral-500 tabular-nums">{uptime(days) === 100 ? "100" : uptime(days).toFixed(n === 30 ? 2 : 3)}%</span>
-                  </div>
-                  <div className="relative mt-3" onPointerLeave={() => setHover(null)}>
-                    <div className="flex h-8 gap-[2px]">
+                <li key={c.name} className="grid items-center gap-x-4 gap-y-2 px-4 py-3 sm:grid-cols-[9.5rem_1fr_4.5rem]">
+                  <span className="flex items-center gap-2 text-[14px] font-medium text-neutral-950 dark:text-neutral-50">
+                    <span className={cn("size-1.5 rounded-full", worst === "ok" ? "bg-emerald-500" : worst === "minor" ? "bg-amber-400" : "bg-rose-500")} />
+                    {c.name}
+                  </span>
+                  <div className="relative" onPointerLeave={() => setHover(null)}>
+                    <div className="flex h-6 gap-px">
                       {days.map((d, i) => {
                         const index = 90 - n + i;
                         const on = hover?.row === row && hover.day === index;
@@ -143,16 +146,14 @@ export function StatusPage({ className }: { className?: string }) {
                             key={index}
                             onPointerEnter={() => setHover({ row, day: index })}
                             className={cn(
-                              "flex-1 rounded-[2px] transition-[opacity,transform] duration-150",
-                              d.level === "major" ? "bg-blue-600 dark:bg-blue-500" : d.level === "minor" ? "bg-amber-400" : "bg-emerald-500/50",
-                              hover?.row === row && !on && "opacity-50",
-                              on && "scale-y-110",
+                              "flex-1 transition-opacity duration-150 first:rounded-l-[3px] last:rounded-r-[3px]",
+                              d.level === "major" ? "bg-rose-500" : d.level === "minor" ? "bg-amber-400" : "bg-emerald-500/70",
+                              hover?.row === row && !on && "opacity-40",
                             )}
                           />
                         );
                       })}
                     </div>
-                    {/* What happened that day */}
                     <AnimatePresence>
                       {hover?.row === row && (
                         <motion.div
@@ -161,39 +162,35 @@ export function StatusPage({ className }: { className?: string }) {
                           exit={{ opacity: 0 }}
                           transition={{ duration: 0.12 }}
                           style={{ left: `${((hover.day - (90 - n) + 0.5) / n) * 100}%` }}
-                          className="pointer-events-none absolute bottom-full z-10 mb-2 w-52 -translate-x-1/2 rounded-[10px] bg-neutral-950 dark:bg-neutral-50 px-3 py-2 text-xs text-neutral-50 dark:text-neutral-950 shadow-lg"
+                          className="pointer-events-none absolute bottom-full z-10 mb-2 w-52 -translate-x-1/2 rounded-[6px] border border-neutral-950/10 bg-white px-3 py-2 text-[12px] text-neutral-900 shadow-[0_6px_16px_-6px_rgb(0_0_0/0.2)] dark:border-neutral-50/10 dark:bg-neutral-800 dark:text-neutral-100"
                         >
                           <span className="block font-medium">{dateOf(hover.day)}</span>
-                          <span className="block opacity-75">{c.days[hover.day].note ?? "No incidents"}</span>
+                          <span className="block text-neutral-500">{c.days[hover.day].note ?? "No incidents"}</span>
                         </motion.div>
                       )}
                     </AnimatePresence>
                   </div>
-                  <div className="mt-2 flex justify-between text-xs text-neutral-500">
-                    <span>{n} days ago</span>
-                    <span>Today</span>
-                  </div>
+                  <span className="text-right text-[13px] text-neutral-600 tabular-nums dark:text-neutral-400">{uptime(days) === 100 ? "100" : uptime(days).toFixed(n === 30 ? 2 : 3)}%</span>
                 </li>
               );
             })}
           </ul>
         </div>
 
-        {/* The latest incident */}
-        <div className="mt-12 grid gap-8 sm:grid-cols-[12rem_1fr]">
-          <div>
-            <p className="text-sm text-neutral-500">{dateOf(84)}</p>
-            <h3 className="mt-1 text-lg font-medium tracking-[-0.01em] text-neutral-950 dark:text-neutral-50">Checkout API down</h3>
-            <p className="mt-1 text-sm text-emerald-600 dark:text-emerald-400">Resolved after 17 minutes</p>
+        {/* The latest incident, as a compact log */}
+        <div className="mt-10">
+          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-neutral-950/10 pb-3 dark:border-neutral-50/10">
+            <h3 className="text-[15px] font-semibold text-neutral-950 dark:text-neutral-50">Image generation failing</h3>
+            <span className="text-[13px] text-neutral-500">
+              {dateOf(84)} · <span className="text-emerald-700 dark:text-emerald-400">resolved in 17 min</span>
+            </span>
           </div>
-          <ol className="space-y-5 border-l border-neutral-950/10 dark:border-neutral-50/10 pl-6">
-            {updates.map(([state, time, text], i) => (
-              <li key={state} className="relative">
-                <span className={cn("absolute top-1.5 -left-[1.6rem] size-2 rounded-full ring-4 ring-white dark:ring-black", i === 0 ? "bg-emerald-500" : "bg-neutral-950/25 dark:bg-neutral-50/25")} />
-                <p className="text-sm">
-                  <span className="font-medium text-neutral-950 dark:text-neutral-50">{state}</span> <span className="text-neutral-500 tabular-nums">{time}</span>
-                </p>
-                <p className="mt-1 max-w-lg text-sm leading-6 text-neutral-600 dark:text-neutral-400">{text}</p>
+          <ol>
+            {updates.map(([state, time, text]) => (
+              <li key={state} className="grid gap-1 border-b border-neutral-950/[0.06] py-3 text-[13px] sm:grid-cols-[6.5rem_3.5rem_1fr] sm:gap-4 dark:border-neutral-50/[0.06]">
+                <span className="font-medium text-neutral-950 dark:text-neutral-50">{state}</span>
+                <span className="text-neutral-500 tabular-nums">{time}</span>
+                <span className="leading-5 text-neutral-600 dark:text-neutral-400">{text}</span>
               </li>
             ))}
           </ol>
