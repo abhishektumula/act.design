@@ -1,6 +1,7 @@
 import type { ComponentType } from "react";
 import CtaCheck from "@/components/blocks/cta-check";
 import FeatureRack from "@/components/blocks/feature-rack";
+import HeroHorizon from "@/components/blocks/hero-horizon";
 import HeroMonitor from "@/components/blocks/hero-monitor";
 import IncidentFlow from "@/components/blocks/incident-flow";
 import NotFound from "@/components/blocks/not-found";
@@ -11,6 +12,7 @@ import TestimonialsDeck from "@/components/blocks/testimonials-deck";
 export const blockPreviews: Record<string, ComponentType> = {
   "cta-check": CtaCheck,
   "feature-rack": FeatureRack,
+  "hero-horizon": HeroHorizon,
   "hero-monitor": HeroMonitor,
   "incident-flow": IncidentFlow,
   "not-found": NotFound,
