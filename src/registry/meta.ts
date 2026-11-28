@@ -76,7 +76,7 @@ export function installCommand(deps: string[], code?: string) {
 
 /* ---------------------------------- blocks --------------------------------- */
 
-export const blockCategories = ["Hero", "How it works", "Features", "Pricing", "Social proof", "Status", "Conversion", "Utility"] as const;
+export const blockCategories = ["Hero", "Bento", "Features", "How it works", "Pricing", "Social proof", "Status", "Conversion", "Utility"] as const;
 
 export type BlockCategory = (typeof blockCategories)[number];
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Highlight } from "@/components/site/fx";
-import { BlockCard } from "@/components/site/block-card";
+import { BlockShelves } from "@/components/site/block-shelves";
 import { PageHeader } from "@/components/site/frame";
 import { Footer } from "@/components/site/footer";
 import { blocks } from "@/registry/meta";
@@ -17,14 +17,10 @@ export default function BlocksIndex() {
               Whole sections, <Highlight>assembled</Highlight>
             </>
           }
-          body={`${blocks.length} landing sections built from the same components, so the controls in them actually work. Preview at any width, then paste the whole section.`}
+          body={`${blocks.length} sections, sorted by where they go on a page: heroes, bentos, features, pricing, footers and whole landing pages. Preview any of them at any width, then paste the whole section.`}
         />
 
-        <div className="mt-14 grid gap-4 md:grid-cols-2">
-          {blocks.map((b) => (
-            <BlockCard key={b.slug} block={b} />
-          ))}
-        </div>
+        <BlockShelves />
       </main>
       <Footer />
     </>
