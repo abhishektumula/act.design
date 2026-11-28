@@ -3,6 +3,7 @@ import CtaCheck from "@/components/blocks/cta-check";
 import FeatureRack from "@/components/blocks/feature-rack";
 import HeroHorizon from "@/components/blocks/hero-horizon";
 import HeroMonitor from "@/components/blocks/hero-monitor";
+import HeroPrint from "@/components/blocks/hero-print";
 import HeroSilk from "@/components/blocks/hero-silk";
 import HeroSky from "@/components/blocks/hero-sky";
 import HeroSweep from "@/components/blocks/hero-sweep";
@@ -17,6 +18,7 @@ export const blockPreviews: Record<string, ComponentType> = {
   "feature-rack": FeatureRack,
   "hero-horizon": HeroHorizon,
   "hero-monitor": HeroMonitor,
+  "hero-print": HeroPrint,
   "hero-silk": HeroSilk,
   "hero-sky": HeroSky,
   "hero-sweep": HeroSweep,
